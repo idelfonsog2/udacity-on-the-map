@@ -17,14 +17,6 @@ struct ParseConstants {
     static let baseURL  = "https://parse.udacity.com/parse/classes"
 }
 
-struct UdacityConstants {
-    static let scheme   = "https"
-    static let host     = "udacity.com"
-    static let path     = "api/session"
-    
-    static let baseURL  = "https://www.udacity.com/api/session"
-}
-
     //MARK: Methods
 struct ParseMethod {
     static let StudentLocation          = "StudentLocation"      //POST, GET
@@ -43,22 +35,8 @@ struct ParseGETParameterKeys {
     static let Where    = "where"   //Required  Escaped SQL query
 }
 
-struct UdactiyHTTPBodyKeys {
-    static let UdacityKey   = "udacity"   //root
-    static let UsernameKey  = "username"
-    static let PasswordKey  = "password"
-    
-    /*
-     request.httpBody = "{\"udacity\": {\"username\": \"account@domain.com\", \"password\": \"********\"}}".data(using: String.Encoding.utf8)
-     */
-}
-
     //MARK: Header Fields
 
-struct UdacityHeaderFieldsKeys {
-    static let Accept = "Accept"
-    static let ContentType = "Content-Type"
-}
 struct ParseHeaderFieldsKeys {
     static let ParseAppIDKey    = "X-Parse-Application-Id"
     static let ParseRestKey     = "X-Parse-REST-API-Key"
@@ -72,13 +50,6 @@ struct ParseHeaderFieldsValues {
 }
 
 /* NOTES:
-
- UDACITY:
- SKIP THE FIRST 5 CHARACTERS OF THE RESPONSE
- 
- let range = Range(5..<data!.count)
- let newData = data?.subdata(in: range) /* subset response data! */
- print(NSString(data: newData!, encoding: String.Encoding.utf8.rawValue)!)
  
  PARSE:
  GETting:

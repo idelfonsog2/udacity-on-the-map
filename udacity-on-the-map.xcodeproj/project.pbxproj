@@ -7,18 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		160C995A1EC3F628008B0399 /* UDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160C99591EC3F628008B0399 /* UDConstants.swift */; };
 		1691C97A1EC1DD0800758BCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C9791EC1DD0800758BCF /* AppDelegate.swift */; };
 		1691C97C1EC1DD0800758BCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C97B1EC1DD0800758BCF /* ViewController.swift */; };
 		1691C97F1EC1DD0800758BCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1691C97D1EC1DD0800758BCF /* Main.storyboard */; };
 		1691C9811EC1DD0800758BCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1691C9801EC1DD0800758BCF /* Assets.xcassets */; };
 		1691C9841EC1DD0800758BCF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1691C9821EC1DD0800758BCF /* LaunchScreen.storyboard */; };
-		1691C98C1EC1DE5000758BCF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C98B1EC1DE5000758BCF /* Constants.swift */; };
+		1691C98C1EC1DE5000758BCF /* PSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C98B1EC1DE5000758BCF /* PSConstants.swift */; };
 		1691C98E1EC1E32A00758BCF /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C98D1EC1E32A00758BCF /* StudentLocation.swift */; };
 		1691C9901EC226FB00758BCF /* UDClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C98F1EC226FB00758BCF /* UDClient.swift */; };
 		1691C9921EC2273400758BCF /* PSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C9911EC2273400758BCF /* PSClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		160C99591EC3F628008B0399 /* UDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDConstants.swift; sourceTree = "<group>"; };
 		1691C9761EC1DD0800758BCF /* udacity-on-the-map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "udacity-on-the-map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1691C9791EC1DD0800758BCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1691C97B1EC1DD0800758BCF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,7 +28,7 @@
 		1691C9801EC1DD0800758BCF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1691C9831EC1DD0800758BCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1691C9851EC1DD0800758BCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1691C98B1EC1DE5000758BCF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1691C98B1EC1DE5000758BCF /* PSConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSConstants.swift; sourceTree = "<group>"; };
 		1691C98D1EC1E32A00758BCF /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		1691C98F1EC226FB00758BCF /* UDClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDClient.swift; sourceTree = "<group>"; };
 		1691C9911EC2273400758BCF /* PSClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSClient.swift; sourceTree = "<group>"; };
@@ -43,6 +45,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		160C99561EC3F5F0008B0399 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				160C99571EC3F5FA008B0399 /* UDClient */,
+				160C99581EC3F604008B0399 /* PSClient */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		160C99571EC3F5FA008B0399 /* UDClient */ = {
+			isa = PBXGroup;
+			children = (
+				1691C98F1EC226FB00758BCF /* UDClient.swift */,
+				160C99591EC3F628008B0399 /* UDConstants.swift */,
+			);
+			name = UDClient;
+			sourceTree = "<group>";
+		};
+		160C99581EC3F604008B0399 /* PSClient */ = {
+			isa = PBXGroup;
+			children = (
+				1691C9911EC2273400758BCF /* PSClient.swift */,
+				1691C98B1EC1DE5000758BCF /* PSConstants.swift */,
+			);
+			name = PSClient;
+			sourceTree = "<group>";
+		};
 		1691C96D1EC1DD0800758BCF = {
 			isa = PBXGroup;
 			children = (
@@ -64,9 +93,7 @@
 			children = (
 				1691C9791EC1DD0800758BCF /* AppDelegate.swift */,
 				1691C97B1EC1DD0800758BCF /* ViewController.swift */,
-				1691C98F1EC226FB00758BCF /* UDClient.swift */,
-				1691C9911EC2273400758BCF /* PSClient.swift */,
-				1691C98B1EC1DE5000758BCF /* Constants.swift */,
+				160C99561EC3F5F0008B0399 /* Model */,
 				1691C98D1EC1E32A00758BCF /* StudentLocation.swift */,
 				1691C97D1EC1DD0800758BCF /* Main.storyboard */,
 				1691C9801EC1DD0800758BCF /* Assets.xcassets */,
@@ -154,7 +181,8 @@
 				1691C98E1EC1E32A00758BCF /* StudentLocation.swift in Sources */,
 				1691C97C1EC1DD0800758BCF /* ViewController.swift in Sources */,
 				1691C97A1EC1DD0800758BCF /* AppDelegate.swift in Sources */,
-				1691C98C1EC1DE5000758BCF /* Constants.swift in Sources */,
+				1691C98C1EC1DE5000758BCF /* PSConstants.swift in Sources */,
+				160C995A1EC3F628008B0399 /* UDConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +348,7 @@
 				1691C98A1EC1DD0800758BCF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
