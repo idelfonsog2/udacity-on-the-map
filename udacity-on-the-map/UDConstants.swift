@@ -31,6 +31,10 @@ struct UdacityHeaderFieldsKeys {
     static let ContentType = "Content-Type"
 }
 
+struct UdacityHeaderFieldValue {
+    static let ApplicationJSON = "application/json"
+}
+
 /*
  UDACITY:
  SKIP THE FIRST 5 CHARACTERS OF THE RESPONSE

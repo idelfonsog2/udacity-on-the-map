@@ -12,38 +12,109 @@ class UDClient: NSObject {
     
     let session = URLSession.shared
     
-    func logoutUdacity() {
-        let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/api/session")!)
+    func logoutFromUdacity() {
+        let request = NSMutableURLRequest(url: URL(string: UdacityConstants.baseURL)!)
         request.httpMethod = "DELETE"
         var xsrfCookie: HTTPCookie? = nil
         let sharedCookieStorage = HTTPCookieStorage.shared
         for cookie in sharedCookieStorage.cookies! {
-            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+            if cookie.name == "XSRF-TOKEN" {
+                xsrfCookie = cookie
+            }
         }
         if let xsrfCookie = xsrfCookie {
             request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
-        let session = URLSession.shared
-        let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            if error != nil { // Handle error…
+
+        let task = session.dataTask(with: request as URLRequest) {
+            data, response, error in
+            
+            func sendError(_ error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                print(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(String(describing: error))")
                 return
             }
-            let range = Range(5..<data!.count)
-            let newData = data?.subdata(in: range) /* subset response data! */
-            print(NSString(data: newData!, encoding: String.Encoding.utf8.rawValue)!)
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            let range = Range(5..<data.count)
+            let newData = data.subdata(in: range) /* subset response data! */
+            print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
         }
         task.resume()
     }
     
-    func taskForPOSTmethod(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+        
+        // GET
+        let url = URL(string: UdacityConstants.baseURL+"/\(userId)")!
+        let request = NSMutableURLRequest(url: url)
+        
+        // DataTask
+        let task = session.dataTask(with: request as URLRequest) {
+            (data, response, error) in
+            
+            func sendError(_ error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandlerForGET(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(String(describing: error))")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            let range = Range(5..<data.count)
+            let newData = data.subdata(in: range) /* subset response data! */
+
+            //TODO: obtain values from JSON
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)
+        }
+        
+        task.resume()
+        
+    }
+
+    
+    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
         // POST:
         let url = urlFromParameters([:])
         let request = NSMutableURLRequest(url: url)
-        request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
-        request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
-        request.addValue(ParseHeaderFieldsValues.ApplicationJSONKey, forHTTPHeaderField: ParseHeaderFieldsKeys.ContentType)
+        request.addValue(UdacityHeaderFieldValue.ApplicationJSON , forHTTPHeaderField: UdacityHeaderFieldsKeys.Accept)
+        request.addValue(UdacityHeaderFieldValue.ApplicationJSON, forHTTPHeaderField: UdacityHeaderFieldsKeys.ContentType)
         request.httpMethod = "POST"
+        
+        //i.e. request.httpBody = "{\"udacity\": {\"username\": \"account@domain.com\", \"password\": \"********\"}}".data(using: String.Encoding.utf8)
         request.httpBody = try! JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
         
         // DataTask
@@ -73,6 +144,7 @@ class UDClient: NSObject {
                 return
             }
             
+            //TODO: obtain values from JSON
             self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
         }
         task.resume()

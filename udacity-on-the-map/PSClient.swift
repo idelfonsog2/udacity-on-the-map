@@ -11,7 +11,7 @@ import UIKit
 class PSClient: NSObject {
     let session = URLSession.shared
     
-    func taskForGETmethod(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func obtainStudentLocation(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
         // GET
         let url = urlFromParameters(parameters)
@@ -54,7 +54,7 @@ class PSClient: NSObject {
         
     }
     
-    func taskForPOSTmethod(httpBody: String?, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func createStudentLocation(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
         // POST:
         let url = urlFromParameters([:])
@@ -63,7 +63,7 @@ class PSClient: NSObject {
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         request.addValue(ParseHeaderFieldsValues.ApplicationJSONKey, forHTTPHeaderField: ParseHeaderFieldsKeys.ContentType)
         request.httpMethod = "POST"
-        request.httpBody = httpBody?.data(using: String.Encoding.utf8)
+        request.httpBody = try! JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
         
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
@@ -97,7 +97,7 @@ class PSClient: NSObject {
         task.resume()
     }
     
-    func taskForPUTmethod(objectId: String, httpBody: String?, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func updateStudentLocation(objectId: String, httpBody: String?, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
         // PUT:
 
