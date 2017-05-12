@@ -13,13 +13,10 @@ class StudentLocation {
     var firstName: String?
     var mapString: String?
     var mediaURL: String?
-    var latitude: Double
-    var longitude: Double
+    var latitude: Double?
+    var longitude: Double?
     //var createdAt: Date
     //var updateAt: Date
     //var ACL: Any
     
-    init(<#parameters#>) {
-        <#statements#>
-    }
 }
