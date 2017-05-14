@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MapKit
 
 class StudentLocation {
     var objectID:   String?
@@ -28,5 +29,16 @@ class StudentLocation {
         longitude = dictionary["longitude"] as? Double
         uniqueKey = dictionary["uniqueKey"] as? String
         
+    }
+    
+    static func studentsLocationFrom(_ reponse: [[String:AnyObject]]) -> [StudentLocation] {
+        
+        var locations = [StudentLocation]()
+        
+        for result in reponse {
+            locations.append(StudentLocation(dictionary: result))
+        }
+        
+        return locations
     }
 }

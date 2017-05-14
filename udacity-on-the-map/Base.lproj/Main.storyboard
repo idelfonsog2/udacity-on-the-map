@@ -146,6 +146,9 @@
                                     </navigationBar>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="KT2-4n-o1d">
                                         <rect key="frame" x="0.0" y="44" width="375" height="554"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="baK-t3-kfJ" id="GNO-dW-o8m"/>
+                                        </connections>
                                     </mapView>
                                 </subviews>
                             </stackView>
@@ -159,6 +162,9 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="map" selectedImage="map" id="f2h-RT-zMW"/>
+                    <connections>
+                        <outlet property="mapView" destination="KT2-4n-o1d" id="Jbs-xn-Mg9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1OP-O3-SUu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

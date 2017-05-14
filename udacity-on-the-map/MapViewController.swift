@@ -9,29 +9,58 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Properties
     var sessionId: String?
     var listOfLocations: [StudentLocation]?
     
     //MARK: IBOutlets
+    @IBOutlet weak var mapView: MKMapView!
     
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(listOfLocations)
+        mapView.delegate = self
+        self.loadStudentLocations()
     }
     
     //MARK: Helper Functions
     
-    func converToStudentLocation(param: [String:Any]) {
-        //TODO: fill method
+    /* network call, UI update
+     @params: limit (Number), skip (Number), order (String)
+     */
+    func loadStudentLocations() {
         
+        let parameters: [String: Any] = ["limit": 100]
+
+        PSClient().obtainStudentLocation(parameters: parameters) { (response, error) in
+            guard (error == nil) else {
+                print("Error in the response")
+                return
+            }
+            
+            guard let arrayOfStudentLocations = response?["results"] as? [[String: Any]] else {
+                print("No 'results' key found in the response")
+                return
+            }
+            
+            self.listOfLocations = StudentLocation.studentsLocationFrom(arrayOfStudentLocations as [[String : AnyObject]])
+            
+            DispatchQueue.main.async {
+                for student in self.listOfLocations! {
+                    self.loadAnnotations(student: student)
+                }
+            }
+        }
     }
     
-    func drawAnnotations(coordinates: CLLocationCoordinate2D) {
-        //TODO:
+    func loadAnnotations(student: StudentLocation) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
+        annotation.title = "\(student.firstName!) \(student.lastName!)"
+        annotation.subtitle = "\(student.mediaURL!)"
+        self.mapView.addAnnotation(annotation)
     }
     
     //MARK: IBActions
@@ -40,4 +69,33 @@ class MapViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: MKMapViewDelegate
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifier = "MapViewController"
+        
+        if !annotation.isKind(of: MKPointAnnotation.self) {
+            return nil
+        }
+        
+        let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            // Create Annotation
+            
+            let annotationView = MKAnnotationView(annotation:annotation, reuseIdentifier:identifier)
+            annotationView.isEnabled = true
+            annotationView.canShowCallout = true
+            
+            // Here I create the button and add in accessoryView
+            
+            let btn = UIButton(type: .detailDisclosure)
+            annotationView.rightCalloutAccessoryView = btn
+            return annotationView
+        } else {
+            // Reuse Annotationview
+            annotationView?.annotation = annotation
+            return annotationView
+        }
+    }
 }
