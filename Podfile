@@ -6,5 +6,6 @@ target 'udacity-on-the-map' do
   use_frameworks!
 
   # Pods for udacity-on-the-map
+  pod 'NVActivityIndicatorView'
 
 end

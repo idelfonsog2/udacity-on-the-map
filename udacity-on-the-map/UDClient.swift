@@ -114,8 +114,11 @@ class UDClient: NSObject {
         request.addValue(UdacityHeaderFieldValue.ApplicationJSON, forHTTPHeaderField: UdacityHeaderFieldsKeys.ContentType)
         request.httpMethod = "POST"
         
-        //i.e. request.httpBody = "{\"udacity\": {\"username\": \"account@domain.com\", \"password\": \"********\"}}".data(using: String.Encoding.utf8)
-        request.httpBody = try! JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
+        } catch {
+            print(error.localizedDescription)
+        }
         
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
@@ -145,7 +148,10 @@ class UDClient: NSObject {
             }
             
             //TODO: obtain values from JSON
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
+            let range = Range(5..<data.count)
+            let newData = data.subdata(in: range) /* subset response data! */
+            
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
         }
         task.resume()
     }
@@ -155,13 +161,16 @@ class UDClient: NSObject {
         components.scheme   = UdacityConstants.scheme
         components.host     = UdacityConstants.host
         components.path     = UdacityConstants.path
-        components.queryItems = [URLQueryItem]()
         
-        for (key, value) in params {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
-            components.queryItems?.append(queryItem)
+        if !params.isEmpty {
+            components.queryItems = [URLQueryItem]()
+            for (key, value) in params {
+                let queryItem = URLQueryItem(name: key, value: "\(value)")
+                components.queryItems?.append(queryItem)
+            }
         }
-        return (components.url)!
+        
+        return components.url!
     }
     
     // given raw JSON, return a usable Foundation object
@@ -171,8 +180,9 @@ class UDClient: NSObject {
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
-            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+            let userInfo = [NSLocalizedDescriptionKey : "completionHandlerForConvertData"]
+            completionHandlerForConvertData("Could not parse the data as JSON: '\(data)'" as AnyObject, nil)
+            //completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
         }
         
         completionHandlerForConvertData(parsedResult, nil)

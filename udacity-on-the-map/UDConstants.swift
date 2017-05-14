@@ -11,12 +11,12 @@ import Foundation
 struct UdacityConstants {
     static let scheme   = "https"
     static let host     = "udacity.com"
-    static let path     = "api/session"
+    static let path     = "/api/session"
     
     static let baseURL  = "https://www.udacity.com/api/session"
 }
 
-struct UdactiyHTTPBodyKeys {
+struct UdacityHTTPBodyKeys {
     static let UdacityKey   = "udacity"   //root
     static let UsernameKey  = "username"
     static let PasswordKey  = "password"

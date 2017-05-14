@@ -53,6 +53,9 @@
                                         <state key="normal" title="Login">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="loginToUdacity:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8cJ-Yz-PbE"/>
+                                        </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="JtY-eY-cyV">
                                         <rect key="frame" x="0.0" y="172" width="343" height="35"/>
@@ -69,6 +72,9 @@
                                                 <state key="normal" title="Sign Up">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="signUpToUdacity:" destination="BYZ-38-t0r" eventType="touchUpInside" id="668-2i-FSd"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -94,6 +100,10 @@
                             <constraint firstItem="rCl-Qa-TCc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="eHm-LF-C6B"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="emailAddressTextField" destination="e6x-v6-e3R" id="Zs8-Mf-Puq"/>
+                        <outlet property="passwordTextField" destination="fc3-Rx-1Uk" id="tHo-tP-bep"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -102,7 +112,7 @@
         <!--Map-->
         <scene sceneID="n92-UX-Xuv">
             <objects>
-                <viewController id="baK-t3-kfJ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapViewController" id="baK-t3-kfJ" customClass="MapViewController" customModule="udacity_on_the_map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ohr-rf-L2r"/>
                         <viewControllerLayoutGuide type="bottom" id="sx5-P4-lOk"/>
@@ -118,7 +128,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <items>
                                             <navigationItem title="On The Map" id="eC7-3j-55Y">
-                                                <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="ERL-gp-jJ0"/>
+                                                <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="ERL-gp-jJ0">
+                                                    <connections>
+                                                        <action selector="logouFromUdacity:" destination="baK-t3-kfJ" id="bsj-jk-2Li"/>
+                                                    </connections>
+                                                </barButtonItem>
                                                 <rightBarButtonItems>
                                                     <barButtonItem systemItem="add" id="16s-jR-7Re">
                                                         <connections>
@@ -225,7 +239,7 @@
         <!--List-->
         <scene sceneID="qIs-a7-YmS">
             <objects>
-                <viewController id="JmZ-h9-gXg" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ListViewController" id="JmZ-h9-gXg" customClass="ListViewController" customModule="udacity_on_the_map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="35W-bs-bQX"/>
                         <viewControllerLayoutGuide type="bottom" id="98o-gP-DvE"/>
@@ -241,7 +255,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <items>
                                             <navigationItem title="On The Map" id="fsy-j0-Pqi">
-                                                <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="xmJ-2I-RsD"/>
+                                                <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="xmJ-2I-RsD">
+                                                    <connections>
+                                                        <action selector="logoutFromUdacity:" destination="JmZ-h9-gXg" id="oHk-3F-QYN"/>
+                                                    </connections>
+                                                </barButtonItem>
                                                 <rightBarButtonItems>
                                                     <barButtonItem systemItem="add" id="Ixl-K4-P33">
                                                         <connections>
@@ -286,8 +304,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="JmZ-h9-gXg" kind="relationship" relationship="viewControllers" id="X3A-Hv-7Dr"/>
                         <segue destination="baK-t3-kfJ" kind="relationship" relationship="viewControllers" id="6uq-Ki-54x"/>
+                        <segue destination="JmZ-h9-gXg" kind="relationship" relationship="viewControllers" id="X3A-Hv-7Dr"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DwI-Wt-BfL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -297,7 +315,8 @@
         <!--Navigation Controller-->
         <scene sceneID="vmM-Cy-iV1">
             <objects>
-                <navigationController id="OVv-u5-4Ho" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ManagerNavigationController" navigationBarHidden="YES" id="OVv-u5-4Ho" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UJq-Yw-zV1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -12,15 +12,15 @@ import Foundation
 struct ParseConstants {
     static let scheme   = "https"
     static let host     = "parse.udacity.com"
-    static let path     = "parse/classes"
+    static let path     = "/parse/classes"
     
     static let baseURL  = "https://parse.udacity.com/parse/classes"
 }
 
     //MARK: Methods
 struct ParseMethod {
-    static let StudentLocation          = "StudentLocation"      //POST, GET
-    static let PUTStudentLocation    = "StudentLocation/<objectId>"
+    static let StudentLocation      = "/StudentLocation"      //POST, GET
+    static let PUTStudentLocation   = "/StudentLocation/<objectId>"
 }
 
     //MARK: ParameterKeys

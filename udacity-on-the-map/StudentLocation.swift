@@ -9,14 +9,24 @@
 import Foundation
 
 class StudentLocation {
-    var objectID: String?
-    var firstName: String?
-    var mapString: String?
-    var mediaURL: String?
-    var latitude: Double?
-    var longitude: Double?
-    //var createdAt: Date
-    //var updateAt: Date
-    //var ACL: Any
+    var objectID:   String?
+    var firstName:  String?
+    var lastName:   String?
+    var mapString:  String?
+    var mediaURL:   String?
+    var uniqueKey:  String?
+    var latitude:   Double?
+    var longitude:  Double?
     
+    init(dictionary: [String:AnyObject]) {
+        objectID = dictionary["objectId"] as? String
+        firstName = dictionary["firstName"] as? String
+        lastName = dictionary["lastName"] as? String
+        mapString = dictionary["mapString"] as? String
+        mediaURL = dictionary["mediaURL"] as? String
+        latitude = dictionary["latitude"] as? Double
+        longitude = dictionary["longitude"] as? Double
+        uniqueKey = dictionary["uniqueKey"] as? String
+        
+    }
 }

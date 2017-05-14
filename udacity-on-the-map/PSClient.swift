@@ -18,7 +18,8 @@ class PSClient: NSObject {
         let request = NSMutableURLRequest(url: url)
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
-        
+        print(request.url)
+        print(request.allHTTPHeaderFields)
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
             (data, response, error) in
@@ -36,6 +37,10 @@ class PSClient: NSObject {
             }
             
             /* GUARD: Did we get a successful 2XX response? */
+            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                print(statusCode)
+            }
+            
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 sendError("Your request returned a status code other than 2xx!")
                 return
@@ -143,14 +148,17 @@ class PSClient: NSObject {
         var components = URLComponents()
         components.scheme   = ParseConstants.scheme
         components.host     = ParseConstants.host
-        components.path     = ParseConstants.path
-        components.queryItems = [URLQueryItem]()
+        components.path     = ParseConstants.path + ParseMethod.StudentLocation
         
-        for (key, value) in params {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
-            components.queryItems?.append(queryItem)
+        if !params.isEmpty {
+            components.queryItems = [URLQueryItem]()
+            for (key, value) in params {
+                let queryItem = URLQueryItem(name: key, value: "\(value)")
+                components.queryItems?.append(queryItem)
+            }
         }
-        return (components.url)!
+        
+        return components.url!
     }
     
     // given raw JSON, return a usable Foundation object
