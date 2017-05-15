@@ -18,37 +18,31 @@ class PSClient: NSObject {
         let request = NSMutableURLRequest(url: url)
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
-        print(request.url)
-        print(request.allHTTPHeaderFields)
+
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
             (data, response, error) in
             
-            func sendError(_ error: String) {
-                print(error)
+            func sendError(_ error: String) -> NSError {
                 let userInfo = [NSLocalizedDescriptionKey : error]
                 completionHandlerForGET(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                return NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo)
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
+                completionHandlerForGET(nil, sendError("There was an error with your request: \(String(describing: error))"))
                 return
             }
             
-            /* GUARD: Did we get a successful 2XX response? */
-            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                print(statusCode)
-            }
-            
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
+                completionHandlerForGET(nil, sendError("Your request returned a status code other than 2xx!"))
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                sendError("No data was returned by the request!")
+                completionHandlerForGET(nil,sendError("No data was returned by the request!"))
                 return
             }
             

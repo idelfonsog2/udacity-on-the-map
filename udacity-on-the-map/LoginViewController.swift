@@ -35,23 +35,14 @@ class LoginViewController: UIViewController {
         ]
         
         UDClient().getSessionId(httpBody: credentials) { (response, error) in
-            guard (error == nil) else {
-                //TODO: display pop error alert
-                return
+            DispatchQueue.main.async {
+                if (response?.isEqual(to: 1))! {
+                    self.accessGranted()
+                } else {
+                    displayAlert(message: "Incorrect Credentials")
+                }
             }
-            
-            guard let session = response?["session"] as? [String: Any] else {
-                //TODO: display pop error alert
-                return
-            }
-            
-            guard let id = session["id"] as? String else {
-                return
-            }
-            
-            self.appDelegate?.sessionId = id
         }
-        self.accessGranted()
     }
 
     @IBAction func signUpToUdacity(_ sender: UIButton) {
@@ -61,9 +52,16 @@ class LoginViewController: UIViewController {
     //MARK: helpers
     
     func accessGranted() {
-        
         let controller = storyboard?.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
+    }
+    
+    func displayAlert(message: String) {
+        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        controller.addAction(okAction)
+        self.present(controller, animated: true, completion: nil)
+
     }
     
 }

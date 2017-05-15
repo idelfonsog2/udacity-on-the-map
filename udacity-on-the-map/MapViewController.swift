@@ -35,8 +35,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let parameters: [String: Any] = ["limit": 100]
 
         PSClient().obtainStudentLocation(parameters: parameters) { (response, error) in
-            guard (error == nil) else {
-                print("Error in the response")
+            guard response == nil else {
+                let controller = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .actionSheet)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                controller.addAction(okAction)
+                self.present(controller, animated: true, completion: nil)
                 return
             }
             

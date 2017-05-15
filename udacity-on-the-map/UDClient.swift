@@ -11,6 +11,7 @@ import UIKit
 class UDClient: NSObject {
     
     let session = URLSession.shared
+    var appDelegate: AppDelegate?
     
     func logoutFromUdacity() {
         let request = NSMutableURLRequest(url: URL(string: UdacityConstants.baseURL)!)
@@ -60,7 +61,7 @@ class UDClient: NSObject {
         task.resume()
     }
     
-    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // GET
         let url = URL(string: UdacityConstants.baseURL+"/\(userId)")!
@@ -105,7 +106,7 @@ class UDClient: NSObject {
     }
 
     
-    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // POST:
         let url = urlFromParameters([:])
@@ -126,7 +127,7 @@ class UDClient: NSObject {
             func sendError(_ error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPOST(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                completionHandlerForPOST(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
             }
             
             /* GUARD: Was there an error? */
@@ -174,18 +175,41 @@ class UDClient: NSObject {
     }
     
     // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ success: Bool) -> Void) {
+    
         
         var parsedResult: AnyObject! = nil
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
             let userInfo = [NSLocalizedDescriptionKey : "completionHandlerForConvertData"]
-            completionHandlerForConvertData("Could not parse the data as JSON: '\(data)'" as AnyObject, nil)
-            //completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+            completionHandlerForConvertData("Could not parse the data as JSON: '\(data)'" as AnyObject, false)
         }
-        print(parsedResult)
-        completionHandlerForConvertData(parsedResult, nil)
+        
+        guard parsedResult == nil else {
+            completionHandlerForConvertData(nil, false)
+            return
+        }
+        
+        guard let account = parsedResult?["account"] as? [String: Any] else {
+            return
+        }
+        
+        guard let registered = parsedResult?["registered"] as? Int  else {
+            return
+            
+        }
+        guard let session = parsedResult?["session"] as? [String: Any] else {
+            return
+        }
+        
+        guard let id = session["id"] as? String else {
+            return
+        }
+        
+        self.appDelegate?.sessionId = id
+        
+        completionHandlerForConvertData(registered as AnyObject, true)
     }
 
 }
