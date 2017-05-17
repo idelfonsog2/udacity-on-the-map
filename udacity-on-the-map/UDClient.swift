@@ -61,7 +61,7 @@ class UDClient: NSObject {
         task.resume()
     }
     
-    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: Any?, _ success: Bool) -> Void) {
         
         // GET
         let url = URL(string: UdacityConstants.baseURL+"/\(userId)")!
@@ -74,7 +74,7 @@ class UDClient: NSObject {
             func sendError(_ error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForGET(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                completionHandlerForGET(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
             }
             
             /* GUARD: Was there an error? */
@@ -106,7 +106,7 @@ class UDClient: NSObject {
     }
 
     
-    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: Any?, _ success: Bool) -> Void) {
         
         // POST:
         let url = urlFromParameters([:])
@@ -124,6 +124,8 @@ class UDClient: NSObject {
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
             (data, response, error) in
+            
+            // Error Function
             func sendError(_ error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
@@ -175,10 +177,16 @@ class UDClient: NSObject {
     }
     
     // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ success: Bool) -> Void) {
-    
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: Any?, _ success: Bool) -> Void) {
         
+        // Error Function
+//        func sendError(_ error: String) {
+//            print(error)
+//            completionHandlerForConvertData(nil, false)
+//        }
+
         var parsedResult: AnyObject! = nil
+        
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
@@ -186,30 +194,42 @@ class UDClient: NSObject {
             completionHandlerForConvertData("Could not parse the data as JSON: '\(data)'" as AnyObject, false)
         }
         
-        guard parsedResult == nil else {
+        //TODO: delete this statement
+        //print(parsedResult)
+        
+        guard parsedResult != nil else {
+            print("parsedResult == nil")
             completionHandlerForConvertData(nil, false)
             return
         }
         
-        guard let account = parsedResult?["account"] as? [String: Any] else {
+        guard let accountDicionary = parsedResult?["account"] as? [String: Any] else {
+            print("no 'account' key found")
+            completionHandlerForConvertData(nil, false)
             return
         }
         
-        guard let registered = parsedResult?["registered"] as? Int  else {
+        guard let registered = accountDicionary["registered"] as? Bool else {
+            print("no 'registered' key found")
+            completionHandlerForConvertData(nil, false)
             return
-            
         }
+        
         guard let session = parsedResult?["session"] as? [String: Any] else {
+            print("no 'session' key found")
+            completionHandlerForConvertData(nil, false)
             return
         }
         
         guard let id = session["id"] as? String else {
+            print("no 'id' key found")
+            completionHandlerForConvertData(nil, false)
             return
         }
         
         self.appDelegate?.sessionId = id
         
-        completionHandlerForConvertData(registered as AnyObject, true)
+        completionHandlerForConvertData(registered as Any, true)
     }
 
 }

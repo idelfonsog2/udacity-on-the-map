@@ -166,6 +166,7 @@ class PSClient: NSObject {
             completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
         }
         
+        print(parsedResult)
         completionHandlerForConvertData(parsedResult, nil)
     }
     

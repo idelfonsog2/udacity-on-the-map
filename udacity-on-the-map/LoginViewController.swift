@@ -34,12 +34,12 @@ class LoginViewController: UIViewController {
             ]
         ]
         
-        UDClient().getSessionId(httpBody: credentials) { (response, error) in
+        UDClient().getSessionId(httpBody: credentials) { (response, success) in
             DispatchQueue.main.async {
-                if (response?.isEqual(to: 1))! {
+                if success && ((response as AnyObject).isEqual(true) != nil) {
                     self.accessGranted()
                 } else {
-                    displayAlert(message: "Incorrect Credentials")
+                    self.displayAlert(message: "Incorrect Credentials")
                 }
             }
         }
@@ -52,6 +52,8 @@ class LoginViewController: UIViewController {
     //MARK: helpers
     
     func accessGranted() {
+        //TODO: obtain student locations before transitioning to the next VC  
+        
         let controller = storyboard?.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
     }
