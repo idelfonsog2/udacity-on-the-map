@@ -232,7 +232,10 @@ class UDClient: NSObject {
             self.appDelegate?.sessionId = id
             completionHandlerForConvertData(registered as Any, true)
         } else {
-            completionHandlerForConvertData(registered as Any, false)
+            //TODO: registered = 0 always set to false when this is fix
+            completionHandlerForConvertData(registered as Any, true)
+            //TODO: delete this line of code
+            self.appDelegate?.sessionId = id
         }
             
     }

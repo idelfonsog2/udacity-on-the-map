@@ -11,7 +11,7 @@ import UIKit
 class PSClient: NSObject {
     let session = URLSession.shared
     
-    func obtainStudentLocation(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func obtainStudentLocation(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // GET
         let url = urlFromParameters(parameters)
@@ -25,24 +25,24 @@ class PSClient: NSObject {
             
             func sendError(_ error: String) -> NSError {
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForGET(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                completionHandlerForGET(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
                 return NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo)
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                completionHandlerForGET(nil, sendError("There was an error with your request: \(String(describing: error))"))
+                completionHandlerForGET(sendError("There was an error with your request: \(String(describing: error))"), false)
                 return
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                completionHandlerForGET(nil, sendError("Your request returned a status code other than 2xx!"))
+                completionHandlerForGET( sendError("Your request returned a status code other than 2xx!"), false)
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                completionHandlerForGET(nil,sendError("No data was returned by the request!"))
+                completionHandlerForGET(sendError("No data was returned by the request!"), false)
                 return
             }
             
@@ -53,7 +53,7 @@ class PSClient: NSObject {
         
     }
     
-    func createStudentLocation(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func createStudentLocation(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // POST:
         let url = urlFromParameters([:])
@@ -70,7 +70,7 @@ class PSClient: NSObject {
             func sendError(_ error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPOST(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                completionHandlerForPOST(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
             }
             
             /* GUARD: Was there an error? */
@@ -96,7 +96,7 @@ class PSClient: NSObject {
         task.resume()
     }
     
-    func updateStudentLocation(objectId: String, httpBody: String?, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    func updateStudentLocation(objectId: String, httpBody: String?, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // PUT:
 
@@ -112,7 +112,7 @@ class PSClient: NSObject {
             func sendError(_ error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPUT(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+                completionHandlerForPUT(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
             }
             
             /* GUARD: Was there an error? */
@@ -156,18 +156,18 @@ class PSClient: NSObject {
     }
     
     // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         var parsedResult: AnyObject! = nil
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
             let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+            completionHandlerForConvertData(NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo), false)
         }
         
         print(parsedResult)
-        completionHandlerForConvertData(parsedResult, nil)
+        completionHandlerForConvertData(parsedResult, true)
     }
     
 }
