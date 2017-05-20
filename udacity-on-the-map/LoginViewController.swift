@@ -22,7 +22,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
     //MARK: IBActions
     @IBAction func loginToUdacity(_ sender: UIButton) {
         let credentials =

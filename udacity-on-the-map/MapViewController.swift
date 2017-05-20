@@ -14,6 +14,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     //MARK: Properties
     var sessionId: String?
     var listOfLocations: [StudentLocation]?
+    var annotations = [MKPointAnnotation]()
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -22,6 +23,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        self.mapView.removeAnnotations(self.annotations)
         self.loadStudentLocations()
     }
     
@@ -35,11 +37,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let parameters: [String: Any] = ["limit": 100]
 
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
-            if let response = response {
-                let controller = UIAlertController(title: "Error", message: response as! String, preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                controller.addAction(okAction)
-                self.present(controller, animated: true, completion: nil)
+            if !success {
+                DispatchQueue.main.async {
+                    self.displayError(string: "Not able to retrieve locations")
+                }
             }
             
             guard let arrayOfStudentLocations = response?["results"] as? [[String: Any]] else {
@@ -47,12 +48,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 return
             }
             
+            //Create StudentLocation /s instead
             self.listOfLocations = StudentLocation.studentsLocationFrom(arrayOfStudentLocations as [[String : AnyObject]])
             
+            for student in self.listOfLocations! {
+                
+                self.loadAnnotations(student: student)
+            }
+            
             DispatchQueue.main.async {
-                for student in self.listOfLocations! {
-                    self.loadAnnotations(student: student)
-                }
+                self.mapView.addAnnotations(self.annotations)
             }
         }
     }
@@ -62,8 +67,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
         annotation.title = "\(student.firstName!) \(student.lastName!)"
         annotation.subtitle = "\(student.mediaURL!)"
-        self.mapView.addAnnotation(annotation)
+        annotations.append(annotation)
     }
+    
+    func displayError(string: String) {
+        let controller = UIAlertController(title: "Error", message: string, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        controller.addAction(okAction)
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
     //MARK: IBActions
     @IBAction func logouFromUdacity(_ sender: UIBarButtonItem) {
@@ -74,30 +87,37 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     //MARK: MKMapViewDelegate
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "MapViewController"
+        let reuseId = "pin"
         
-        if !annotation.isKind(of: MKPointAnnotation.self) {
-            return nil
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView!.canShowCallout = true
+            pinView!.pinTintColor = .red
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+    
+        return pinView
+    }
+    
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+        for annotation in views {
+            print(annotation.canShowCallout)
         }
         
-        let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-        
-        if annotationView == nil {
-            // Create Annotation
-            
-            let annotationView = MKAnnotationView(annotation:annotation, reuseIdentifier:identifier)
-            annotationView.isEnabled = true
-            annotationView.canShowCallout = true
-            
-            // Here I create the button and add in accessoryView
-            
-            let btn = UIButton(type: .detailDisclosure)
-            annotationView.rightCalloutAccessoryView = btn
-            return annotationView
-        } else {
-            // Reuse Annotationview
-            annotationView?.annotation = annotation
-            return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        // Use the subtitle with URL(..) to openSafari
+        if control == view.rightCalloutAccessoryView {
+            let app = UIApplication.shared
+            if let toOpen = view.annotation?.subtitle! {
+                app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+            }
         }
     }
 }
