@@ -227,9 +227,14 @@ class UDClient: NSObject {
             return
         }
         
-        self.appDelegate?.sessionId = id
-        
-        completionHandlerForConvertData(registered as Any, true)
+        print(parsedResult)
+        if registered {
+            self.appDelegate?.sessionId = id
+            completionHandlerForConvertData(registered as Any, true)
+        } else {
+            completionHandlerForConvertData(registered as Any, false)
+        }
+            
     }
 
 }

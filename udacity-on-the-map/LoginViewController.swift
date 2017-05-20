@@ -36,6 +36,7 @@ class LoginViewController: UIViewController {
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
             DispatchQueue.main.async {
+                print(response)
                 if success && ((response as AnyObject).isEqual(true) != nil) {
                     self.accessGranted()
                 } else {
