@@ -61,9 +61,13 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     func showAlerWith(message: String) {
         let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: "CANCEL", style: .destructive, handler: nil)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        okAction.perform(#selector(instantiateFindLocationViewController))
+        let cancelAction = UIAlertAction(title: "cancel", style: .destructive, handler: nil)
+        let okAction = UIAlertAction(title: "ok", style: .default) { (action) in
+            DispatchQueue.main.async {
+                self.instantiateFindLocationViewController()
+            }
+        }
+        
         
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
