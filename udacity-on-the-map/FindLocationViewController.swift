@@ -10,6 +10,9 @@ import UIKit
 
 class FindLocationViewController: UIViewController {
 
+    //MARK: Properties
+    var myLocation: StudentLocation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.tintColor = UIColor(colorLiteralRed: 109, green: 199, blue: 255, alpha: 1.0)

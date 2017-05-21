@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 
-class StudentLocation {
+struct StudentLocation {
     var objectID:   String?
     var firstName:  String?
     var lastName:   String?

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		160A9EF51ED203D900933F7E /* ManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160A9EF41ED203D900933F7E /* ManagerViewController.swift */; };
+		160A9EF71ED21DF800933F7E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160A9EF61ED21DF800933F7E /* User.swift */; };
 		160C995A1EC3F628008B0399 /* UDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160C99591EC3F628008B0399 /* UDConstants.swift */; };
 		160C995C1EC634E6008B0399 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160C995B1EC634E6008B0399 /* Assets.xcassets */; };
 		160C995E1EC63926008B0399 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160C995D1EC63926008B0399 /* MapViewController.swift */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		160A9EF41ED203D900933F7E /* ManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerViewController.swift; sourceTree = "<group>"; };
+		160A9EF61ED21DF800933F7E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		160C99591EC3F628008B0399 /* UDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDConstants.swift; sourceTree = "<group>"; };
 		160C995B1EC634E6008B0399 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		160C995D1EC63926008B0399 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				1691C98D1EC1E32A00758BCF /* StudentLocation.swift */,
+				160A9EF61ED21DF800933F7E /* User.swift */,
 				160C99571EC3F5FA008B0399 /* UDClient */,
 				160C99581EC3F604008B0399 /* PSClient */,
 			);
@@ -279,6 +282,7 @@
 				160C99611EC640BA008B0399 /* ListViewController.swift in Sources */,
 				1691C97A1EC1DD0800758BCF /* AppDelegate.swift in Sources */,
 				1691C98C1EC1DE5000758BCF /* PSConstants.swift in Sources */,
+				160A9EF71ED21DF800933F7E /* User.swift in Sources */,
 				160A9EF51ED203D900933F7E /* ManagerViewController.swift in Sources */,
 				163045381ED1391400FC518F /* FindLocationViewController.swift in Sources */,
 				160C995A1EC3F628008B0399 /* UDConstants.swift in Sources */,

@@ -26,6 +26,8 @@ struct ParseMethod {
     //MARK: ParameterKeys
 struct ParseGETParameterKeys {
     
+    static let UniqueKey = "uniqueKey"
+    
     //Multiple Students
     static let Limit    = "limit"   //Optional
     static let Skip     = "skip"    //Optional
