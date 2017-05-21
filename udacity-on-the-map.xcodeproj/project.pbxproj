@@ -11,6 +11,7 @@
 		160C995C1EC634E6008B0399 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160C995B1EC634E6008B0399 /* Assets.xcassets */; };
 		160C995E1EC63926008B0399 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160C995D1EC63926008B0399 /* MapViewController.swift */; };
 		160C99611EC640BA008B0399 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160C99601EC640BA008B0399 /* ListViewController.swift */; };
+		163045381ED1391400FC518F /* FindLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163045371ED1391400FC518F /* FindLocationViewController.swift */; };
 		1691C97A1EC1DD0800758BCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C9791EC1DD0800758BCF /* AppDelegate.swift */; };
 		1691C97C1EC1DD0800758BCF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C97B1EC1DD0800758BCF /* LoginViewController.swift */; };
 		1691C97F1EC1DD0800758BCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1691C97D1EC1DD0800758BCF /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 		160C995B1EC634E6008B0399 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		160C995D1EC63926008B0399 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		160C99601EC640BA008B0399 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		163045371ED1391400FC518F /* FindLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindLocationViewController.swift; sourceTree = "<group>"; };
 		1691C9761EC1DD0800758BCF /* udacity-on-the-map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "udacity-on-the-map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1691C9791EC1DD0800758BCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1691C97B1EC1DD0800758BCF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				1691C97B1EC1DD0800758BCF /* LoginViewController.swift */,
 				160C995D1EC63926008B0399 /* MapViewController.swift */,
 				160C99601EC640BA008B0399 /* ListViewController.swift */,
+				163045371ED1391400FC518F /* FindLocationViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				160C99611EC640BA008B0399 /* ListViewController.swift in Sources */,
 				1691C97A1EC1DD0800758BCF /* AppDelegate.swift in Sources */,
 				1691C98C1EC1DE5000758BCF /* PSConstants.swift in Sources */,
+				163045381ED1391400FC518F /* FindLocationViewController.swift in Sources */,
 				160C995A1EC3F628008B0399 /* UDConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,11 +9,11 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
 
     //MARK: Properties
     var sessionId: String?
-    var listOfLocations: [StudentLocation]?
+    var studentLocations = AppDelegate().studentLocations
     var annotations = [MKPointAnnotation]()
     
     //MARK: IBOutlets
@@ -49,9 +49,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
             
             
-            self.listOfLocations = StudentLocation.studentsLocationFrom(arrayOfStudentLocations as [[String : AnyObject]])
-            
-            for student in self.listOfLocations! {
+            self.studentLocations = StudentLocation.studentsLocationFrom(arrayOfStudentLocations as [[String : AnyObject]])
+            for student in self.studentLocations! {
                 
                 self.loadAnnotations(student: student)
             }
@@ -85,6 +84,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
+        self.present(controller, animated: true, completion: nil)
+    }
     //MARK: MKMapViewDelegate
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -113,5 +116,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
             }
         }
+    }
+    
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print(item.badgeValue ?? "")
     }
 }

@@ -163,7 +163,7 @@ class UDClient: NSObject {
             let newData = data.subdata(in: range) /* subset response data! */
             
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: { (response, success) in
-                
+                print(response)
                 guard let accountDicionary = response?["account"] as? [String: Any] else {
                     print("no 'account' key found")
                     completionHandlerForPOST(nil, false)
@@ -193,11 +193,10 @@ class UDClient: NSObject {
                     completionHandlerForPOST(registered as AnyObject, true)
                 } else {
                     //TODO: registered = 0 always set to false when this is fix
-                    completionHandlerForPOST(registered as AnyObject, true)
+                    completionHandlerForPOST(registered as AnyObject, false)
                     //TODO: delete this line of code
                     self.appDelegate?.sessionId = id
                 }
-
             })
         }
         task.resume()
