@@ -48,7 +48,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 return
             }
             
-            //Create StudentLocation /s instead
+            
             self.listOfLocations = StudentLocation.studentsLocationFrom(arrayOfStudentLocations as [[String : AnyObject]])
             
             for student in self.listOfLocations! {
@@ -56,6 +56,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 self.loadAnnotations(student: student)
             }
             
+            //Update the UI
             DispatchQueue.main.async {
                 self.mapView.addAnnotations(self.annotations)
             }
@@ -102,13 +103,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     
         return pinView
-    }
-    
-    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-        for annotation in views {
-            print(annotation.canShowCallout)
-        }
-        
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {

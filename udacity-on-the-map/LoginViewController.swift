@@ -36,10 +36,10 @@ class LoginViewController: UIViewController {
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
             DispatchQueue.main.async {
-                if success && ((response as AnyObject).isEqual(true) != nil) {
+                if success {
                     self.accessGranted()
                 } else {
-                    self.displayAlert(message: "Incorrect Credentials")
+                    self.displayAlert(message: "Account not found or invalid credentials")
                 }
             }
         }

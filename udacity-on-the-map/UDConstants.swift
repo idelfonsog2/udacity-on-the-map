@@ -10,7 +10,7 @@ import Foundation
 
 struct UdacityConstants {
     static let scheme   = "https"
-    static let host     = "udacity.com"
+    static let host     = "www.udacity.com"
     static let path     = "/api/session"
     
     static let baseURL  = "https://www.udacity.com/api/session"

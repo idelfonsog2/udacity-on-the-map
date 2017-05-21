@@ -56,7 +56,9 @@ class UDClient: NSObject {
             
             let range = Range(5..<data.count)
             let newData = data.subdata(in: range) /* subset response data! */
-            //print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
+            
+            //TODO: print success
+            print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
         }
         task.resume()
     }
@@ -121,7 +123,6 @@ class UDClient: NSObject {
             print(error.localizedDescription)
         }
         
-        print(request.description)
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
             (data, response, error) in
@@ -137,6 +138,12 @@ class UDClient: NSObject {
             guard (error == nil) else {
                 sendError("There was an error with your request: \(String(describing: error))")
                 return
+            }
+            
+            if let status = (response as? HTTPURLResponse)?.statusCode {
+                if status == 403 {
+                    completionHandlerForPOST(nil, false)
+                }
             }
             
             /* GUARD: Did we get a successful 2XX response? */
@@ -155,7 +162,43 @@ class UDClient: NSObject {
             let range = Range(5..<data.count)
             let newData = data.subdata(in: range) /* subset response data! */
             
-            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: { (response, success) in
+                
+                guard let accountDicionary = response?["account"] as? [String: Any] else {
+                    print("no 'account' key found")
+                    completionHandlerForPOST(nil, false)
+                    return
+                }
+                
+                guard let registered = accountDicionary["registered"] as? Bool else {
+                    print("no 'registered' key found")
+                    completionHandlerForPOST(nil, false)
+                    return
+                }
+                
+                guard let session = response?["session"] as? [String: Any] else {
+                    print("no 'session' key found")
+                    completionHandlerForPOST(nil, false)
+                    return
+                }
+                
+                guard let id = session["id"] as? String else {
+                    print("no 'id' key found")
+                    completionHandlerForPOST(nil, false)
+                    return
+                }
+                
+                if registered {
+                    self.appDelegate?.sessionId = id
+                    completionHandlerForPOST(registered as AnyObject, true)
+                } else {
+                    //TODO: registered = 0 always set to false when this is fix
+                    completionHandlerForPOST(registered as AnyObject, true)
+                    //TODO: delete this line of code
+                    self.appDelegate?.sessionId = id
+                }
+
+            })
         }
         task.resume()
     }
@@ -178,67 +221,23 @@ class UDClient: NSObject {
     }
     
     // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: Any?, _ success: Bool) -> Void) {
-        
-        // Error Function
-//        func sendError(_ error: String) {
-//            print(error)
-//            completionHandlerForConvertData(nil, false)
-//        }
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
 
-        var parsedResult: AnyObject! = nil
+        var parsedResult: AnyObject?
         
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch {
-            let userInfo = [NSLocalizedDescriptionKey : "completionHandlerForConvertData"]
             completionHandlerForConvertData("Could not parse the data as JSON: '\(data)'" as AnyObject, false)
         }
-        
-        //TODO: delete this statement
-        //print(parsedResult)
-        
+
         guard parsedResult != nil else {
             print("parsedResult == nil")
             completionHandlerForConvertData(nil, false)
             return
         }
         
-        guard let accountDicionary = parsedResult?["account"] as? [String: Any] else {
-            print("no 'account' key found")
-            completionHandlerForConvertData(nil, false)
-            return
-        }
-        
-        guard let registered = accountDicionary["registered"] as? Bool else {
-            print("no 'registered' key found")
-            completionHandlerForConvertData(nil, false)
-            return
-        }
-        
-        guard let session = parsedResult?["session"] as? [String: Any] else {
-            print("no 'session' key found")
-            completionHandlerForConvertData(nil, false)
-            return
-        }
-        
-        guard let id = session["id"] as? String else {
-            print("no 'id' key found")
-            completionHandlerForConvertData(nil, false)
-            return
-        }
-        
-        //TODO: delete print statement
-        print(parsedResult)
-        if registered {
-            self.appDelegate?.sessionId = id
-            completionHandlerForConvertData(registered as Any, true)
-        } else {
-            //TODO: registered = 0 always set to false when this is fix
-            completionHandlerForConvertData(registered as Any, true)
-            //TODO: delete this line of code
-            self.appDelegate?.sessionId = id
-        }
+        completionHandlerForConvertData(parsedResult, true)
             
     }
 
