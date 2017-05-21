@@ -25,7 +25,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: <#T##NSNotification.Name?#>, object: <#T##Any?#>)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("refreshLocations"), object: self)
     }
     
     func setupNavBar() {
@@ -53,7 +53,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     }
     
     func refreshSelector() {
-        NotificationCenter().post(name: NSNotification., object: nil)
+        NotificationCenter.default.post(name: Notification.Name("refreshLocations"), object: self)
         StudentLocation.loadStudentLocations()
     }
     
@@ -63,7 +63,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         
         let cancelAction = UIAlertAction(title: "CANCEL", style: .destructive, handler: nil)
         let okAction = UIAlertAction(title: "OK", style: .default)
-        okAction.perform(#selector(presentFindLocation))
+        okAction.perform(#selector(instantiateFindLocationViewController))
         
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)

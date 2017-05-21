@@ -34,6 +34,10 @@ struct StudentLocation {
     }
     
     static func loadStudentLocations() {
+        //Remove for refresh purposes
+        self.studentLocations.removeAll(keepingCapacity: true)
+        
+        //Make network call
         let parameters: [String: Any] = ["limit": 100]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {

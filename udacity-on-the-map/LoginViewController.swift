@@ -17,7 +17,10 @@ class LoginViewController: UIViewController {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        StudentLocation.loadStudentLocations()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadLocations), name: Notification.Name("refreshLocations"), object: nil)
+        
+        self.reloadLocations()
     }
     
     //MARK: IBActions
@@ -65,6 +68,10 @@ class LoginViewController: UIViewController {
         controller.addAction(okAction)
         self.present(controller, animated: true, completion: nil)
 
+    }
+    
+    func reloadLocations() {
+        StudentLocation.loadStudentLocations()
     }
     
 }

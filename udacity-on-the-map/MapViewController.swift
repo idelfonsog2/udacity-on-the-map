@@ -23,15 +23,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsOnMap), name: Notification.Name("refreshLocations"), object: nil)
         self.loadStudentLocationsOnMap()
-    }
-    
-    deinit {
-        self.mapView.removeAnnotations(self.annotations)
     }
     
     //MARK: Helper Functions
     func loadStudentLocationsOnMap() {
+        self.mapView.removeAnnotations(self.annotations)
+        
         if self.locations.isEmpty {
             displayError(string: "Unable to download data")
             return
