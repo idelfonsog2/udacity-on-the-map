@@ -60,8 +60,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     //MARK: IBActions
     
     @IBAction func logouFromUdacity(_ sender: UIBarButtonItem) {
-        UDClient().logoutFromUdacity()
-        self.dismiss(animated: true, completion: nil)
+        
     }
     
     @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
