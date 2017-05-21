@@ -39,7 +39,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
                 DispatchQueue.main.async {
-                    self.displayError(string: "Not able to retrieve locations")
+                    self.displayError(string: "Download Failed")
                 }
             }
             

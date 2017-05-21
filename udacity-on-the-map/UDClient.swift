@@ -56,7 +56,7 @@ class UDClient: NSObject {
             
             let range = Range(5..<data.count)
             let newData = data.subdata(in: range) /* subset response data! */
-            print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
+            //print(NSString(data: newData, encoding: String.Encoding.utf8.rawValue)!)
         }
         task.resume()
     }
@@ -121,6 +121,7 @@ class UDClient: NSObject {
             print(error.localizedDescription)
         }
         
+        print(request.description)
         // DataTask
         let task = session.dataTask(with: request as URLRequest) {
             (data, response, error) in
@@ -227,6 +228,7 @@ class UDClient: NSObject {
             return
         }
         
+        //TODO: delete print statement
         print(parsedResult)
         if registered {
             self.appDelegate?.sessionId = id
