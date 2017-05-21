@@ -11,8 +11,8 @@ import UIKit
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //MARK: Properties
-    var studentLocations = AppDelegate().studentLocations
-    
+    var locations: [StudentLocation] = StudentLocation.studentLocations
+   
     //MARK: IBOutlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var listBarItem: UITabBarItem!
@@ -22,37 +22,45 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.delegate = self
         self.tableView.dataSource = self
         // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.loadStudentsOnTableView()
     }
     
     @IBAction func logoutFromUdacity(_ sender: UIBarButtonItem) {
+        UDClient().logoutFromUdacity()
+        self.dismiss(animated: true, completion: nil)
+    }
     
+    func loadStudentsOnTableView() {
+        if self.locations.isEmpty {
+            displayError(string: "Unable to download data")
+            return
+        }
+    }
+    
+    func displayError(string: String) {
+        let controller = UIAlertController(title: "Error", message: string, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        controller.addAction(okAction)
+        self.present(controller, animated: true, completion: nil)
     }
     
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = self.studentLocations?.count {
-            return count
-        } else {
-            return 0
-        }
+        return self.locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell", for: indexPath)
-        let student = self.studentLocations?[indexPath.row]
-        cell.textLabel?.text = "\(student?.firstName) \(student?.lastName)"
+        let student = self.locations[indexPath.row]
+        cell.textLabel?.text = "\(student.firstName ?? "[firstname]") \(student.lastName ?? "[lastname]")"
+        cell.imageView?.image = UIImage(named: "pin")
         return cell
     }
 
     //MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
-        if let studentUrl = self.studentLocations?[indexPath.row].mediaURL {
+        if let studentUrl = self.locations[indexPath.row].mediaURL {
             app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
         }
     }

@@ -13,7 +13,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
 
     //MARK: Properties
     var sessionId: String?
-    var studentLocations = AppDelegate().studentLocations
+    var locations = StudentLocation.studentLocations
     var annotations = [MKPointAnnotation]()
     
     //MARK: IBOutlets
@@ -23,51 +23,30 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        self.loadStudentLocationsOnMap()
+    }
+    
+    deinit {
         self.mapView.removeAnnotations(self.annotations)
-        self.loadStudentLocations()
     }
     
     //MARK: Helper Functions
-    
-    /* network call, UI update
-     @params: limit (Number), skip (Number), order (String)
-     */
-    func loadStudentLocations() {
-        
-        let parameters: [String: Any] = ["limit": 100]
-
-        PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
-            if !success {
-                DispatchQueue.main.async {
-                    self.displayError(string: "Download Failed")
-                }
-            }
-            
-            guard let arrayOfStudentLocations = response?["results"] as? [[String: Any]] else {
-                print("No 'results' key found in the response")
-                return
-            }
-            
-            
-            self.studentLocations = StudentLocation.studentsLocationFrom(arrayOfStudentLocations as [[String : AnyObject]])
-            for student in self.studentLocations! {
-                
-                self.loadAnnotations(student: student)
-            }
-            
-            //Update the UI
-            DispatchQueue.main.async {
-                self.mapView.addAnnotations(self.annotations)
-            }
+    func loadStudentLocationsOnMap() {
+        if self.locations.isEmpty {
+            displayError(string: "Unable to download data")
+            return
         }
-    }
-    
-    func loadAnnotations(student: StudentLocation) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
-        annotation.title = "\(student.firstName!) \(student.lastName!)"
-        annotation.subtitle = "\(student.mediaURL!)"
-        annotations.append(annotation)
+        
+        for student in self.locations {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
+            annotation.title = "\(student.firstName!) \(student.lastName!)"
+            annotation.subtitle = "\(student.mediaURL!)"
+            self.annotations.append(annotation)
+        }
+        
+        self.mapView.addAnnotations(self.annotations)
+        
     }
     
     func displayError(string: String) {
@@ -79,6 +58,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     
     //MARK: IBActions
+    
     @IBAction func logouFromUdacity(_ sender: UIBarButtonItem) {
         UDClient().logoutFromUdacity()
         self.dismiss(animated: true, completion: nil)
@@ -88,8 +68,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
         self.present(controller, animated: true, completion: nil)
     }
+    
     //MARK: MKMapViewDelegate
-
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "pin"
         
@@ -116,9 +97,5 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                 app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
             }
         }
-    }
-    
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print(item.badgeValue ?? "")
     }
 }

@@ -9,10 +9,6 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    
-    //MARK: Properties
-    var appDelegate: AppDelegate?
-    var listOfLocations: [StudentLocation]?
 
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -21,6 +17,7 @@ class LoginViewController: UIViewController {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        StudentLocation.loadStudentLocations()
     }
     
     //MARK: IBActions
@@ -44,9 +41,13 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    //TODO: Implement Passwordless with Facebook
 
     @IBAction func signUpToUdacity(_ sender: UIButton) {
-        
+        //TODO: Implement url to udacity Sign-up page
+        let url = URL(string: "https://auth.udacity.com/sign-up")!
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
     //MARK: helpers

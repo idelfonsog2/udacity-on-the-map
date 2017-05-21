@@ -20,7 +20,7 @@
 		1691C98E1EC1E32A00758BCF /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C98D1EC1E32A00758BCF /* StudentLocation.swift */; };
 		1691C9901EC226FB00758BCF /* UDClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C98F1EC226FB00758BCF /* UDClient.swift */; };
 		1691C9921EC2273400758BCF /* PSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691C9911EC2273400758BCF /* PSClient.swift */; };
-		B4197008528C5088818CB559 /* Pods_udacity_on_the_map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 456BF6099209BEE39B62B03A /* Pods_udacity_on_the_map.framework */; };
+		A7D4016C1666C7861960E2FB /* Pods_udacity_on_the_map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3AB994EFA1201262BD058EE /* Pods_udacity_on_the_map.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,9 +39,9 @@
 		1691C98D1EC1E32A00758BCF /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		1691C98F1EC226FB00758BCF /* UDClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDClient.swift; sourceTree = "<group>"; };
 		1691C9911EC2273400758BCF /* PSClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSClient.swift; sourceTree = "<group>"; };
-		456BF6099209BEE39B62B03A /* Pods_udacity_on_the_map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_udacity_on_the_map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EF2DAC2915DD3791CEEECA52 /* Pods-udacity-on-the-map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.release.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.release.xcconfig"; sourceTree = "<group>"; };
-		FFC7552BBD8BA36F08B0AA18 /* Pods-udacity-on-the-map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.debug.xcconfig"; sourceTree = "<group>"; };
+		A3AB994EFA1201262BD058EE /* Pods_udacity_on_the_map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_udacity_on_the_map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4A9790253F3D72BD980DA8A /* Pods-udacity-on-the-map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.release.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.release.xcconfig"; sourceTree = "<group>"; };
+		D3F2A87CEC114E334FA98303 /* Pods-udacity-on-the-map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4197008528C5088818CB559 /* Pods_udacity_on_the_map.framework in Frameworks */,
+				A7D4016C1666C7861960E2FB /* Pods_udacity_on_the_map.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +100,8 @@
 			children = (
 				1691C9781EC1DD0800758BCF /* udacity-on-the-map */,
 				1691C9771EC1DD0800758BCF /* Products */,
-				260A4F6250DFECC969108B25 /* Pods */,
-				75F7EB0294AC78801152DA17 /* Frameworks */,
+				DF5B47BB92F9BC01175D5681 /* Pods */,
+				504E2111492A0722586F2975 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -127,21 +127,21 @@
 			path = "udacity-on-the-map";
 			sourceTree = "<group>";
 		};
-		260A4F6250DFECC969108B25 /* Pods */ = {
+		504E2111492A0722586F2975 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FFC7552BBD8BA36F08B0AA18 /* Pods-udacity-on-the-map.debug.xcconfig */,
-				EF2DAC2915DD3791CEEECA52 /* Pods-udacity-on-the-map.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		75F7EB0294AC78801152DA17 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				456BF6099209BEE39B62B03A /* Pods_udacity_on_the_map.framework */,
+				A3AB994EFA1201262BD058EE /* Pods_udacity_on_the_map.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF5B47BB92F9BC01175D5681 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D3F2A87CEC114E334FA98303 /* Pods-udacity-on-the-map.debug.xcconfig */,
+				A4A9790253F3D72BD980DA8A /* Pods-udacity-on-the-map.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,12 +151,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1691C9881EC1DD0800758BCF /* Build configuration list for PBXNativeTarget "udacity-on-the-map" */;
 			buildPhases = (
-				E953C09EB77D477281FD4F49 /* [CP] Check Pods Manifest.lock */,
+				C62977BAF7605798ECDCEE4A /* [CP] Check Pods Manifest.lock */,
 				1691C9721EC1DD0800758BCF /* Sources */,
 				1691C9731EC1DD0800758BCF /* Frameworks */,
 				1691C9741EC1DD0800758BCF /* Resources */,
-				452C7A9D34027CE00860564C /* [CP] Embed Pods Frameworks */,
-				2E6E74FBC148951CFFD159F3 /* [CP] Copy Pods Resources */,
+				4FDA1591FE138333249FA053 /* [CP] Embed Pods Frameworks */,
+				6DA81CB71789AEC4234A965C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -216,22 +216,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2E6E74FBC148951CFFD159F3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		452C7A9D34027CE00860564C /* [CP] Embed Pods Frameworks */ = {
+		4FDA1591FE138333249FA053 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,7 +231,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E953C09EB77D477281FD4F49 /* [CP] Check Pods Manifest.lock */ = {
+		6DA81CB71789AEC4234A965C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C62977BAF7605798ECDCEE4A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -400,7 +400,7 @@
 		};
 		1691C9891EC1DD0800758BCF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFC7552BBD8BA36F08B0AA18 /* Pods-udacity-on-the-map.debug.xcconfig */;
+			baseConfigurationReference = D3F2A87CEC114E334FA98303 /* Pods-udacity-on-the-map.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = M74HARNN5W;
@@ -414,7 +414,7 @@
 		};
 		1691C98A1EC1DD0800758BCF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF2DAC2915DD3791CEEECA52 /* Pods-udacity-on-the-map.release.xcconfig */;
+			baseConfigurationReference = A4A9790253F3D72BD980DA8A /* Pods-udacity-on-the-map.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = M74HARNN5W;

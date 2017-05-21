@@ -19,6 +19,9 @@ class StudentLocation {
     var latitude:   Double?
     var longitude:  Double?
     
+    static var studentLocations = [StudentLocation]()
+    
+    
     init(dictionary: [String:AnyObject]) {
         objectID = dictionary["objectId"] as? String
         firstName = dictionary["firstName"] as? String
@@ -28,17 +31,25 @@ class StudentLocation {
         latitude = dictionary["latitude"] as? Double
         longitude = dictionary["longitude"] as? Double
         uniqueKey = dictionary["uniqueKey"] as? String
-        
     }
     
-    static func studentsLocationFrom(_ reponse: [[String:AnyObject]]) -> [StudentLocation] {
-        
-        var locations = [StudentLocation]()
-        
-        for result in reponse {
-            locations.append(StudentLocation(dictionary: result))
+    static func loadStudentLocations() {
+        let parameters: [String: Any] = ["limit": 100]
+        PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
+            if !success {
+                print(response ?? "nil")
+            }
+            
+            guard let arrayOfStudentLocations = response?["results"] as? [[String: AnyObject]] else {
+                print("No 'results' key found in the response")
+                return
+            }
+            
+            for student in arrayOfStudentLocations {
+                StudentLocation.studentLocations.append(StudentLocation(dictionary: student))
+            }
         }
-        
-        return locations
     }
+    
+    
 }
