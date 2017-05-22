@@ -11,7 +11,7 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
 
-    //MARK: Properties
+    //MARK: Properties & Instantiate Models
     var sessionId: String?
     var locations = StudentLocation.studentLocations
     var annotations = [MKPointAnnotation]()

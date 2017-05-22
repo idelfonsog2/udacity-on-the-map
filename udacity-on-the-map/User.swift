@@ -29,13 +29,30 @@ class User {
     
     
     //MARK: static functions
-    static func loadMyData() {
+    static func loadMyData(completionHandler: @escaping(_ response: AnyObject?, _ success: Bool) -> Void) {
+        
+        //Pass completion handler in case the Object construction fails
         let params = [UdacityHTTPBodyKeys.UdacityKey: User.uniqueKey]
         
-        UDClient().getUserPublicData(userId: <#T##String#>, completionHandlerForGET: <#T##(AnyObject?, Bool) -> Void#>)
+        UDClient().getUserPublicData(params: params) { (response, success) in
+            if !success {
+                completionHandler(nil, false)
+            }
+            
+            guard let userDictionary = response?["user"] as? [String: Any] else {
+                completionHandler(nil, false)
+                return
+            }
+            
+            //MARK: Init user with JSON
+            User.userData = User(dictionary: userDictionary)
+            completionHandler(nil, true)
+        }
     }
     
     static func getSessionId(email: String, password: String, completionHandler: @escaping(_ response: Any?, _ success: Bool) -> Void) {
+        
+        //Pass completion handler in case the Object construction fails
         let credentials =
             [
                 UdacityHTTPBodyKeys.UdacityKey:
@@ -46,8 +63,10 @@ class User {
         ]
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
+            
             //TODO: remove print statement
             print(response!)
+            
             guard let accountDictionary = response?["account"] as? [String: Any] else {
                 print("no 'account' key found")
                 completionHandler(nil, false)
@@ -78,33 +97,32 @@ class User {
                 return
             }
             
+            //MARK: Init Udacity Session
             User.sessionId = id
             User.uniqueKey = key
             completionHandler(nil, true)
         }
     }
     
-    static func loadMyLocation() {
-        let params: [String: Any]
-        if let key = User.userLocation?.uniqueKey {
-            params = [ParseGETParameterKeys.UniqueKey: key]
-        } else {
-            //dummy key
-            params = [ParseGETParameterKeys.UniqueKey: "4444"]
-        }
+    static func loadMyLocation(completionHandler: @escaping(_ response: AnyObject?, _ succes: Bool) -> Void) {
         
+        let params = [ParseGETParameterKeys.UniqueKey: User.uniqueKey]
+
         PSClient().obtainStudentLocation(parameters: params) { (response, success) in
             
             if !success {
-                print(response ?? "nil")
+                completionHandler(nil, false)
             }
             
             guard let arrayOfStudentLocations = response?["results"] as? [[String: AnyObject]] else {
                 print("No 'results' key found in the response")
+                completionHandler(nil, false)
                 return
             }
             
+            //MARK: Init user location with JSON
             User.userLocation = StudentLocation(dictionary: arrayOfStudentLocations[0])
+            completionHandler(nil, true)
         }
     }
     

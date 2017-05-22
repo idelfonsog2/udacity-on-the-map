@@ -11,9 +11,9 @@ import MapKit
 
 class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
-    //MARK: Properties
-    var myLocation: StudentLocation?
-    var profile = User.userLocation
+    //MARK: Instantiate Models
+    var myLocation = User.userLocation
+    var profile = User.userData
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -31,29 +31,45 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: IBActions
     @IBAction func findLocationButtonPressed(_ sender: UIButton) {
-        if let address = self.locationTextField.text {
-            let geoCoder = CLGeocoder()
-            geoCoder.geocodeAddressString(address) { (placeMarkArray, error) in
-                if error == nil {
-                    let myCoordinates = placeMarkArray?.first?.location?.coordinate
-                    let spanCoordinates = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
-                    let region = MKCoordinateRegion(center: myCoordinates!, span: spanCoordinates)
-                    
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = myCoordinates!
-                    annotation.title = "\(self.myLocation?.firstName) \(self.myLocation?.lastName)"
-                    DispatchQueue.main.async {
-                        self.mapView.isHidden = false
-                        self.mapView.setRegion(region, animated: true)
-                        
-                        self.mapView.addAnnotation(placeMarkArray?.first as! MKAnnotation)
-                    }
-                } else {
-                    //TODO: Display Empty field error
-                    print("error")
+        
+        if (self.locationTextField.text?.isEmpty)! {
+            displayError(message: "Missing location")
+        }
+    
+        let address = self.locationTextField.text!
+        self.showMapWith(location: address)
+    }
+    
+    func showMapWith(location: String) {
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(location) { (placeMarkArray, error) in
+            if error == nil {
+                let myCoordinates = placeMarkArray?.first?.location?.coordinate
+                let spanCoordinates = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+                let region = MKCoordinateRegion(center: myCoordinates!, span: spanCoordinates)
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = myCoordinates!
+                annotation.title = "\(self.profile?.firstName) \(self.profile?.lastName)"
+                DispatchQueue.main.async {
+                    self.mapView.isHidden = false
+                    self.mapView.setRegion(region, animated: true)
+                    //TODO: place marker
+                    //self.mapView.addAnnotation(placeMarkArray?.first as! MKAnnotation)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.displayError(message: "Could Not find location")
                 }
             }
         }
+    }
+    
+    func displayError(message: String) {
+        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        controller.addAction(okAction)
+        self.present(controller, animated: true, completion: nil)
     }
 
     /*

@@ -63,10 +63,10 @@ class UDClient: NSObject {
         task.resume()
     }
     
-    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func getUserPublicData(params: [String: Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // GET
-        let url = URL(string: UdacityConstants.baseURL+"/\(userId)")!
+        let url = urlFromParameters(params)
         let request = NSMutableURLRequest(url: url)
         
         // DataTask
@@ -96,8 +96,10 @@ class UDClient: NSObject {
                 sendError("No data was returned by the request!")
                 return
             }
+            
+            /* subset response data! */
             let range = Range(5..<data.count)
-            let newData = data.subdata(in: range) /* subset response data! */
+            let newData = data.subdata(in: range)
 
             //TODO: obtain values from JSON
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)

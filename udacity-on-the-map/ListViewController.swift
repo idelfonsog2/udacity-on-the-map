@@ -10,7 +10,7 @@ import UIKit
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    //MARK: Properties
+    //MARK: Instantiate Models & Properties
     var locations: [StudentLocation] = StudentLocation.studentLocations
    
     //MARK: IBOutlets
