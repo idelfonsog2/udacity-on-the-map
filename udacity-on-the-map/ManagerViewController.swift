@@ -16,6 +16,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     //MARK: IBOutlets
     @IBOutlet weak var leBar: UINavigationBar!
     
+    //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.leBar.delegate = self
@@ -28,6 +29,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         NotificationCenter.default.removeObserver(self, name: Notification.Name("refreshLocations"), object: self)
     }
     
+    //MARK: Helper func
     func setupNavBar() {
         self.leBar.topItem?.title = "On The Map"
         self.leBar.topItem?.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logout))
@@ -68,10 +70,8 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
             }
         }
         
-        
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
-        
         self.present(alertController, animated: true, completion: nil)
     }
     

@@ -30,9 +30,9 @@ class User {
     
     //MARK: static functions
     static func loadMyData() {
-//        let params = [UdacityHTTPBodyKeys.UdacityKey:
-//            
-//        ]
+        let params = [UdacityHTTPBodyKeys.UdacityKey: User.uniqueKey]
+        
+        UDClient().getUserPublicData(userId: <#T##String#>, completionHandlerForGET: <#T##(AnyObject?, Bool) -> Void#>)
     }
     
     static func getSessionId(email: String, password: String, completionHandler: @escaping(_ response: Any?, _ success: Bool) -> Void) {

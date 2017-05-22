@@ -36,21 +36,19 @@ class LoginViewController: UIViewController {
                 }
             })
         } else {
-            //TODO: display error missing field
+            displayAlert(message: "Empty Field!")
         }
         
     }
-    
-    //TODO: Implement Passwordless with Facebook
 
     @IBAction func signUpToUdacity(_ sender: UIButton) {
-        //TODO: Implement url to udacity Sign-up page
         let url = URL(string: "https://auth.udacity.com/sign-up")!
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    //MARK: helpers
+    //TODO: Implement Passwordless with Facebook
     
+    //MARK: helpers
     func accessGranted() {
         //TODO: obtain student locations before transitioning to the next VC  
         
