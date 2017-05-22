@@ -11,7 +11,7 @@ import UIKit
 class ManagerViewController: UINavigationController, UINavigationBarDelegate {
 
     //MARK: Properties
-    var myLocation = User.sharedInstance().userLocation
+    var myLocation = User.userLocation
     
     //MARK: IBOutlets
     @IBOutlet weak var leBar: UINavigationBar!
@@ -45,7 +45,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     
     //MARK: UIBarButtonItems
     func pinSelector() {
-        if (myLocation?.uniqueKey) != nil {
+        if (myLocation?.uniqueKey) != nil { //check if there is active location for user
             self.showAlerWith(message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
         } else {
             self.showAlerWith(message: "No location found. Would You Like to post your location?")

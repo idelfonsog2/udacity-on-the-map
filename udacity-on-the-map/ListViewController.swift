@@ -22,6 +22,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.delegate = self
         self.tableView.dataSource = self
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentsOnTableView), name: Notification.Name("refreshLocations"), object: nil)
         self.loadStudentsOnTableView()
     }
     
@@ -35,6 +36,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             displayError(string: "Unable to download data")
             return
         }
+        //refresh table
+        self.tableView.reloadData()
     }
     
     func displayError(string: String) {

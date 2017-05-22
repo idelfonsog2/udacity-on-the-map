@@ -11,12 +11,82 @@ import Foundation
 class User {
     
     //MARK: Properties
-    var userLocation: StudentLocation?
+    static var userLocation: StudentLocation?
+    static var userData: User?
+    static var sessionId = String()
+    static var uniqueKey = String()
+    
+    //MARK: Class properties
+    var firstName: String?
+    var lastName: String?
+    
+    init(dictionary: [String: Any]) {
+        self.firstName = dictionary["first_name"] as? String
+        self.lastName = dictionary["last_name"] as? String
+        //TODO: add more properties if needed from the response
+        //https://d17h27t6h515a5.cloudfront.net/topher/2016/June/575840d1_get-user-data/get-user-data.json
+    }
+    
+    
+    //MARK: static functions
+    static func loadMyData() {
+//        let params = [UdacityHTTPBodyKeys.UdacityKey:
+//            
+//        ]
+    }
+    
+    static func getSessionId(email: String, password: String, completionHandler: @escaping(_ response: Any?, _ success: Bool) -> Void) {
+        let credentials =
+            [
+                UdacityHTTPBodyKeys.UdacityKey:
+                    [
+                        UdacityHTTPBodyKeys.UsernameKey:email,
+                        UdacityHTTPBodyKeys.PasswordKey:password
+                ]
+        ]
+        
+        UDClient().getSessionId(httpBody: credentials) { (response, success) in
+            //TODO: remove print statement
+            print(response!)
+            guard let accountDictionary = response?["account"] as? [String: Any] else {
+                print("no 'account' key found")
+                completionHandler(nil, false)
+                return
+            }
+            
+            guard let registered = accountDictionary["registered"] as? Bool else {
+                print("no 'registered' key found")
+                completionHandler(nil, false)
+                return
+            }
+            
+            guard let key = accountDictionary["key"] as? String else {
+                print("no 'key' key found")
+                completionHandler(nil, false)
+                return
+            }
+            
+            guard let session = response?["session"] as? [String: Any] else {
+                print("no 'session' key found")
+                completionHandler(nil, false)
+                return
+            }
+            
+            guard let id = session["id"] as? String else {
+                print("no 'id' key found")
+                completionHandler(nil, false)
+                return
+            }
+            
+            User.sessionId = id
+            User.uniqueKey = key
+            completionHandler(nil, true)
+        }
+    }
     
     static func loadMyLocation() {
-        
         let params: [String: Any]
-        if let key = User.sharedInstance().userLocation?.uniqueKey {
+        if let key = User.userLocation?.uniqueKey {
             params = [ParseGETParameterKeys.UniqueKey: key]
         } else {
             //dummy key
@@ -34,14 +104,9 @@ class User {
                 return
             }
             
-            User.sharedInstance().userLocation = StudentLocation(dictionary: arrayOfStudentLocations[0])
+            User.userLocation = StudentLocation(dictionary: arrayOfStudentLocations[0])
         }
     }
     
-    class func sharedInstance() -> User {
-        struct Singleton {
-            static var sharedInstance = User()
-        }
-        return Singleton.sharedInstance
-    }
+    
 }

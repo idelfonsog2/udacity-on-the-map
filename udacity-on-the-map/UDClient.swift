@@ -63,7 +63,7 @@ class UDClient: NSObject {
         task.resume()
     }
     
-    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: Any?, _ success: Bool) -> Void) {
+    func getUserPublicData(userId: String, completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // GET
         let url = URL(string: UdacityConstants.baseURL+"/\(userId)")!
@@ -108,7 +108,7 @@ class UDClient: NSObject {
     }
 
     
-    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: Any?, _ success: Bool) -> Void) {
+    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // POST:
         let url = urlFromParameters([:])
@@ -162,42 +162,7 @@ class UDClient: NSObject {
             let range = Range(5..<data.count)
             let newData = data.subdata(in: range) /* subset response data! */
             
-            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: { (response, success) in
-                print(response)
-                guard let accountDicionary = response?["account"] as? [String: Any] else {
-                    print("no 'account' key found")
-                    completionHandlerForPOST(nil, false)
-                    return
-                }
-                
-                guard let registered = accountDicionary["registered"] as? Bool else {
-                    print("no 'registered' key found")
-                    completionHandlerForPOST(nil, false)
-                    return
-                }
-                
-                guard let session = response?["session"] as? [String: Any] else {
-                    print("no 'session' key found")
-                    completionHandlerForPOST(nil, false)
-                    return
-                }
-                
-                guard let id = session["id"] as? String else {
-                    print("no 'id' key found")
-                    completionHandlerForPOST(nil, false)
-                    return
-                }
-                
-                if registered {
-                    self.appDelegate?.sessionId = id
-                    completionHandlerForPOST(registered as AnyObject, true)
-                } else {
-                    //TODO: registered = 0 always set to false when this is fix
-                    completionHandlerForPOST(registered as AnyObject, false)
-                    //TODO: delete this line of code
-                    self.appDelegate?.sessionId = id
-                }
-            })
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
         }
         task.resume()
     }
@@ -220,7 +185,7 @@ class UDClient: NSObject {
     }
     
     // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ success: Bool) -> Void) {
 
         var parsedResult: AnyObject?
         

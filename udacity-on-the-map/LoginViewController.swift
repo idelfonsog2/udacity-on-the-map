@@ -25,24 +25,20 @@ class LoginViewController: UIViewController {
     
     //MARK: IBActions
     @IBAction func loginToUdacity(_ sender: UIButton) {
-        let credentials =
-        [
-            UdacityHTTPBodyKeys.UdacityKey:
-            [
-                UdacityHTTPBodyKeys.UsernameKey:emailAddressTextField.text,
-                UdacityHTTPBodyKeys.PasswordKey:passwordTextField.text
-            ]
-        ]
-        
-        UDClient().getSessionId(httpBody: credentials) { (response, success) in
-            DispatchQueue.main.async {
-                if success {
-                    self.accessGranted()
-                } else {
-                    self.displayAlert(message: "Account not found or invalid credentials")
+        if let email = emailAddressTextField.text, let password = passwordTextField.text {
+            User.getSessionId(email: email, password: password, completionHandler: { (response, success) in
+                DispatchQueue.main.async {
+                    if success {
+                        self.accessGranted()
+                    } else {
+                        self.displayAlert(message: "Account not found or invalid credentials")
+                    }
                 }
-            }
+            })
+        } else {
+            //TODO: display error missing field
         }
+        
     }
     
     //TODO: Implement Passwordless with Facebook

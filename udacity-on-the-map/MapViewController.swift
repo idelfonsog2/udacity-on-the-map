@@ -64,6 +64,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
+        //TODO: 
         self.present(controller, animated: true, completion: nil)
     }
     
