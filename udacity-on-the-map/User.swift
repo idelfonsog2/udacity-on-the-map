@@ -13,20 +13,14 @@ class User {
     //MARK: Properties
     static var userLocation: StudentLocation?
     static var userData: User?
-    static var sessionId = String()
-    static var uniqueKey = String()
     
     //MARK: Class properties
     var firstName: String?
     var lastName: String?
     
-    init(dictionary: [String: Any]) {
-        self.firstName = dictionary["first_name"] as? String
-        self.lastName = dictionary["last_name"] as? String
-        //TODO: add more properties if needed from the response
-        //https://d17h27t6h515a5.cloudfront.net/topher/2016/June/575840d1_get-user-data/get-user-data.json
-    }
-    
+//    self.firstName = dictionary["first_name"] as? String
+//    self.lastName = dictionary["last_name"] as? String
+
     
     //MARK: static functions
     static func loadMyData(completionHandler: @escaping(_ response: AnyObject?, _ success: Bool) -> Void) {
@@ -53,19 +47,9 @@ class User {
     static func getSessionId(email: String, password: String, completionHandler: @escaping(_ response: Any?, _ success: Bool) -> Void) {
         
         //Pass completion handler in case the Object construction fails
-        let credentials =
-            [
-                UdacityHTTPBodyKeys.UdacityKey:
-                    [
-                        UdacityHTTPBodyKeys.UsernameKey:email,
-                        UdacityHTTPBodyKeys.PasswordKey:password
-                ]
-        ]
+       
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
-            
-            //TODO: remove print statement
-            print(response!)
             
             guard let accountDictionary = response?["account"] as? [String: Any] else {
                 print("no 'account' key found")
@@ -126,5 +110,11 @@ class User {
         }
     }
     
+    class func sharedInstance() -> User {
+        struct Singleton {
+            static var sharedInstance = User()
+        }
+        return Singleton.sharedInstance
+    }
     
 }

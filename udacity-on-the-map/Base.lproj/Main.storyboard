@@ -133,6 +133,7 @@
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="0.49563891267123289" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="F0O-8y-3Zo" firstAttribute="leading" secondItem="RZO-zK-Cl9" secondAttribute="leading" id="2Hp-Hc-bKv"/>
                             <constraint firstAttribute="trailing" secondItem="F0O-8y-3Zo" secondAttribute="trailing" id="J0P-Sb-USY"/>
@@ -264,7 +265,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="375" height="65"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xOK-tM-F1g" id="khw-xz-Fgn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWZ-Rh-4TM">

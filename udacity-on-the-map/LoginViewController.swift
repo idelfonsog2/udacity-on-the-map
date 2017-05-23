@@ -17,26 +17,27 @@ class LoginViewController: UIViewController {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(reloadLocations), name: Notification.Name("refreshLocations"), object: nil)
-        
         self.reloadLocations()
     }
     
     //MARK: IBActions
     @IBAction func loginToUdacity(_ sender: UIButton) {
-        if let email = emailAddressTextField.text, let password = passwordTextField.text {
-            User.getSessionId(email: email, password: password, completionHandler: { (response, success) in
-                DispatchQueue.main.async {
-                    if success {
-                        self.accessGranted()
-                    } else {
-                        self.displayAlert(message: "Account not found or invalid credentials")
-                    }
-                }
-            })
-        } else {
-            displayAlert(message: "Empty Field!")
+        guard let email = emailAddressTextField.text, let password = passwordTextField.text else {
+            displayAlert(message: "Missing field")
+            return
+        }
+        let credentials = [ UdacityHTTPBodyKeys.UdacityKey: [
+                        UdacityHTTPBodyKeys.UsernameKey:email,
+                        UdacityHTTPBodyKeys.PasswordKey:password ]
+        ]
+        
+        UDClient().getSessionId(httpBody: credentials) { (response, success) in
+            if !success {
+                self.displayAlert(message: "Account not found or invalid credentials")
+            } else {
+                
+            }
         }
         
     }
@@ -57,11 +58,12 @@ class LoginViewController: UIViewController {
     }
     
     func displayAlert(message: String) {
-        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        controller.addAction(okAction)
-        self.present(controller, animated: true, completion: nil)
-
+        DispatchQueue.main.async {
+            let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            controller.addAction(okAction)
+            self.present(controller, animated: true, completion: nil)
+        }
     }
     
     func reloadLocations() {

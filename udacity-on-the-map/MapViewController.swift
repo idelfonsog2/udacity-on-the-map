@@ -8,12 +8,14 @@
 
 import UIKit
 import MapKit
+import NVActivityIndicatorView
 
-class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, NVActivityIndicatorViewable {
 
     //MARK: Properties & Instantiate Models
     var sessionId: String?
-    var locations = StudentLocation.studentLocations
+    //TODO: create singleton
+    var locations = StudentLocation.shareInstance()
     var annotations = [MKPointAnnotation]()
     
     //MARK: IBOutlets
@@ -29,7 +31,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     //MARK: Helper Functions
     func loadStudentLocationsOnMap() {
+        //TODO: add delays fo UI
+        self.startAnimating(self.view.frame.size, message: "hheel", messageFont: nil, type: NVActivityIndicatorType.ballBeat, color: UIColor.black, padding: nil, displayTimeThreshold: 5000, minimumDisplayTime: 2600, backgroundColor: UIColor(red: 255, green: 255, blue: 255, alpha: 0.5), textColor: nil)
+        
+
         self.mapView.removeAnnotations(self.annotations)
+        self.annotations.removeAll()
         
         if self.locations.isEmpty {
             displayError(string: "Unable to download data")
@@ -44,8 +51,31 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
             self.annotations.append(annotation)
         }
         
+        stopAnimating()
         self.mapView.addAnnotations(self.annotations)
         
+    }
+    
+    func loadStudentLocationsData() {
+        //Remove for refresh purposes
+        self.studentLocations.removeAll()
+        
+        //Make network call
+        let parameters: [String: Any] = ["limit": 100]
+        PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
+            if !success {
+                print(response ?? "nil")
+            }
+            
+            guard let arrayOfStudentLocations = response?["results"] as? [[String: AnyObject]] else {
+                print("No 'results' key found in the response")
+                return
+            }
+            
+            for student in arrayOfStudentLocations {
+                StudentLocation.studentLocations.append(StudentLocation(dictionary: student))
+            }
+        }
     }
     
     func displayError(string: String) {

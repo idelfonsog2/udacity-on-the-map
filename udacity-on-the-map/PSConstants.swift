@@ -20,9 +20,11 @@ struct ParseConstants {
     //MARK: Methods
 struct ParseMethod {
     static let StudentLocation      = "/StudentLocation"      //POST, GET
-    static let PUTStudentLocation   = "/StudentLocation/<objectId>"
 }
 
+struct ParseURLKeys {
+    static let ObjectId = "objectId"
+}
     //MARK: ParameterKeys
 struct ParseGETParameterKeys {
     

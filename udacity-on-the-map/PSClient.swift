@@ -9,164 +9,70 @@
 import UIKit
 
 class PSClient: NSObject {
-    let session = URLSession.shared
+    let network = UMNetworking.sharedInstance()
     
     func obtainStudentLocation(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
-        
-        // GET
-        let url = urlFromParameters(parameters)
+        // GET: StudentLocation
+        let url = urlFromParameters(parameters, withPathExtension: nil)
         let request = NSMutableURLRequest(url: url)
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
-
-        // DataTask
-        let task = session.dataTask(with: request as URLRequest) {
-            (data, response, error) in
-            
-            func sendError(_ error: String) -> NSError {
-                let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForGET(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
-                return NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo)
-            }
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                completionHandlerForGET(sendError("There was an error with your request: \(String(describing: error))"), false)
-                return
-            }
-            
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                completionHandlerForGET( sendError("Your request returned a status code other than 2xx!"), false)
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                completionHandlerForGET(sendError("No data was returned by the request!"), false)
-                return
-            }
-            
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+        
+        let _ = network.taskForWithRequest(request) { (response, success) in
+            //TODO: create objects
         }
-        
-        task.resume()
-        
     }
     
     func createStudentLocation(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
-        
-        // POST:
-        let url = urlFromParameters([:])
-        var request = NSMutableURLRequest(url: url)
+        // POST: StudentLocation
+        let url = urlFromParameters([:], withPathExtension: ParseMethod.StudentLocation)
+        let request = NSMutableURLRequest(url: url)
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         request.addValue(ParseHeaderFieldsValues.ApplicationJSONKey, forHTTPHeaderField: ParseHeaderFieldsKeys.ContentType)
         request.httpMethod = "POST"
-        request.httpBody = try! JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
+        request.httpBody = network.convertHTTPBodyToData(body: httpBody)
         
-        // DataTask
-        let task = session.dataTask(with: request as URLRequest) {
-            (data, response, error) in
-            func sendError(_ error: String) {
-                print(error)
-                let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPOST(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
-            }
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                sendError("No data was returned by the request!")
-                return
-            }
-            
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
+        let _ = network.taskForWithRequest(request) { (reponse, success) in
+            //TODO: create object
         }
-        task.resume()
     }
     
     func updateStudentLocation(objectId: String, httpBody: String?, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+        // PUT: StudentLocation
+        var mutablePathExtension: String = ParseMethod.StudentLocation
+        mutablePathExtension = UMNetworking().substituteKeyInMethod(mutablePathExtension, key: ParseURLKeys.ObjectId, value: objectId)!
         
-        // PUT:
-
-        let url = URL(string: ParseConstants.baseURL+"/\(objectId)")
-        let request = NSMutableURLRequest(url: url!)
+        let url = urlFromParameters([:], withPathExtension: mutablePathExtension)
+        let request = NSMutableURLRequest(url: url)
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         request.addValue(ParseHeaderFieldsValues.ApplicationJSONKey, forHTTPHeaderField: ParseHeaderFieldsKeys.ContentType)
         request.httpMethod = "PUT"
         request.httpBody = httpBody?.data(using: String.Encoding.utf8)
         
-        let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            func sendError(_ error: String) {
-                print(error)
-                let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPUT(NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo), false)
-            }
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                sendError("No data was returned by the request!")
-                return
-            }
-
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPUT)
+        let _ = network.taskForWithRequest(request) { (response, success) in
+            //TODO: create object
         }
-        task.resume()
     }
     
-    public func urlFromParameters(_ params: [String : Any]) -> URL {
+
+    // create a URL from parameters
+    private func urlFromParameters(_ parameters: [String: Any], withPathExtension: String? = nil) -> URL {
         var components = URLComponents()
-        components.scheme   = ParseConstants.scheme
-        components.host     = ParseConstants.host
-        components.path     = ParseConstants.path + ParseMethod.StudentLocation
+        components.scheme = ParseConstants.scheme
+        components.host = ParseConstants.host
+        components.path = ParseConstants.path + (withPathExtension ?? "")
+        components.queryItems = [URLQueryItem]()
         
-        if !params.isEmpty {
-            components.queryItems = [URLQueryItem]()
-            for (key, value) in params {
+        if !parameters.isEmpty {
+            for (key, value) in parameters {
                 let queryItem = URLQueryItem(name: key, value: "\(value)")
-                components.queryItems?.append(queryItem)
+                components.queryItems!.append(queryItem)
             }
         }
         
         return components.url!
-    }
-    
-    // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ success: Bool) -> Void) {
-        
-        var parsedResult: AnyObject! = nil
-        do {
-            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
-        } catch {
-            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo), false)
-        }
-        
-        completionHandlerForConvertData(parsedResult, true)
     }
     
 }
