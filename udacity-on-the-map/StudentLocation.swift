@@ -22,6 +22,9 @@ struct StudentLocation {
     //Singleton
     static var sharedInstance = [StudentLocation]()
     
+    init() {
+    }
+    
     init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double, longitude: Double) {
         self.objectId = objectId
         self.firstName = firstName
@@ -45,10 +48,11 @@ struct StudentLocation {
     }
     
     //Functions
-    static func locationsFromResults(_ arrayOfStudentsDictionaries: [[String:AnyObject]]) -> [StudentLocation] {
+    static func locationsFromResults(_ arrayOfStudentsDictionaries: AnyObject) -> [StudentLocation] {
+        let jsonObjectArray = arrayOfStudentsDictionaries as! [[String:AnyObject]]
         var locations = [StudentLocation]()
         
-        for student in arrayOfStudentsDictionaries {
+        for student in jsonObjectArray {
             locations.append(StudentLocation(dictionary: student))
         }
         

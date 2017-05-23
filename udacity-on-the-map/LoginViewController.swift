@@ -11,7 +11,8 @@ import UIKit
 class LoginViewController: UIViewController {
 
     //Singleton
-    let udacitySession = UdacitySession.sharedInstance
+    var udacitySession = UdacitySession.sharedInstance
+    var udacityUser = UdacityUser.sharedInstance
     
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -35,6 +36,7 @@ class LoginViewController: UIViewController {
             ]
         ]
         
+        
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
@@ -42,11 +44,22 @@ class LoginViewController: UIViewController {
                     self.displayAlert(message: "Account not found or invalid credentials")
                 } else {
                     //access granted
+                    self.udacitySession = UdacitySession(dictionary: response as! [String : Any])
                     self.instantiateManagerViewController()
                 }
             }
         }
         
+        UDClient().getUserPublicData() { (response, success) in
+            if !success {
+                DispatchQueue.main.async {
+                    self.displayAlert(message: "Could not find your information")
+                }
+            } else {
+                // Get the First Name, last Name from user
+                self.udacityUser = UdacityUser(dictionary: response as! [String : Any])
+            }
+        }
     }
 
     @IBAction func signUpToUdacity(_ sender: UIButton) {

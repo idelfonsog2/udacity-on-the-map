@@ -12,7 +12,8 @@ import MapKit
 class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Instantiate Models
-    var udacityAuthentication = UdacitySessionClass.sharedInstance()
+    var udacityUser = UdacityUser.sharedInstance
+    var udacitySession = UdacitySession.sharedInstance
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -44,24 +45,8 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     //MARK: load Data
     func loadUdacityUserData() {
         
-        //Pass completion handler in case the Object construction fails
-        let params = [UdacityHTTPBodyKeys.UdacityKey: udacityAuthentication.uniqueKey]
         
-        UDClient().getUserPublicData(params: params) { (response, success) in
-            if !success {
-                completionHandler(nil, false)
-            }
-            
-            guard let userDictionary = response?["user"] as? [String: Any] else {
-                completionHandler(nil, false)
-                return
-            }
-            
-            //MARK: Init user with JSON
-            User.userData = User(dictionary: userDictionary)
-            completionHandler(nil, true)
-        }
-
+    }
     
     func showMapWith(location: String) {
         let geoCoder = CLGeocoder()
@@ -73,12 +58,11 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = myCoordinates!
-                annotation.title = "\(self.profile?.firstName) \(self.profile?.lastName)"
+                annotation.title = "\(self.udacityUser.firstName ?? "unknow") \(self.udacityUser.lastName ?? "unknow")"
                 annotation.subtitle = "\(self.mediaURLTextField.text ?? "")"
                 DispatchQueue.main.async {
                     self.mapView.isHidden = false
                     self.mapView.setRegion(region, animated: true)
-                    //TODO: place marker
                     self.mapView.addAnnotation(annotation)
                 }
             } else {
@@ -95,28 +79,5 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         controller.addAction(okAction)
         self.present(controller, animated: true, completion: nil)
     }
-    
-
-    /*
-     if let location = self.locationTextField.text {
-     let request = MKLocalSearchRequest()
-     request.naturalLanguageQuery = location
-     
-     let localSearch = MKLocalSearch(request: request)
-     self.mapView.isHidden = true
-     localSearch.start(completionHandler: { (response, error) in
-     if error = nil {
-     let coordinates = response?.mapItems[0].placemark.coordinate
-     let spanCoordinates = MKCoordinateSpan(latitudeDelta: 200, longitudeDelta: 200)
-     let region = MKCoordinateRegion(center: coordinates!, span: spanCoordinates)
-     DispatchQueue.main.async {
-     self.mapView.setRegion(region, animated: true)
-     }
-     } else {
-     print("not able to find location \(String(describing: error))")
-     }
-     })
-     }
-     */
 
 }

@@ -64,7 +64,7 @@ class UMNetworking: NSObject {
     }
     
     
-    // substitute the key for the value that is contained within the method name
+    // Substitute the key for the value that is contained within the method name
     public func substituteKeyInMethod(_ method: String, key: String, value: String) -> String? {
         if method.range(of: "{\(key)}") != nil {
             return method.replacingOccurrences(of: "{\(key)}", with: value)
@@ -73,7 +73,7 @@ class UMNetworking: NSObject {
         }
     }
 
-    // given raw JSON, return a usable Foundation object
+    // Given raw JSON, return a usable Foundation object
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ success: Bool) -> Void) {
         var parsedResult: AnyObject?
         
@@ -86,9 +86,9 @@ class UMNetworking: NSObject {
         completionHandlerForConvertData(parsedResult, true)
     }
     
-    //Convert dictionary to Data Object
+    // Convert dictionary to Data Object
     func convertHTTPBodyToData(body: [String: Any]) -> Data {
-        var data: Data
+        var data: Data = Data()
         do {
             data = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
         } catch {
@@ -96,8 +96,8 @@ class UMNetworking: NSObject {
         }
         return data
     }
+    
     // MARK: Shared Instance
-
     class func sharedInstance() -> UMNetworking {
         struct Singleton {
             static var sharedInstance = UMNetworking()

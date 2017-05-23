@@ -11,7 +11,7 @@ import UIKit
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //MARK: Instantiate Models & Properties
-    var locations: [StudentLocation] = StudentLocation.studentLocations
+    var locations: [StudentLocation] = StudentLocation.sharedInstance
    
     //MARK: IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -27,8 +27,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func logoutFromUdacity(_ sender: UIBarButtonItem) {
-        UDClient().logoutFromUdacity()
-        self.dismiss(animated: true, completion: nil)
+        UDClient().logoutFromUdacity { (response, success) in
+            if !success {
+                print("FAIL to logout")
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
     }
     
     func loadStudentsOnTableView() {

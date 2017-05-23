@@ -70,9 +70,6 @@
 				1691C98D1EC1E32A00758BCF /* StudentLocation.swift */,
 				160A9EF61ED21DF800933F7E /* UdacityUser.swift */,
 				16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */,
-				16F940921ED496C00070F9C7 /* UMNetworking.swift */,
-				160C99571EC3F5FA008B0399 /* UDClient */,
-				160C99581EC3F604008B0399 /* PSClient */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -129,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				1691C9791EC1DD0800758BCF /* AppDelegate.swift */,
+				16F940961ED4E3FF0070F9C7 /* Networking */,
 				160C995F1EC63932008B0399 /* Controller */,
 				160C99561EC3F5F0008B0399 /* Model */,
 				1691C97D1EC1DD0800758BCF /* Main.storyboard */,
@@ -137,6 +135,16 @@
 				1691C9851EC1DD0800758BCF /* Info.plist */,
 			);
 			path = "udacity-on-the-map";
+			sourceTree = "<group>";
+		};
+		16F940961ED4E3FF0070F9C7 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				16F940921ED496C00070F9C7 /* UMNetworking.swift */,
+				160C99571EC3F5FA008B0399 /* UDClient */,
+				160C99581EC3F604008B0399 /* PSClient */,
+			);
+			name = Networking;
 			sourceTree = "<group>";
 		};
 		504E2111492A0722586F2975 /* Frameworks */ = {

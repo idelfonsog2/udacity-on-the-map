@@ -9,10 +9,9 @@
 import UIKit
 
 class ManagerViewController: UINavigationController, UINavigationBarDelegate {
-
-    //MARK: Singletons
-    var udacityAuthentication = UdacitySessionClass.sharedInstance()
     
+    //Udacity User 
+    var user = UdacityUser.sharedInstance
     //MARK: IBOutlets
     @IBOutlet weak var leBar: UINavigationBar!
     
@@ -50,6 +49,11 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     //MARK: UIBarButtonItems
     func pinSelector() {
         NotificationCenter.default.post(name: Notification.Name("updateLocation"), object: self)
+        if (user.location) != nil { //check if there is active location for user
+            showAlerWith(message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
+        } else {
+            showAlerWith(message: "No location found. Would You Like to post your location?")
+        }
     }
     
     func refreshSelector() {
@@ -75,7 +79,6 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     //MARK: Instantiate View Controllers
     func instantiateFindLocationViewController() {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
-        controller.myLocation = self.myLocation
         self.present(controller, animated: true, completion: nil)
     }
 

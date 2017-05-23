@@ -14,7 +14,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
 
     //TODO: Properties
     var annotations = [MKPointAnnotation]()
-    var studentLocations = StudentLocation
+    var locations: [StudentLocation] = StudentLocation.sharedInstance
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -33,7 +33,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
         //TODO: add delays fo UI
         self.startAnimating(self.view.frame.size, message: "hheel", messageFont: nil, type: NVActivityIndicatorType.ballBeat, color: UIColor.black, padding: nil, displayTimeThreshold: 5000, minimumDisplayTime: 2600, backgroundColor: UIColor(red: 255, green: 255, blue: 255, alpha: 0.5), textColor: nil)
         
-
         self.mapView.removeAnnotations(self.annotations)
         self.annotations.removeAll()
         
@@ -57,22 +56,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     
     func loadStudentLocationsData() {
         //Remove for refresh purposes
-        self.studentLocations.removeAll()
+        self.locations.removeAll()
         
-        //Make network call
+        //Obtain 100 student locations
         let parameters: [String: Any] = ["limit": 100]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
-                print(response ?? "nil")
-            }
-            
-            guard let arrayOfStudentLocations = response?["results"] as? [[String: AnyObject]] else {
-                print("No 'results' key found in the response")
-                return
-            }
-            
-            for student in arrayOfStudentLocations {
-                StudentLocation.studentLocations.append(StudentLocation(dictionary: student))
+                DispatchQueue.main.async {
+                    self.displayError(string: "Unable To download Data")
+                }
+            } else {
+                //FIX: Instantiating singleton??
+                self.locations = StudentLocation.locationsFromResults(response!)
             }
         }
     }
@@ -86,10 +81,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     
     
     //MARK: IBActions
-    
-    @IBAction func logouFromUdacity(_ sender: UIBarButtonItem) {
-        
-    }
     
     @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController

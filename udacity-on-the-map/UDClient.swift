@@ -36,8 +36,7 @@ class UDClient: NSObject {
         }
     }
     
-    func getUserPublicDataW(completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
-        
+    func getUserPublicData(completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         // GET: Udacity User Data
         var mutablePathExtension = UdacityMethod.Users
         mutablePathExtension = network.substituteKeyInMethod(mutablePathExtension, key: UdacityURLKeys.UserId, value: udacitySession.uniqueKey!)!
@@ -52,7 +51,6 @@ class UDClient: NSObject {
 
     
     func getSessionId(httpBody: [String: Any], completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
-        
         // POST: Get Udacity Session and uniqueKey
         let url = urlFromParameters([:])
         let request = NSMutableURLRequest(url: url)

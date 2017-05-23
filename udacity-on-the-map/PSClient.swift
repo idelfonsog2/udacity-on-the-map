@@ -19,7 +19,7 @@ class PSClient: NSObject {
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         
         let _ = network.taskForWithRequest(request) { (response, success) in
-            //TODO: create objects
+            completionHandlerForGET(response, success)
         }
     }
     
@@ -33,8 +33,8 @@ class PSClient: NSObject {
         request.httpMethod = "POST"
         request.httpBody = network.convertHTTPBodyToData(body: httpBody)
         
-        let _ = network.taskForWithRequest(request) { (reponse, success) in
-            //TODO: create object
+        let _ = network.taskForWithRequest(request) { (response, success) in
+            completionHandlerForPOST(response, success)
         }
     }
     
@@ -52,7 +52,7 @@ class PSClient: NSObject {
         request.httpBody = httpBody?.data(using: String.Encoding.utf8)
         
         let _ = network.taskForWithRequest(request) { (response, success) in
-            //TODO: create object
+            completionHandlerForPUT(response, success)
         }
     }
     
