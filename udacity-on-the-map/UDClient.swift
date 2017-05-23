@@ -11,7 +11,7 @@ import UIKit
 class UDClient: NSObject {
     
     let network = UMNetworking.sharedInstance()
-    //let user = User.shareInstance()
+    let udacitySession = UdacitySession.sharedInstance
 
     //MARK: Network calls
     func logoutFromUdacity(completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
@@ -40,7 +40,7 @@ class UDClient: NSObject {
         
         // GET: Udacity User Data
         var mutablePathExtension = UdacityMethod.Users
-        mutablePathExtension = network.substituteKeyInMethod(mutablePathExtension, key: UdacityURLKeys.UserId, value: user.user)
+        mutablePathExtension = network.substituteKeyInMethod(mutablePathExtension, key: UdacityURLKeys.UserId, value: udacitySession.uniqueKey!)!
         let url = urlFromParameters([:], withPathExtension: mutablePathExtension)
         let request = NSMutableURLRequest(url: url)
         

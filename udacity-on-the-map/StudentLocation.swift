@@ -19,7 +19,8 @@ struct StudentLocation {
     var latitude:   Double?
     var longitude:  Double?
     
-    var sharedInstance = [StudentLocation]()
+    //Singleton
+    static var sharedInstance = [StudentLocation]()
     
     init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double, longitude: Double) {
         self.objectId = objectId

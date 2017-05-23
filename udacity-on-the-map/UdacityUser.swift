@@ -13,16 +13,25 @@ struct UdacityUser {
     var lastName: String?
     var location: String?
     
-    init(firsName: String?, lastName: String?, location: String?) {
+    //Singleton
+    static var sharedInstance = UdacityUser()
+    
+    init() {
+    }
+    
+    init(firstName: String?, lastName: String?, location: String?) {
         self.firstName = firstName
         self.lastName = lastName
         self.location = location
     }
     
-    init(dictionary: [[String: Any]]) {
-        self.firstName = dictionary["first_name"] as? String
-        self.lastName = dictionary["last_name"] as? String
-        self.location = dictionary["location"] as? String
+    init(dictionary: [String: Any]) {
+        guard let userDictionary = dictionary["user"] as? [String: Any] else {
+            return
+        }
+        self.firstName = userDictionary["first_name"] as? String
+        self.lastName = userDictionary["last_name"] as? String
+        self.location = userDictionary["location"] as? String
     }
 }
 

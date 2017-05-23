@@ -49,7 +49,7 @@ class UMNetworking: NSObject {
             }
             
             // Udacity vs Parse Data
-            if url.host == UdacityConstants.host {
+            if request.url?.host == UdacityConstants.host {
                 let range = Range(5..<data.count)
                 let newData = data.subdata(in: range) /* subset response data! */
                 self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandler)

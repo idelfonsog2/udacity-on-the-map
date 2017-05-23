@@ -11,7 +11,7 @@ import UIKit
 class LoginViewController: UIViewController {
 
     //Singleton
-    let udacitySession = UdacityUser
+    let udacitySession = UdacitySession.sharedInstance
     
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -30,17 +30,20 @@ class LoginViewController: UIViewController {
         }
         let credentials = [
             UdacityHTTPBodyKeys.UdacityKey: [
-                        UdacityHTTPBodyKeys.UsernameKey:email,
-                        UdacityHTTPBodyKeys.PasswordKey:password
+                UdacityHTTPBodyKeys.UsernameKey:email,
+                UdacityHTTPBodyKeys.PasswordKey:password
             ]
         ]
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
-            if !success {
-                self.displayAlert(message: "Account not found or invalid credentials")
-            } else {
-                udacitySession.sessionId = ""
-                udacitySession.uniqueKey = ""
+            DispatchQueue.main.async {
+                if !success {
+                    //access denied
+                    self.displayAlert(message: "Account not found or invalid credentials")
+                } else {
+                    //access granted
+                    self.instantiateManagerViewController()
+                }
             }
         }
         
@@ -54,18 +57,16 @@ class LoginViewController: UIViewController {
     //TODO: Implement Passwordless with Facebook
     
     //MARK: helpers
-    func accessGranted() {
+    func instantiateManagerViewController() {
         let controller = storyboard?.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
     }
     
     func displayAlert(message: String) {
-        DispatchQueue.main.async {
-            let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            controller.addAction(okAction)
-            self.present(controller, animated: true, completion: nil)
-        }
+        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        controller.addAction(okAction)
+        self.present(controller, animated: true, completion: nil)
     }
 }
 

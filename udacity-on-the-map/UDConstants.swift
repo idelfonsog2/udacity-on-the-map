@@ -18,7 +18,7 @@ struct UdacityConstants {
 
 struct UdacityMethod {
     static let Session = "/session"
-    static let Users = "/usesrs/{user_id}"
+    static let Users = "/users/{user_id}"
 }
 
 struct UdacityURLKeys {

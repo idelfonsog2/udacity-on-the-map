@@ -12,6 +12,12 @@ struct UdacitySession {
     var uniqueKey: String?
     var sessionId: String?
     
+    //Singleton
+    static var sharedInstance = UdacitySession()
+    
+    init() {
+    }
+    
     init(uniqueKey: String?, sessionId: String?) {
         self.uniqueKey = uniqueKey
         self.sessionId = sessionId
