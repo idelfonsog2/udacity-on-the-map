@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  UdacityUser.swift
 //  udacity-on-the-map
 //
 //  Created by Idelfonso Gutierrez Jr. on 5/21/17.
@@ -8,43 +8,31 @@
 
 import Foundation
 
-class User {
-    
-    //MARK: Properties
-    static var userLocation: StudentLocation?
-    static var userData: User?
-    
-    //MARK: Class properties
+struct UdacityUser {
     var firstName: String?
     var lastName: String?
+    var location: String?
     
-//    self.firstName = dictionary["first_name"] as? String
-//    self.lastName = dictionary["last_name"] as? String
-
-    
-    //MARK: static functions
-    static func loadMyData(completionHandler: @escaping(_ response: AnyObject?, _ success: Bool) -> Void) {
-        
-        //Pass completion handler in case the Object construction fails
-        let params = [UdacityHTTPBodyKeys.UdacityKey: User.uniqueKey]
-        
-        UDClient().getUserPublicData(params: params) { (response, success) in
-            if !success {
-                completionHandler(nil, false)
-            }
-            
-            guard let userDictionary = response?["user"] as? [String: Any] else {
-                completionHandler(nil, false)
-                return
-            }
-            
-            //MARK: Init user with JSON
-            User.userData = User(dictionary: userDictionary)
-            completionHandler(nil, true)
-        }
+    init(firsName: String?, lastName: String?, location: String?) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.location = location
     }
     
-    static func getSessionId(email: String, password: String, completionHandler: @escaping(_ response: Any?, _ success: Bool) -> Void) {
+    init(dictionary: [[String: Any]]) {
+        self.firstName = dictionary["first_name"] as? String
+        self.lastName = dictionary["last_name"] as? String
+        self.location = dictionary["location"] as? String
+    }
+}
+
+
+
+
+class UserClass {
+    
+    
+    class func getSessionId(email: String, password: String, completionHandler: @escaping(_ response: Any?, _ success: Bool) -> Void) {
         
         //Pass completion handler in case the Object construction fails
        

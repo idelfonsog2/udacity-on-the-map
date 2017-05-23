@@ -12,11 +12,9 @@ import NVActivityIndicatorView
 
 class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, NVActivityIndicatorViewable {
 
-    //MARK: Properties & Instantiate Models
-    var sessionId: String?
-    //TODO: create singleton
-    var locations = StudentLocation.shareInstance()
+    //TODO: Properties
     var annotations = [MKPointAnnotation]()
+    var studentLocations = StudentLocation
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -25,8 +23,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsOnMap), name: Notification.Name("refreshLocations"), object: nil)
-        self.loadStudentLocationsOnMap()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name("refreshLocations"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name("updateLocation"), object: nil)
+        self.loadStudentLocationsData()
     }
     
     //MARK: Helper Functions

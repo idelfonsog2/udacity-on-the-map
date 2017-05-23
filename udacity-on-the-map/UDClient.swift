@@ -14,7 +14,7 @@ class UDClient: NSObject {
     //let user = User.shareInstance()
 
     //MARK: Network calls
-    func logoutFromUdacity() {
+    func logoutFromUdacity(completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         //DELETE: User login session
         let url = urlFromParameters([:], withPathExtension: nil)
         let request = NSMutableURLRequest(url: url)
@@ -32,11 +32,11 @@ class UDClient: NSObject {
         }
 
         let _ = network.taskForWithRequest(request) { (response, success) in
-            //TODO: Create Object
+            completionHandler(response, success)
         }
     }
     
-    func getUserPublicDataW(completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func getUserPublicDataW(completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // GET: Udacity User Data
         var mutablePathExtension = UdacityMethod.Users
@@ -45,13 +45,13 @@ class UDClient: NSObject {
         let request = NSMutableURLRequest(url: url)
         
         let _ = network.taskForWithRequest(request) { (response, success) in
-            //TODO: Update object
+            completionHandler(response, success)
         }
         
     }
 
     
-    func getSessionId(httpBody: [String: Any], completionHandlerForPOST: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func getSessionId(httpBody: [String: Any], completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         
         // POST: Get Udacity Session and uniqueKey
         let url = urlFromParameters([:])
@@ -62,7 +62,7 @@ class UDClient: NSObject {
         request.httpBody = network.convertHTTPBodyToData(body: httpBody)
         
         let _ = network.taskForWithRequest(request) { (response, success) in
-            //TODO: CREATE/UPdate object
+            completionHandler(response, success)
         }
     
     }

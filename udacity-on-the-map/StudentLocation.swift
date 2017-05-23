@@ -10,8 +10,7 @@ import Foundation
 import MapKit
 
 struct StudentLocation {
-    
-    var objectID:   String?
+    var objectId:   String?
     var firstName:  String?
     var lastName:   String?
     var mapString:  String?
@@ -20,43 +19,38 @@ struct StudentLocation {
     var latitude:   Double?
     var longitude:  Double?
     
+    var sharedInstance = [StudentLocation]()
     
-//    objectID = student["objectId"] as? String
-//    firstName = student["firstName"] as? String
-//    lastName = student["lastName"] as? String
-//    mapString = student["mapString"] as? String
-//    mediaURL = student["mediaURL"] as? String
-//    latitude = student["latitude"] as? Double
-//    longitude = student["longitude"] as? Double
-//    uniqueKey = student["uniqueKey"] as? String
-
+    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double, longitude: Double) {
+        self.objectId = objectId
+        self.firstName = firstName
+        self.lastName = lastName
+        self.mapString = mapString
+        self.mediaURL = mediaURL
+        self.uniqueKey = uniqueKey
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
+    init(dictionary: [String:AnyObject]) {
+        objectId = dictionary["objectId"] as? String
+        firstName = dictionary["firstName"] as? String
+        lastName = dictionary["lastName"] as? String
+        mapString = dictionary["mapString"] as? String
+        mediaURL = dictionary["mediaURL"] as? String
+        latitude = dictionary["latitude"] as? Double
+        longitude = dictionary["longitude"] as? Double
+        uniqueKey = dictionary["uniqueKey"] as? String
+    }
+    
+    //Functions
     static func locationsFromResults(_ arrayOfStudentsDictionaries: [[String:AnyObject]]) -> [StudentLocation] {
         var locations = [StudentLocation]()
         
-        // iterate through array of dictionaries
         for student in arrayOfStudentsDictionaries {
-            let newStudent = StudentLocation(
-                objectID:   student["objectId"] as? String,
-                firstName:  student["firstName"] as? String,
-                lastName:   student["lastName"] as? String,
-                mapString:  student["mapString"] as? String,
-                mediaURL:   student["mediaURL"] as? String,
-                uniqueKey:  student["uniqueKey"] as? String,
-                latitude:   student["latitude"] as? Double,
-                longitude:  student["longitude"] as? Double)
-            locations.append(newStudent)
-        }
-        return locations
-    }
-    
-    //MARK: Singleton
-    static func sharedInstance() -> StudentLocation {
-        struct Singleton {
-            static var sharedInstance = StudentLocation()
+            locations.append(StudentLocation(dictionary: student))
         }
         
-        return Singleton.sharedInstance
+        return locations
     }
-    
-    
 }

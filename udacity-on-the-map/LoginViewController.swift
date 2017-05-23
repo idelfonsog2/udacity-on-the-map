@@ -10,6 +10,9 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    //Singleton
+    let udacitySession = UdacityUser
+    
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -17,8 +20,6 @@ class LoginViewController: UIViewController {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadLocations), name: Notification.Name("refreshLocations"), object: nil)
-        self.reloadLocations()
     }
     
     //MARK: IBActions
@@ -27,16 +28,19 @@ class LoginViewController: UIViewController {
             displayAlert(message: "Missing field")
             return
         }
-        let credentials = [ UdacityHTTPBodyKeys.UdacityKey: [
+        let credentials = [
+            UdacityHTTPBodyKeys.UdacityKey: [
                         UdacityHTTPBodyKeys.UsernameKey:email,
-                        UdacityHTTPBodyKeys.PasswordKey:password ]
+                        UdacityHTTPBodyKeys.PasswordKey:password
+            ]
         ]
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
             if !success {
                 self.displayAlert(message: "Account not found or invalid credentials")
             } else {
-                
+                udacitySession.sessionId = ""
+                udacitySession.uniqueKey = ""
             }
         }
         
@@ -51,8 +55,6 @@ class LoginViewController: UIViewController {
     
     //MARK: helpers
     func accessGranted() {
-        //TODO: obtain student locations before transitioning to the next VC  
-        
         let controller = storyboard?.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
     }
@@ -65,10 +67,5 @@ class LoginViewController: UIViewController {
             self.present(controller, animated: true, completion: nil)
         }
     }
-    
-    func reloadLocations() {
-        StudentLocation.loadStudentLocations()
-    }
-    
 }
 

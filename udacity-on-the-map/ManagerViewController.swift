@@ -10,8 +10,8 @@ import UIKit
 
 class ManagerViewController: UINavigationController, UINavigationBarDelegate {
 
-    //MARK: Properties
-    var myLocation = User.userLocation
+    //MARK: Singletons
+    var udacityAuthentication = UdacitySessionClass.sharedInstance()
     
     //MARK: IBOutlets
     @IBOutlet weak var leBar: UINavigationBar!
@@ -21,7 +21,6 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         super.viewDidLoad()
         self.leBar.delegate = self
         self.setupNavBar()
-        
         // Do any additional setup after loading the view.
     }
 
@@ -36,27 +35,25 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         
         let pinButton = UIBarButtonItem(image: UIImage(named: "pin"), style: .done, target: self, action: #selector(pinSelector))
         let refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshSelector))
-        
         self.leBar.topItem?.rightBarButtonItems = [pinButton, refreshButton]
     }
     
     func logout() {
-        UDClient().logoutFromUdacity()
-        self.dismiss(animated: true, completion: nil)
+        UDClient().logoutFromUdacity { (response, success) in
+            //TODO: Check with udacity number of sessions that could be open by the same user
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     //MARK: UIBarButtonItems
     func pinSelector() {
-        if (myLocation?.uniqueKey) != nil { //check if there is active location for user
-            self.showAlerWith(message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
-        } else {
-            self.showAlerWith(message: "No location found. Would You Like to post your location?")
-        }
+        NotificationCenter.default.post(name: Notification.Name("updateLocation"), object: self)
     }
     
     func refreshSelector() {
         NotificationCenter.default.post(name: Notification.Name("refreshLocations"), object: self)
-        StudentLocation.loadStudentLocations()
     }
     
     // MARK: Alerts

@@ -12,8 +12,7 @@ import MapKit
 class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Instantiate Models
-    var myLocation = User.userLocation
-    var profile = User.userData
+    var udacityAuthentication = UdacitySessionClass.sharedInstance()
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -45,12 +44,24 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     //MARK: load Data
     func loadUdacityUserData() {
         
-        User.loadMyData { (response, success) in
+        //Pass completion handler in case the Object construction fails
+        let params = [UdacityHTTPBodyKeys.UdacityKey: udacityAuthentication.uniqueKey]
+        
+        UDClient().getUserPublicData(params: params) { (response, success) in
             if !success {
-                self.displayError(message: "Error retrieving data")
+                completionHandler(nil, false)
             }
+            
+            guard let userDictionary = response?["user"] as? [String: Any] else {
+                completionHandler(nil, false)
+                return
+            }
+            
+            //MARK: Init user with JSON
+            User.userData = User(dictionary: userDictionary)
+            completionHandler(nil, true)
         }
-    }
+
     
     func showMapWith(location: String) {
         let geoCoder = CLGeocoder()
