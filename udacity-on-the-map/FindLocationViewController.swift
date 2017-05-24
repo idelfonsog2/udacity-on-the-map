@@ -35,7 +35,17 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     }
 
     func initMyProfile() {
-        self.myLocation = StudentLocation(objectId: nil, firstName: data.user?.firstName, lastName: data.user?.lastName, mapString: nil, mediaURL: nil, uniqueKey: data.session?.uniqueKey, latitude: nil, longitude: nil, updatedAt: nil, createdAt: nil)
+        let params: [String: Any] = ["where":
+            "{\"\(ParseHTTPBodyKeys.UniqueKey)\:\"\(data.session!.uniqueKey!)\"}"
+            ]
+        //TODO: Get Student Information
+        PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
+            if !sucess {
+                print("Error finding the current udacity user in the Parse API")
+            } else {
+                self.myLocation = StudentLocation(objectId: nil, firstName: self.data.user?.firstName, lastName: self.data.user?.lastName, mapString: nil, mediaURL: nil, uniqueKey: self.data.session?.uniqueKey, latitude: nil, longitude: nil, updatedAt: nil, createdAt: nil)
+            }
+        }
     }
     
     //MARK: IBActions
@@ -50,7 +60,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         self.myLocation?.mapString = self.locationTextField.text!
         
         //Search for location
-        self.showMapWith(location: (self.myLocation?.mapString)!)
+        self.showMapWith(location: self.locationTextField.text!)
     }
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {

@@ -51,7 +51,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     func pinSelector() {
         NotificationCenter.default.post(name: Notification.Name(kUpdateLocation), object: self)
         //TODO: Use bool form parse data to confirm user previously posted
-        if (data.user?.location) != nil { //check if there is active location for user
+        if (UserDefaults.standard.bool(forKey: kUpdateLocation)) { //check if there is active location for user
             showAlerWith(message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
         } else {
             showAlerWith(message: "No location found. Would You Like to post your location?")
