@@ -44,12 +44,18 @@ class LoginViewController: UIViewController {
                     self.displayAlert(message: "Account not found or invalid credentials")
                 } else {
                     //access granted
-                    self.udacitySession = UdacitySession(dictionary: response as! [String : Any])
+                    UdacitySession.sharedInstance() = UdacitySession(dictionary: response as! [String : Any])
+                    let info = UdacitySession(dictionary: response as! [String : Any])
+                    UdacitySession.sharedInstance().sessionId = info.sessionId
+                    UdacitySession.sharedInstance().uniqueKey = info.uniqueKey
+                    self.loadUdacityUserProfile()
                     self.instantiateManagerViewController()
                 }
             }
         }
-        
+    }
+
+    func loadUdacityUserProfile() {
         UDClient().getUserPublicData() { (response, success) in
             if !success {
                 DispatchQueue.main.async {
@@ -61,7 +67,6 @@ class LoginViewController: UIViewController {
             }
         }
     }
-
     @IBAction func signUpToUdacity(_ sender: UIButton) {
         let url = URL(string: "https://auth.udacity.com/sign-up")!
         UIApplication.shared.open(url, options: [:], completionHandler: nil)

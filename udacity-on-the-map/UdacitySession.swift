@@ -13,10 +13,7 @@ struct UdacitySession {
     var sessionId: String?
     
     //Singleton
-    static var sharedInstance = UdacitySession()
-    
-    init() {
-    }
+//    static var sharedInstance: UdacitySession?
     
     init(uniqueKey: String?, sessionId: String?) {
         self.uniqueKey = uniqueKey
@@ -35,6 +32,14 @@ struct UdacitySession {
         
         self.uniqueKey = account["key"] as? String
         self.sessionId = session["id"] as? String
+    }
+    
+    
+    static func sharedInstance() -> UdacitySession {
+        struct Singleton {
+            static var sharedInstance = UdacitySession(dictionary: [:])
+        }
+        return Singleton.sharedInstance
     }
 }
 

@@ -31,14 +31,14 @@ class UMNetworking: NSObject {
                 return
             }
             
-            guard statusCode >= 200 && statusCode <= 299 else {
-                completionHandler("Your request returned a status code other than 2xx!" as AnyObject, false)
-                return
-            }
-            
             //Udacity Exception
             guard statusCode != 403 else {
                 completionHandler(403 as AnyObject, false)
+                return
+            }
+            
+            guard statusCode >= 200 && statusCode <= 299 else {
+                completionHandler("Your request returned a status code other than 2xx!" as AnyObject, false)
                 return
             }
             
