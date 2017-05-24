@@ -42,8 +42,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func loadStudentsOnTableView() {
-        //FIX: not the rpoper way maybe
-        NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
+        //FIX: It gets stuck in a loop
+        //NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: nil)
         if self.data.studentLocations.isEmpty {
             displayError(string: "Unable to download data")
             return
@@ -76,6 +76,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
         if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL {
+            //FIX: not opening safari
             app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
         }
     }

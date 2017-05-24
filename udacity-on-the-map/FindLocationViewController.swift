@@ -8,9 +8,9 @@
 
 import UIKit
 import MapKit
+import NVActivityIndicatorView
 
-
-class FindLocationViewController: UIViewController, MKMapViewDelegate {
+class FindLocationViewController: UIViewController, MKMapViewDelegate, NVActivityIndicatorViewable {
 
     //MARK: Instantiate Models
     let data = OMData.sharedInstance()
@@ -19,6 +19,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     //Properties
     var latitude: Double?
     var longitude: Double?
+    var activictyIndicator: NVActivityIndicatorView?
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -61,17 +62,23 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     
     //MARK: IBActions
     @IBAction func findLocationButtonPressed(_ sender: UIButton) {
-
+        
         //TODO: Check rubric for this logic
         if (self.locationTextField.text?.isEmpty)! {
             displayError(message: "Missing location")
         }
     
+        //TODO: Display ActivityIndicator
+        let activityData = ActivityData()
+        
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         //Building profile to submit
         self.myLocation?.mapString = self.locationTextField.text!
         
         //Search for location
         self.showMapWith(location: self.locationTextField.text!)
+        
+        NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
     }
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
@@ -101,7 +108,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         PSClient().updateStudentLocation(objectId: (self.myLocation?.objectId)!, httpBody: params) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
-                    self.displayError(message: "Error Your Location")
+                    self.displayError(message: "Error Updating Your Location")
                 } else {
                     self.myLocation?.updatedAt = response?["updatedAt"] as? String
                     NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
@@ -117,7 +124,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         PSClient().createStudentLocation(httpBody: params) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
-                    self.displayError(message: "Error Your Location")
+                    self.displayError(message: "Error Posting Your Location")
                 } else {
                     self.myLocation?.objectId = response?["objectId"] as? String
                     self.myLocation?.createdAt = response?["createdAt"] as? String
