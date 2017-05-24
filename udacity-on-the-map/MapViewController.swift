@@ -23,14 +23,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name("refreshLocations"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name("updateLocation"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name(kRefreshLocation), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name(kUpdateLocation), object: nil)
         self.loadStudentLocationsData()
     }
     
     //MARK: Helper Functions
     func loadStudentLocationsOnMap() {
-        //TODO: add delays fo UI
+        
+        //TODO: Not working 🤔
         self.startAnimating(self.view.frame.size, message: "hheel", messageFont: nil, type: NVActivityIndicatorType.ballBeat, color: UIColor.black, padding: nil, displayTimeThreshold: 5000, minimumDisplayTime: 2600, backgroundColor: UIColor(red: 255, green: 255, blue: 255, alpha: 0.5), textColor: nil)
         
         self.mapView.removeAnnotations(self.annotations)
@@ -67,6 +68,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
             } else {
                 //Init StudentLocation (100 sl)
                 self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
+                
+                //TODO: move to MapViewController
                 DispatchQueue.main.async {
                     self.loadStudentLocationsOnMap()
                 }

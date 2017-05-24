@@ -15,6 +15,7 @@ class PSClient: NSObject {
         // GET: StudentLocation
         let url = urlFromParameters(parameters, withPathExtension: ParseMethod.StudentLocation)
         let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         
@@ -38,7 +39,7 @@ class PSClient: NSObject {
         }
     }
     
-    func updateStudentLocation(objectId: String, httpBody: String?, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func updateStudentLocation(objectId: String, httpBody: [String: Any], completionHandlerForPUT: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         // PUT: StudentLocation
         var mutablePathExtension: String = ParseMethod.StudentLocation
         mutablePathExtension = UMNetworking().substituteKeyInMethod(mutablePathExtension, key: ParseURLKeys.ObjectId, value: objectId)!
@@ -49,7 +50,7 @@ class PSClient: NSObject {
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         request.addValue(ParseHeaderFieldsValues.ApplicationJSONKey, forHTTPHeaderField: ParseHeaderFieldsKeys.ContentType)
         request.httpMethod = "PUT"
-        request.httpBody = httpBody?.data(using: String.Encoding.utf8)
+        request.httpBody = network.convertHTTPBodyToData(body: httpBody)
         
         let _ = network.taskForWithRequest(request) { (response, success) in
             completionHandlerForPUT(response, success)

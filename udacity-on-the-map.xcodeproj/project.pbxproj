@@ -25,6 +25,7 @@
 		16F940931ED496C00070F9C7 /* UMNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F940921ED496C00070F9C7 /* UMNetworking.swift */; };
 		16F940951ED4BA9D0070F9C7 /* UdacitySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */; };
 		16FD229F1ED5A0E600D49960 /* OMData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FD229E1ED5A0E600D49960 /* OMData.swift */; };
+		16FD22A11ED5DFF900D49960 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FD22A01ED5DFF900D49960 /* Constants.swift */; };
 		83F417E34152EC8DD47C8FEA /* Pods_udacity_on_the_map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA83F37936D37F3191BBA66B /* Pods_udacity_on_the_map.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		16F940921ED496C00070F9C7 /* UMNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UMNetworking.swift; sourceTree = "<group>"; };
 		16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacitySession.swift; sourceTree = "<group>"; };
 		16FD229E1ED5A0E600D49960 /* OMData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMData.swift; sourceTree = "<group>"; };
+		16FD22A01ED5DFF900D49960 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A87427BCED33A1F0EAE5CA3F /* Pods-udacity-on-the-map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.debug.xcconfig"; sourceTree = "<group>"; };
 		AE297211CA51B30C3C67A62F /* Pods-udacity-on-the-map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.release.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.release.xcconfig"; sourceTree = "<group>"; };
 		EA83F37936D37F3191BBA66B /* Pods_udacity_on_the_map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_udacity_on_the_map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				1691C9791EC1DD0800758BCF /* AppDelegate.swift */,
+				16FD22A01ED5DFF900D49960 /* Constants.swift */,
 				16F940961ED4E3FF0070F9C7 /* Networking */,
 				160C995F1EC63932008B0399 /* Controller */,
 				160C99561EC3F5F0008B0399 /* Model */,
@@ -298,6 +301,7 @@
 				1691C97C1EC1DD0800758BCF /* LoginViewController.swift in Sources */,
 				160C995E1EC63926008B0399 /* MapViewController.swift in Sources */,
 				160C99611EC640BA008B0399 /* ListViewController.swift in Sources */,
+				16FD22A11ED5DFF900D49960 /* Constants.swift in Sources */,
 				1691C97A1EC1DD0800758BCF /* AppDelegate.swift in Sources */,
 				1691C98C1EC1DE5000758BCF /* PSConstants.swift in Sources */,
 				160A9EF71ED21DF800933F7E /* UdacityUser.swift in Sources */,

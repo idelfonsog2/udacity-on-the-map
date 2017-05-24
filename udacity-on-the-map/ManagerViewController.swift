@@ -25,7 +25,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("refreshLocations"), object: self)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(kRefreshLocation), object: self)
     }
     
     //MARK: Helper func
@@ -49,7 +49,8 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     
     //MARK: UIBarButtonItems
     func pinSelector() {
-        NotificationCenter.default.post(name: Notification.Name("updateLocation"), object: self)
+        NotificationCenter.default.post(name: Notification.Name(kUpdateLocation), object: self)
+        //TODO: Use bool form parse data to confirm user previously posted
         if (data.user?.location) != nil { //check if there is active location for user
             showAlerWith(message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
         } else {
@@ -58,7 +59,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     }
     
     func refreshSelector() {
-        NotificationCenter.default.post(name: Notification.Name("refreshLocations"), object: self)
+        NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
     }
     
     // MARK: Alerts

@@ -35,7 +35,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     }
 
     func initMyProfile() {
-        self.myLocation = StudentLocation(objectId: nil, firstName: data.user?.firstName, lastName: data.user?.lastName, mapString: nil, mediaURL: nil, uniqueKey: data.session?.uniqueKey, latitude: nil, longitude: nil, lastUpdated: nil)
+        self.myLocation = StudentLocation(objectId: nil, firstName: data.user?.firstName, lastName: data.user?.lastName, mapString: nil, mediaURL: nil, uniqueKey: data.session?.uniqueKey, latitude: nil, longitude: nil, updatedAt: nil, createdAt: nil)
     }
     
     //MARK: IBActions
@@ -68,16 +68,27 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
             ParseHTTPBodyKeys.Longitude : self.myLocation?.longitude
         ]
         
-        if UserDefaults.standard.bool(forKey: "newLocation") {
+        if UserDefaults.standard.bool(forKey: kNewLocation) {
+            //it will only run when new user
             self.createStudentLocation(params: information)
         } else {
             self.updateStudentLocation(params: information)
         }
-        
     }
     
     func updateStudentLocation(params: [String: Any]) {
-        //TODO: Use PUT network code
+        PSClient().updateStudentLocation(objectId: (self.myLocation?.objectId)!, httpBody: params) { (response, success) in
+            DispatchQueue.main.async {
+                if !success {
+                    self.displayError(message: "Error Your Location")
+                } else {
+                    self.myLocation?.updatedAt = response?["updatedAt"] as? String
+                    NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
+                    UserDefaults.standard.set(false, forKey: kNewLocation)
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     func createStudentLocation(params: [String: Any]) {
@@ -88,8 +99,9 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
                     self.displayError(message: "Error Your Location")
                 } else {
                     self.myLocation?.objectId = response?["objectId"] as? String
-                    self.myLocation?.lastUpdated = response?["createdAt"] as? String
-                    NotificationCenter.default.post(name: Notification.Name("refreshLocations"), object: self)
+                    self.myLocation?.createdAt = response?["createdAt"] as? String
+                    NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
+                    UserDefaults.standard.set(false, forKey: kNewLocation)
                     self.dismiss(animated: true, completion: nil)
                 }
             }

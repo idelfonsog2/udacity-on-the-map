@@ -18,30 +18,33 @@ struct StudentLocation {
     var uniqueKey:  String?
     var latitude:   Double?
     var longitude:  Double?
-    var lastUpdated: String?
+    var updatedAt:  String?
+    var createdAt:  String?
     
-    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double?, longitude: Double?, lastUpdated: String?) {
-        self.objectId = objectId
-        self.firstName = firstName
-        self.lastName = lastName
-        self.mapString = mapString
-        self.mediaURL = mediaURL
-        self.uniqueKey = uniqueKey
-        self.latitude = latitude
-        self.longitude = longitude
-        self.lastUpdated = lastUpdated
+    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double?, longitude: Double?, updatedAt: String?, createdAt: String?) {
+        self.objectId   = objectId
+        self.firstName  = firstName
+        self.lastName   = lastName
+        self.mapString  = mapString
+        self.mediaURL   = mediaURL
+        self.uniqueKey  = uniqueKey
+        self.latitude   = latitude
+        self.longitude  = longitude
+        self.updatedAt  = updatedAt
+        self.createdAt  = createdAt
     }
     
     init(dictionary: [String: AnyObject]) {
-        objectId = dictionary["objectId"] as? String
-        firstName = dictionary["firstName"] as? String
-        lastName = dictionary["lastName"] as? String
-        mapString = dictionary["mapString"] as? String
-        mediaURL = dictionary["mediaURL"] as? String
-        latitude = dictionary["latitude"] as? Double
-        longitude = dictionary["longitude"] as? Double
-        uniqueKey = dictionary["uniqueKey"] as? String
-        lastUpdated = dictionary["updatedAt"] as? String
+        objectId    = dictionary["objectId"]    as? String
+        firstName   = dictionary["firstName"]   as? String
+        lastName    = dictionary["lastName"]    as? String
+        mapString   = dictionary["mapString"]   as? String
+        mediaURL    = dictionary["mediaURL"]    as? String
+        latitude    = dictionary["latitude"]    as? Double
+        longitude   = dictionary["longitude"]   as? Double
+        uniqueKey   = dictionary["uniqueKey"]   as? String
+        updatedAt   = dictionary["updatedAt"]   as? String
+        createdAt   = dictionary["createdAt"]   as? String
     }
     
     //Functions
