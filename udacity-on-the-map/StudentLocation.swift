@@ -18,8 +18,9 @@ struct StudentLocation {
     var uniqueKey:  String?
     var latitude:   Double?
     var longitude:  Double?
+    var lastUpdated: String?
     
-    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double, longitude: Double) {
+    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double?, longitude: Double?, lastUpdated: String?) {
         self.objectId = objectId
         self.firstName = firstName
         self.lastName = lastName
@@ -28,9 +29,10 @@ struct StudentLocation {
         self.uniqueKey = uniqueKey
         self.latitude = latitude
         self.longitude = longitude
+        self.lastUpdated = lastUpdated
     }
     
-    init(dictionary: [String:AnyObject]) {
+    init(dictionary: [String: AnyObject]) {
         objectId = dictionary["objectId"] as? String
         firstName = dictionary["firstName"] as? String
         lastName = dictionary["lastName"] as? String
@@ -39,14 +41,15 @@ struct StudentLocation {
         latitude = dictionary["latitude"] as? Double
         longitude = dictionary["longitude"] as? Double
         uniqueKey = dictionary["uniqueKey"] as? String
+        lastUpdated = dictionary["updatedAt"] as? String
     }
     
     //Functions
-    static func locationsFromResults(_ arrayOfStudentsDictionaries: AnyObject) -> [StudentLocation] {
-        let jsonObjectArray = arrayOfStudentsDictionaries as! [[String:AnyObject]]
+    static func locationsFromResults(arrayOfStudentsDictionaries: AnyObject) -> [StudentLocation] {
         var locations = [StudentLocation]()
+        let results = arrayOfStudentsDictionaries["results"] as! [[String:AnyObject]]
         
-        for student in jsonObjectArray {
+        for student in results {
             locations.append(StudentLocation(dictionary: student))
         }
         

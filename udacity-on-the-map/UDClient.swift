@@ -46,9 +46,7 @@ class UDClient: NSObject {
         let _ = network.taskForWithRequest(request) { (response, success) in
             completionHandler(response, success)
         }
-        
     }
-
     
     func getSessionId(httpBody: [String: Any], completionHandler: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         // POST: Get Udacity Session and uniqueKey
@@ -62,7 +60,6 @@ class UDClient: NSObject {
         let _ = network.taskForWithRequest(request) { (response, success) in
             completionHandler(response, success)
         }
-    
     }
     
     //MARK: Self Functions

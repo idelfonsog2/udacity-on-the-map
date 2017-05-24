@@ -13,7 +13,7 @@ class PSClient: NSObject {
     
     func obtainStudentLocation(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         // GET: StudentLocation
-        let url = urlFromParameters(parameters, withPathExtension: nil)
+        let url = urlFromParameters(parameters, withPathExtension: ParseMethod.StudentLocation)
         let request = NSMutableURLRequest(url: url)
         request.addValue(ParseHeaderFieldsValues.ParseAppIDValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseAppIDKey)
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)

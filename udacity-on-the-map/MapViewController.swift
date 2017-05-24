@@ -49,9 +49,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
             self.annotations.append(annotation)
         }
         
-        stopAnimating()
         self.mapView.addAnnotations(self.annotations)
-        
+        stopAnimating()
     }
     
     func loadStudentLocationsData() {
@@ -66,8 +65,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
                     self.displayError(string: "Unable To download Data")
                 }
             } else {
-                //FIX: Instantiating singleton??
-                self.data.studentLocations = StudentLocation.locationsFromResults(response!)
+                //Init StudentLocation (100 sl)
+                self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
+                DispatchQueue.main.async {
+                    self.loadStudentLocationsOnMap()
+                }
             }
         }
     }

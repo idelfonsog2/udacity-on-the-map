@@ -12,6 +12,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     //MARK: Instantiate Models & Properties
     var data = OMData.sharedInstance()
+    var arrayOfStudents: [StudentLocation]?
    
     //MARK: IBOutlets
     @IBOutlet weak var tableView: UITableView!

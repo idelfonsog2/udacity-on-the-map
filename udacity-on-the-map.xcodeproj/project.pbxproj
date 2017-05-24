@@ -25,7 +25,7 @@
 		16F940931ED496C00070F9C7 /* UMNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F940921ED496C00070F9C7 /* UMNetworking.swift */; };
 		16F940951ED4BA9D0070F9C7 /* UdacitySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */; };
 		16FD229F1ED5A0E600D49960 /* OMData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FD229E1ED5A0E600D49960 /* OMData.swift */; };
-		A7D4016C1666C7861960E2FB /* Pods_udacity_on_the_map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3AB994EFA1201262BD058EE /* Pods_udacity_on_the_map.framework */; };
+		83F417E34152EC8DD47C8FEA /* Pods_udacity_on_the_map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA83F37936D37F3191BBA66B /* Pods_udacity_on_the_map.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,9 +49,9 @@
 		16F940921ED496C00070F9C7 /* UMNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UMNetworking.swift; sourceTree = "<group>"; };
 		16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacitySession.swift; sourceTree = "<group>"; };
 		16FD229E1ED5A0E600D49960 /* OMData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMData.swift; sourceTree = "<group>"; };
-		A3AB994EFA1201262BD058EE /* Pods_udacity_on_the_map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_udacity_on_the_map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A4A9790253F3D72BD980DA8A /* Pods-udacity-on-the-map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.release.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.release.xcconfig"; sourceTree = "<group>"; };
-		D3F2A87CEC114E334FA98303 /* Pods-udacity-on-the-map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.debug.xcconfig"; sourceTree = "<group>"; };
+		A87427BCED33A1F0EAE5CA3F /* Pods-udacity-on-the-map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.debug.xcconfig"; sourceTree = "<group>"; };
+		AE297211CA51B30C3C67A62F /* Pods-udacity-on-the-map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-udacity-on-the-map.release.xcconfig"; path = "Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map.release.xcconfig"; sourceTree = "<group>"; };
+		EA83F37936D37F3191BBA66B /* Pods_udacity_on_the_map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_udacity_on_the_map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7D4016C1666C7861960E2FB /* Pods_udacity_on_the_map.framework in Frameworks */,
+				83F417E34152EC8DD47C8FEA /* Pods_udacity_on_the_map.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,8 +112,8 @@
 			children = (
 				1691C9781EC1DD0800758BCF /* udacity-on-the-map */,
 				1691C9771EC1DD0800758BCF /* Products */,
-				DF5B47BB92F9BC01175D5681 /* Pods */,
-				504E2111492A0722586F2975 /* Frameworks */,
+				DF94E29487FAE26206D0D41C /* Pods */,
+				F07BAC45B48CA3FC8395CEDF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -150,21 +150,21 @@
 			name = Networking;
 			sourceTree = "<group>";
 		};
-		504E2111492A0722586F2975 /* Frameworks */ = {
+		DF94E29487FAE26206D0D41C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A3AB994EFA1201262BD058EE /* Pods_udacity_on_the_map.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DF5B47BB92F9BC01175D5681 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D3F2A87CEC114E334FA98303 /* Pods-udacity-on-the-map.debug.xcconfig */,
-				A4A9790253F3D72BD980DA8A /* Pods-udacity-on-the-map.release.xcconfig */,
+				A87427BCED33A1F0EAE5CA3F /* Pods-udacity-on-the-map.debug.xcconfig */,
+				AE297211CA51B30C3C67A62F /* Pods-udacity-on-the-map.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F07BAC45B48CA3FC8395CEDF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EA83F37936D37F3191BBA66B /* Pods_udacity_on_the_map.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,12 +174,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1691C9881EC1DD0800758BCF /* Build configuration list for PBXNativeTarget "udacity-on-the-map" */;
 			buildPhases = (
-				C62977BAF7605798ECDCEE4A /* [CP] Check Pods Manifest.lock */,
+				5350A5C823D7569C5F79A48E /* [CP] Check Pods Manifest.lock */,
 				1691C9721EC1DD0800758BCF /* Sources */,
 				1691C9731EC1DD0800758BCF /* Frameworks */,
 				1691C9741EC1DD0800758BCF /* Resources */,
-				4FDA1591FE138333249FA053 /* [CP] Embed Pods Frameworks */,
-				6DA81CB71789AEC4234A965C /* [CP] Copy Pods Resources */,
+				8D0174160D82B3D2A7E1A24B /* [CP] Embed Pods Frameworks */,
+				9225C4B1C8EECB0DCEE6362C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -239,7 +239,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4FDA1591FE138333249FA053 /* [CP] Embed Pods Frameworks */ = {
+		5350A5C823D7569C5F79A48E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8D0174160D82B3D2A7E1A24B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -254,7 +269,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6DA81CB71789AEC4234A965C /* [CP] Copy Pods Resources */ = {
+		9225C4B1C8EECB0DCEE6362C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -267,21 +282,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-udacity-on-the-map/Pods-udacity-on-the-map-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C62977BAF7605798ECDCEE4A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -428,7 +428,7 @@
 		};
 		1691C9891EC1DD0800758BCF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D3F2A87CEC114E334FA98303 /* Pods-udacity-on-the-map.debug.xcconfig */;
+			baseConfigurationReference = A87427BCED33A1F0EAE5CA3F /* Pods-udacity-on-the-map.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = M74HARNN5W;
@@ -442,7 +442,7 @@
 		};
 		1691C98A1EC1DD0800758BCF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4A9790253F3D72BD980DA8A /* Pods-udacity-on-the-map.release.xcconfig */;
+			baseConfigurationReference = AE297211CA51B30C3C67A62F /* Pods-udacity-on-the-map.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = M74HARNN5W;
