@@ -12,8 +12,8 @@ import MapKit
 class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Instantiate Models
-    var udacityUser = UdacityUser.sharedInstance
-    var udacitySession = UdacitySession.sharedInstance
+    let data = OMData.sharedInstance()
+    
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -27,7 +27,6 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         self.view.backgroundColor = UIColor(red: 109, green: 199, blue: 254, alpha: 1.0)
         self.mapView.delegate = self
         self.mapView.isHidden = true
-        self.loadUdacityUserData()
     }
 
     //MARK: IBActions
@@ -41,13 +40,9 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         let address = self.locationTextField.text!
         self.showMapWith(location: address)
     }
+
     
-    //MARK: load Data
-    func loadUdacityUserData() {
-        
-        
-    }
-    
+    //MARK: Functions
     func showMapWith(location: String) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(location) { (placeMarkArray, error) in
@@ -58,7 +53,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = myCoordinates!
-                annotation.title = "\(self.udacityUser.firstName ?? "unknow") \(self.udacityUser.lastName ?? "unknow")"
+                annotation.title = "\(self.data.user?.firstName ?? "unknow") \(self.data.user?.lastName ?? "unknow")"
                 annotation.subtitle = "\(self.mediaURLTextField.text ?? "")"
                 DispatchQueue.main.async {
                     self.mapView.isHidden = false

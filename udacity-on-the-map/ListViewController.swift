@@ -11,7 +11,7 @@ import UIKit
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //MARK: Instantiate Models & Properties
-    var locations: [StudentLocation] = StudentLocation.sharedInstance
+    var data = OMData.sharedInstance()
    
     //MARK: IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -38,7 +38,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func loadStudentsOnTableView() {
-        if self.locations.isEmpty {
+        if self.data.studentLocations.isEmpty {
             displayError(string: "Unable to download data")
             return
         }
@@ -55,12 +55,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.locations.count
+        return self.data.studentLocations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell", for: indexPath)
-        let student = self.locations[indexPath.row]
+        let student = self.data.studentLocations[indexPath.row]
         cell.textLabel?.text = "\(student.firstName ?? "[firstname]") \(student.lastName ?? "[lastname]")"
         cell.imageView?.image = UIImage(named: "pin")
         return cell
@@ -69,7 +69,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
-        if let studentUrl = self.locations[indexPath.row].mediaURL {
+        if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL {
             app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
         }
     }

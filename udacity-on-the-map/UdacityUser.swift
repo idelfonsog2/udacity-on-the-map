@@ -13,12 +13,6 @@ struct UdacityUser {
     var lastName: String?
     var location: String?
     
-    //Singleton
-    static var sharedInstance = UdacityUser()
-    
-    init() {
-    }
-    
     init(firstName: String?, lastName: String?, location: String?) {
         self.firstName = firstName
         self.lastName = lastName

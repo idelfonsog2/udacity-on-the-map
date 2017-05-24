@@ -11,8 +11,7 @@ import UIKit
 class LoginViewController: UIViewController {
 
     //Singleton
-    var udacitySession = UdacitySession.sharedInstance
-    var udacityUser = UdacityUser.sharedInstance
+    var data = OMData.sharedInstance()
     
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -44,10 +43,7 @@ class LoginViewController: UIViewController {
                     self.displayAlert(message: "Account not found or invalid credentials")
                 } else {
                     //access granted
-                    UdacitySession.sharedInstance() = UdacitySession(dictionary: response as! [String : Any])
-                    let info = UdacitySession(dictionary: response as! [String : Any])
-                    UdacitySession.sharedInstance().sessionId = info.sessionId
-                    UdacitySession.sharedInstance().uniqueKey = info.uniqueKey
+                    self.data.session = UdacitySession(dictionary: response as! [String : Any])
                     self.loadUdacityUserProfile()
                     self.instantiateManagerViewController()
                 }
@@ -63,7 +59,7 @@ class LoginViewController: UIViewController {
                 }
             } else {
                 // Get the First Name, last Name from user
-                self.udacityUser = UdacityUser(dictionary: response as! [String : Any])
+                self.data.user = UdacityUser(dictionary: response as! [String : Any])
             }
         }
     }

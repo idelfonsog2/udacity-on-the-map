@@ -14,7 +14,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
 
     //TODO: Properties
     var annotations = [MKPointAnnotation]()
-    var locations: [StudentLocation] = StudentLocation.sharedInstance
+    var data = OMData.sharedInstance()
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -36,12 +36,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
         self.mapView.removeAnnotations(self.annotations)
         self.annotations.removeAll()
         
-        if self.locations.isEmpty {
+        if data.studentLocations.isEmpty {
             displayError(string: "Unable to download data")
             return
         }
         
-        for student in self.locations {
+        for student in self.data.studentLocations {
             let annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
             annotation.title = "\(student.firstName!) \(student.lastName!)"
@@ -56,7 +56,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     
     func loadStudentLocationsData() {
         //Remove for refresh purposes
-        self.locations.removeAll()
+        data.studentLocations.removeAll()
         
         //Obtain 100 student locations
         let parameters: [String: Any] = ["limit": 100]
@@ -67,7 +67,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
                 }
             } else {
                 //FIX: Instantiating singleton??
-                self.locations = StudentLocation.locationsFromResults(response!)
+                self.data.studentLocations = StudentLocation.locationsFromResults(response!)
             }
         }
     }
