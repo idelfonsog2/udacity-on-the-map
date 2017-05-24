@@ -30,7 +30,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     
     //MARK: Helper Functions
     func loadStudentLocationsOnMap() {
-        
         //TODO: Not working 🤔
         self.startAnimating(self.view.frame.size, message: "hheel", messageFont: nil, type: NVActivityIndicatorType.ballBeat, color: UIColor.black, padding: nil, displayTimeThreshold: 5000, minimumDisplayTime: 2600, backgroundColor: UIColor(red: 255, green: 255, blue: 255, alpha: 0.5), textColor: nil)
         
@@ -59,7 +58,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
         data.studentLocations.removeAll()
         
         //Obtain 100 student locations
-        let parameters: [String: Any] = ["limit": 100]
+        let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
                 DispatchQueue.main.async {

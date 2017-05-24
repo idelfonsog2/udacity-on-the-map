@@ -41,7 +41,7 @@ class PSClient: NSObject {
     
     func updateStudentLocation(objectId: String, httpBody: [String: Any], completionHandlerForPUT: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         // PUT: StudentLocation
-        var mutablePathExtension: String = ParseMethod.StudentLocation
+        var mutablePathExtension: String = ParseMethod.UpdateStudentLocation
         mutablePathExtension = UMNetworking().substituteKeyInMethod(mutablePathExtension, key: ParseURLKeys.ObjectId, value: objectId)!
         
         let url = urlFromParameters([:], withPathExtension: mutablePathExtension)

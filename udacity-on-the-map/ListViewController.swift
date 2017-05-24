@@ -27,6 +27,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.loadStudentsOnTableView()
     }
     
+    deinit {
+        //FIX: Do I remove if VC goes off screen?
+        //NotificationCenter.default.removeObserver(self)
+    }
     @IBAction func logoutFromUdacity(_ sender: UIBarButtonItem) {
         UDClient().logoutFromUdacity { (response, success) in
             if !success {
@@ -35,10 +39,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.dismiss(animated: true, completion: nil)
             }
         }
-        
     }
     
     func loadStudentsOnTableView() {
+        //FIX: not the rpoper way maybe
+        NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
         if self.data.studentLocations.isEmpty {
             displayError(string: "Unable to download data")
             return

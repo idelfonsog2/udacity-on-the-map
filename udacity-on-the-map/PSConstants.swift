@@ -17,7 +17,8 @@ struct ParseConstants {
 }
 
 struct ParseMethod {
-    static let StudentLocation      = "/StudentLocation"      //POST, GET
+    static let StudentLocation          = "/StudentLocation"      //POST, GET
+    static let UpdateStudentLocation    = "/StudentLocation/{objectId}"
 }
 
 struct ParseURLKeys {

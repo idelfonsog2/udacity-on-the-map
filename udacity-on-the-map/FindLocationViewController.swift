@@ -16,6 +16,10 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     let data = OMData.sharedInstance()
     var myLocation: StudentLocation?
     
+    //Properties
+    var latitude: Double?
+    var longitude: Double?
+    
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
     @IBOutlet weak var locationTextField: UITextField!
@@ -35,15 +39,22 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     }
 
     func initMyProfile() {
-        let params: [String: Any] = ["where":
-            "{\"\(ParseHTTPBodyKeys.UniqueKey)\:\"\(data.session!.uniqueKey!)\"}"
-            ]
+        let params: [String: Any] = ["where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
         //TODO: Get Student Information
         PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
             if !sucess {
                 print("Error finding the current udacity user in the Parse API")
             } else {
-                self.myLocation = StudentLocation(objectId: nil, firstName: self.data.user?.firstName, lastName: self.data.user?.lastName, mapString: nil, mediaURL: nil, uniqueKey: self.data.session?.uniqueKey, latitude: nil, longitude: nil, updatedAt: nil, createdAt: nil)
+                guard let resultsDictionary = response?["results"] as? [[String: Any]] else {
+                    return
+                }
+                
+                guard let lastUpdateDictionary = resultsDictionary[0] as? [String: AnyObject] else {
+                    return
+                }
+                
+                //Init My Parse Location from Parse API
+                self.myLocation = StudentLocation(dictionary: lastUpdateDictionary)
             }
         }
     }

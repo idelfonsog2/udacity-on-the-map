@@ -230,6 +230,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <color key="backgroundColor" red="0.42745098040000001" green="0.78039215689999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="HSR-Yr-kBE" firstAttribute="bottom" secondItem="3gb-RG-oNO" secondAttribute="top" id="1La-mz-v0I"/>
                             <constraint firstItem="HSR-Yr-kBE" firstAttribute="leading" secondItem="54n-Lv-u1c" secondAttribute="leading" id="1uw-Qm-pfa"/>
@@ -263,7 +264,7 @@
         <!--List-->
         <scene sceneID="qIs-a7-YmS">
             <objects>
-                <viewController storyboardIdentifier="ListViewController" automaticallyAdjustsScrollViewInsets="NO" id="JmZ-h9-gXg" customClass="ListViewController" customModule="udacity_on_the_map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ListViewController" id="JmZ-h9-gXg" customClass="ListViewController" customModule="udacity_on_the_map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="35W-bs-bQX"/>
                         <viewControllerLayoutGuide type="bottom" id="98o-gP-DvE"/>
@@ -272,45 +273,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6dQ-yg-4WC">
-                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
-                                <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VFS-sh-g6W">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="598"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="StudentLocationTableViewCell" rowHeight="65" id="xOK-tM-F1g">
-                                                <rect key="frame" x="0.0" y="28" width="375" height="65"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xOK-tM-F1g" id="khw-xz-Fgn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWZ-Rh-4TM">
-                                                            <rect key="frame" x="85" y="7" width="282" height="49"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ufa-Da-DWk">
-                                                            <rect key="frame" x="8" y="0.0" width="55" height="65"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </imageView>
-                                                    </subviews>
-                                                </tableViewCellContentView>
-                                            </tableViewCell>
-                                        </prototypes>
-                                    </tableView>
-                                </subviews>
-                            </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VFS-sh-g6W">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="StudentLocationTableViewCell" rowHeight="65" id="xOK-tM-F1g">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="65"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xOK-tM-F1g" id="khw-xz-Fgn">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWZ-Rh-4TM">
+                                                    <rect key="frame" x="85" y="7" width="282" height="49"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ufa-Da-DWk">
+                                                    <rect key="frame" x="8" y="0.0" width="55" height="65"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="98o-gP-DvE" firstAttribute="top" secondItem="6dQ-yg-4WC" secondAttribute="bottom" id="1zC-H1-kEf"/>
-                            <constraint firstItem="6dQ-yg-4WC" firstAttribute="leading" secondItem="qdV-c4-UCL" secondAttribute="leading" id="Osk-0A-0Ph"/>
-                            <constraint firstItem="6dQ-yg-4WC" firstAttribute="top" secondItem="35W-bs-bQX" secondAttribute="bottom" id="duf-SC-ui6"/>
-                            <constraint firstAttribute="trailing" secondItem="6dQ-yg-4WC" secondAttribute="trailing" id="sCK-ah-5tL"/>
+                            <constraint firstItem="VFS-sh-g6W" firstAttribute="leading" secondItem="qdV-c4-UCL" secondAttribute="leading" id="6hd-s1-85s"/>
+                            <constraint firstAttribute="bottom" secondItem="VFS-sh-g6W" secondAttribute="bottom" id="UT3-c4-kOu"/>
+                            <constraint firstItem="VFS-sh-g6W" firstAttribute="top" secondItem="35W-bs-bQX" secondAttribute="bottom" id="cAX-su-DoF"/>
+                            <constraint firstAttribute="trailing" secondItem="VFS-sh-g6W" secondAttribute="trailing" id="sEg-Wr-81p"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="List" image="list" selectedImage="list" id="CZQ-LF-wrb"/>
@@ -347,7 +343,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="0uY-Rg-I9h">
             <objects>
-                <tabBarController id="LGs-Vc-AzL" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="LGs-Vc-AzL" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="nqw-hd-FDn"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="1Kc-td-L79">
