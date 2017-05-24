@@ -12,8 +12,8 @@ import MapKit
 class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Instantiate Models
-    var myLocation = User.userLocation
-    var profile = User.userData
+    let data = OMData.sharedInstance()
+    
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -24,7 +24,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     //MARK: App Lify Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor(red: 109, green: 199, blue: 255, alpha: 1.0)
+        self.view.backgroundColor = UIColor(red: 109, green: 199, blue: 254, alpha: 1.0)
         self.mapView.delegate = self
         self.mapView.isHidden = true
     }
@@ -32,6 +32,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     //MARK: IBActions
     @IBAction func findLocationButtonPressed(_ sender: UIButton) {
         
+        //TODO: Check rubric for this logic
         if (self.locationTextField.text?.isEmpty)! {
             displayError(message: "Missing location")
         }
@@ -39,7 +40,9 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         let address = self.locationTextField.text!
         self.showMapWith(location: address)
     }
+
     
+    //MARK: Functions
     func showMapWith(location: String) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(location) { (placeMarkArray, error) in
@@ -50,12 +53,12 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = myCoordinates!
-                annotation.title = "\(self.profile?.firstName) \(self.profile?.lastName)"
+                annotation.title = "\(self.data.user?.firstName ?? "unknow") \(self.data.user?.lastName ?? "unknow")"
+                annotation.subtitle = "\(self.mediaURLTextField.text ?? "")"
                 DispatchQueue.main.async {
                     self.mapView.isHidden = false
                     self.mapView.setRegion(region, animated: true)
-                    //TODO: place marker
-                    //self.mapView.addAnnotation(placeMarkArray?.first as! MKAnnotation)
+                    self.mapView.addAnnotation(annotation)
                 }
             } else {
                 DispatchQueue.main.async {
@@ -71,27 +74,5 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         controller.addAction(okAction)
         self.present(controller, animated: true, completion: nil)
     }
-
-    /*
-     if let location = self.locationTextField.text {
-     let request = MKLocalSearchRequest()
-     request.naturalLanguageQuery = location
-     
-     let localSearch = MKLocalSearch(request: request)
-     self.mapView.isHidden = true
-     localSearch.start(completionHandler: { (response, error) in
-     if error = nil {
-     let coordinates = response?.mapItems[0].placemark.coordinate
-     let spanCoordinates = MKCoordinateSpan(latitudeDelta: 200, longitudeDelta: 200)
-     let region = MKCoordinateRegion(center: coordinates!, span: spanCoordinates)
-     DispatchQueue.main.async {
-     self.mapView.setRegion(region, animated: true)
-     }
-     } else {
-     print("not able to find location \(String(describing: error))")
-     }
-     })
-     }
-     */
 
 }

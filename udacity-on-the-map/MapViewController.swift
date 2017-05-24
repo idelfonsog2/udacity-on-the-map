@@ -8,13 +8,13 @@
 
 import UIKit
 import MapKit
+import NVActivityIndicatorView
 
-class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, NVActivityIndicatorViewable {
 
-    //MARK: Properties & Instantiate Models
-    var sessionId: String?
-    var locations = StudentLocation.studentLocations
+    //TODO: Properties
     var annotations = [MKPointAnnotation]()
+    var data = OMData.sharedInstance()
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -23,20 +23,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsOnMap), name: Notification.Name("refreshLocations"), object: nil)
-        self.loadStudentLocationsOnMap()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name("refreshLocations"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name("updateLocation"), object: nil)
+        self.loadStudentLocationsData()
     }
     
     //MARK: Helper Functions
     func loadStudentLocationsOnMap() {
-        self.mapView.removeAnnotations(self.annotations)
+        //TODO: add delays fo UI
+        self.startAnimating(self.view.frame.size, message: "hheel", messageFont: nil, type: NVActivityIndicatorType.ballBeat, color: UIColor.black, padding: nil, displayTimeThreshold: 5000, minimumDisplayTime: 2600, backgroundColor: UIColor(red: 255, green: 255, blue: 255, alpha: 0.5), textColor: nil)
         
-        if self.locations.isEmpty {
+        self.mapView.removeAnnotations(self.annotations)
+        self.annotations.removeAll()
+        
+        if data.studentLocations.isEmpty {
             displayError(string: "Unable to download data")
             return
         }
         
-        for student in self.locations {
+        for student in self.data.studentLocations {
             let annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
             annotation.title = "\(student.firstName!) \(student.lastName!)"
@@ -44,8 +49,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
             self.annotations.append(annotation)
         }
         
+        stopAnimating()
         self.mapView.addAnnotations(self.annotations)
         
+    }
+    
+    func loadStudentLocationsData() {
+        //Remove for refresh purposes
+        data.studentLocations.removeAll()
+        
+        //Obtain 100 student locations
+        let parameters: [String: Any] = ["limit": 100]
+        PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
+            if !success {
+                DispatchQueue.main.async {
+                    self.displayError(string: "Unable To download Data")
+                }
+            } else {
+                //FIX: Instantiating singleton??
+                self.data.studentLocations = StudentLocation.locationsFromResults(response!)
+            }
+        }
     }
     
     func displayError(string: String) {
@@ -57,10 +81,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     
     //MARK: IBActions
-    
-    @IBAction func logouFromUdacity(_ sender: UIBarButtonItem) {
-        
-    }
     
     @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController

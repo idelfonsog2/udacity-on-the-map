@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 struct StudentLocation {
-    var objectID:   String?
+    var objectId:   String?
     var firstName:  String?
     var lastName:   String?
     var mapString:  String?
@@ -19,11 +19,19 @@ struct StudentLocation {
     var latitude:   Double?
     var longitude:  Double?
     
-    static var studentLocations = [StudentLocation]()
-    
+    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double, longitude: Double) {
+        self.objectId = objectId
+        self.firstName = firstName
+        self.lastName = lastName
+        self.mapString = mapString
+        self.mediaURL = mediaURL
+        self.uniqueKey = uniqueKey
+        self.latitude = latitude
+        self.longitude = longitude
+    }
     
     init(dictionary: [String:AnyObject]) {
-        objectID = dictionary["objectId"] as? String
+        objectId = dictionary["objectId"] as? String
         firstName = dictionary["firstName"] as? String
         lastName = dictionary["lastName"] as? String
         mapString = dictionary["mapString"] as? String
@@ -33,27 +41,15 @@ struct StudentLocation {
         uniqueKey = dictionary["uniqueKey"] as? String
     }
     
-    static func loadStudentLocations() {
-        //Remove for refresh purposes
-        self.studentLocations.removeAll(keepingCapacity: true)
+    //Functions
+    static func locationsFromResults(_ arrayOfStudentsDictionaries: AnyObject) -> [StudentLocation] {
+        let jsonObjectArray = arrayOfStudentsDictionaries as! [[String:AnyObject]]
+        var locations = [StudentLocation]()
         
-        //Make network call
-        let parameters: [String: Any] = ["limit": 100]
-        PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
-            if !success {
-                print(response ?? "nil")
-            }
-            
-            guard let arrayOfStudentLocations = response?["results"] as? [[String: AnyObject]] else {
-                print("No 'results' key found in the response")
-                return
-            }
-            
-            for student in arrayOfStudentLocations {
-                StudentLocation.studentLocations.append(StudentLocation(dictionary: student))
-            }
+        for student in jsonObjectArray {
+            locations.append(StudentLocation(dictionary: student))
         }
+        
+        return locations
     }
-    
-    
 }
