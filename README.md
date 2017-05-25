@@ -2,6 +2,16 @@
 
 The On The Map app allows users to share their location and a URL with their fellow students. To visualize this data, On The Map uses a map with pins for location and pin annotations for student names and URLs, allowing students to place themselves “on the map,” so to speak.
 
+## Installation:
+In terminal run:
+```
+git clone https://github.com/idelfonsog2/udacity-on-the-map.git
+cd udacity-on-the-map
+open udacity-on-the-map.xcodeproj
+```
+
+change the bundle Id if necessary
+
 ## Issues:
 
 The information button in the annotations won't work unless the user has input an **https://**  in their profile
