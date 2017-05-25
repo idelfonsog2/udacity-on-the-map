@@ -92,6 +92,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     func loadStudentLocationsData() {
         //Obtain 100 student locations
         showActivityIndicator()
+        self.mapView.alpha = 0.2
         let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
@@ -104,6 +105,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                 //TODO: Show Map with Annotations
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                     self.loadStudentLocationsOnMap()
+                    self.mapView.alpha = 1.0
                     self.activityIndicator?.stopAnimating()
                 }
             }
