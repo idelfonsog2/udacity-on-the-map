@@ -25,6 +25,12 @@ class LoginViewController: UIViewController {
         self.view.addGestureRecognizer(tap)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.emailAddressTextField.text = ""
+        self.emailAddressTextField.text = ""
+    }
+    
     //MARK: IBActions
     @IBAction func loginToUdacity(_ sender: UIButton) {
         guard let email = emailAddressTextField.text, let password = passwordTextField.text else {
