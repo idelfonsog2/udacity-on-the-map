@@ -67,7 +67,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell", for: indexPath)
         let student = self.data.studentLocations[indexPath.row]
         cell.textLabel?.text = "\(student.firstName ?? "[firstname]") \(student.lastName ?? "[lastname]")"
-        cell.imageView?.image = UIImage(named: "pin")
+        cell.detailTextLabel?.text = "\(student.mediaURL ?? "[no-url]")"
         return cell
     }
 

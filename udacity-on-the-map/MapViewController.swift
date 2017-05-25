@@ -14,6 +14,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     //TODO: Properties
     var annotations = [MKPointAnnotation]()
     var data = OMData.sharedInstance()
+    var activityIndicator: UIActivityIndicatorView?
+
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -22,11 +24,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        
         subscribeToNotifications()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+                
         //Remove for refresh purposes
         data.studentLocations.removeAll()
         
@@ -87,6 +91,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     func loadStudentLocationsData() {
         //Obtain 100 student locations
+        showActivityIndicator()
         let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
@@ -97,8 +102,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                 self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
                 
                 //TODO: Show Map with Annotations
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                     self.loadStudentLocationsOnMap()
+                    self.activityIndicator?.stopAnimating()
                 }
             }
         }
@@ -158,5 +164,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                 }
             }
         }
+    }
+    
+    func showActivityIndicator() {
+        //Init activity Indicator
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        activityIndicator?.color = UIColor.gray
+        activityIndicator?.center = self.view.center
+        self.view.addSubview(activityIndicator!)
+        activityIndicator?.startAnimating()
     }
 }

@@ -10,8 +10,9 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    //Singleton
+    //Properties
     var data = OMData.sharedInstance()
+    var activityIndicator: UIActivityIndicatorView?
     
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -35,16 +36,18 @@ class LoginViewController: UIViewController {
             ]
         ]
         
-        
+        self.startActivityIndicator()
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
                     //access denied
+                    self.activityIndicator?.stopAnimating()
                     self.displayAlert(message: "Account not found or invalid credentials")
                 } else {
                     //access granted
                     self.data.session = UdacitySession(dictionary: response as! [String : Any])
                     self.loadUdacityUserProfile()
+                    self.activityIndicator?.stopAnimating()
                     self.instantiateManagerViewController()
                 }
             }
@@ -67,20 +70,27 @@ class LoginViewController: UIViewController {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    //TODO: Implement Passwordless with Facebook
-    
-    //MARK: helpers
+    //MARK: Helpers
     func instantiateManagerViewController() {
         let controller = storyboard?.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
     }
     
-    //FIXME: I can place this in another class
     func displayAlert(message: String) {
         let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         controller.addAction(okAction)
         self.present(controller, animated: true, completion: nil)
+    }
+    
+    //TODO: Implement Passwordless with Facebook
+
+    func startActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        activityIndicator?.center = self.view.center
+        activityIndicator?.color = UIColor.gray
+        self.view.addSubview(activityIndicator!)
+        activityIndicator?.startAnimating()
     }
 }
 

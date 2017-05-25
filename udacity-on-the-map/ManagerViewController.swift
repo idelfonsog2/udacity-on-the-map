@@ -10,8 +10,9 @@ import UIKit
 
 class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     
-    //Singleton
+    //Properties
     var data = OMData.sharedInstance()
+    var activityIndicator: UIActivityIndicatorView?
     
     //MARK: IBOutlets
     @IBOutlet weak var leBar: UINavigationBar!
@@ -21,7 +22,6 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         super.viewDidLoad()
         self.leBar.delegate = self
         self.setupNavBar()
-        // Do any additional setup after loading the view.
     }
 
     deinit {
