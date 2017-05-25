@@ -8,9 +8,8 @@
 
 import UIKit
 import MapKit
-import NVActivityIndicatorView
 
-class FindLocationViewController: UIViewController, MKMapViewDelegate, NVActivityIndicatorViewable {
+class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Instantiate Models
     let data = OMData.sharedInstance()
@@ -19,7 +18,6 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, NVActivit
     //Properties
     var latitude: Double?
     var longitude: Double?
-    var activictyIndicator: NVActivityIndicatorView?
     
     //MARK: IBOutlets
     @IBOutlet weak var udacityLogoImageView: UIImageView!
@@ -40,8 +38,8 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, NVActivit
     }
 
     func initMyProfile() {
-        let params: [String: Any] = ["where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
-        //TODO: Get Student Information
+        //TODO: access your lcoation in the array of student locations
+        let params: [String: Any] = ["order":"-createdAt","where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
         PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
             if !sucess {
                 print("Error finding the current udacity user in the Parse API")
@@ -69,16 +67,13 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, NVActivit
         }
     
         //TODO: Display ActivityIndicator
-        let activityData = ActivityData()
-        
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+
         //Building profile to submit
         self.myLocation?.mapString = self.locationTextField.text!
         
         //Search for location
         self.showMapWith(location: self.locationTextField.text!)
         
-        NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
     }
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {

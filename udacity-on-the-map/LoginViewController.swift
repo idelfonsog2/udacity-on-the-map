@@ -58,7 +58,6 @@ class LoginViewController: UIViewController {
                     self.displayAlert(message: "Could not find your information")
                 }
             } else {
-                // Get the First Name, last Name from user
                 self.data.user = UdacityUser(dictionary: response as! [String : Any])
             }
         }
@@ -76,6 +75,7 @@ class LoginViewController: UIViewController {
         self.present(controller, animated: true, completion: nil)
     }
     
+    //FIXME: I can place this in another class
     func displayAlert(message: String) {
         let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)

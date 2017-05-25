@@ -83,7 +83,6 @@ class UMNetworking: NSObject {
             completionHandlerForConvertData("Could not parse the data as JSON: '\(data)'" as AnyObject, false)
         }
         
-        //FIX: remove print statement
         print(parsedResult)
         completionHandlerForConvertData(parsedResult, true)
     }

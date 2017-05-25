@@ -8,9 +8,8 @@
 
 import UIKit
 import MapKit
-import NVActivityIndicatorView
 
-class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, NVActivityIndicatorViewable {
+class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
 
     //TODO: Properties
     var annotations = [MKPointAnnotation]()
@@ -23,15 +22,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name(kRefreshLocation), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name(kUpdateLocation), object: nil)
+        subscribeToNotifications()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //Remove for refresh purposes
+        data.studentLocations.removeAll()
+        
+        self.loadMyParseStudentLocationData()
+        
+        //The map will show in the exec of the following func
         self.loadStudentLocationsData()
     }
     
     //MARK: Helper Functions
     func loadStudentLocationsOnMap() {
-        //TODO: Not working 🤔
-        self.startAnimating(self.view.frame.size, message: "hheel", messageFont: nil, type: NVActivityIndicatorType.ballBeat, color: UIColor.black, padding: nil, displayTimeThreshold: 5000, minimumDisplayTime: 2600, backgroundColor: UIColor(red: 255, green: 255, blue: 255, alpha: 0.5), textColor: nil)
         
         self.mapView.removeAnnotations(self.annotations)
         self.annotations.removeAll()
@@ -41,22 +47,42 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
             return
         }
         
+
+        //TODO: Another user might have not posted their location or media url
         for student in self.data.studentLocations {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
-            annotation.title = "\(student.firstName!) \(student.lastName!)"
-            annotation.subtitle = "\(student.mediaURL!)"
-            self.annotations.append(annotation)
+            if student.latitude != nil, student.longitude != nil {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
+                annotation.title = "\(student.firstName!) \(student.lastName!)"
+                annotation.subtitle = "\(student.mediaURL!)"
+                self.annotations.append(annotation)
+            }
         }
         
         self.mapView.addAnnotations(self.annotations)
-        stopAnimating()
+    }
+    
+    func loadMyParseStudentLocationData() {
+        //Obtain My Student Location and show it
+        let params: [String: Any] = ["order":"-createdAt","where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
+        PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
+            if !sucess {
+                print("Error finding the current udacity user in the Parse API")
+            } else {
+                guard let resultsDictionary = response?["results"] as? [[String: Any]] else {
+                    return
+                }
+                
+                guard let lastUpdateDictionary = resultsDictionary[0] as? [String: AnyObject] else {
+                    return
+                }
+
+                self.data.studentLocations.append(StudentLocation(dictionary: lastUpdateDictionary))
+            }
+        }
     }
     
     func loadStudentLocationsData() {
-        //Remove for refresh purposes
-        data.studentLocations.removeAll()
-        
         //Obtain 100 student locations
         let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
@@ -65,10 +91,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
                     self.displayError(string: "Unable To download Data")
                 }
             } else {
-                //Init StudentLocation (100 sl)
                 self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
                 
-                //TODO: move to MapViewController
+                //TODO: Show Map with Annotations
                 DispatchQueue.main.async {
                     self.loadStudentLocationsOnMap()
                 }
@@ -83,6 +108,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate, 
         self.present(controller, animated: true, completion: nil)
     }
     
+    func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name(kRefreshLocation), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name(kUpdateLocation), object: nil)
+    }
     
     //MARK: IBActions
     
