@@ -21,19 +21,6 @@ struct StudentLocation {
     var updatedAt:  String?
     var createdAt:  String?
     
-    init(objectId: String?, firstName: String?, lastName: String?, mapString: String?, mediaURL: String?, uniqueKey: String?, latitude: Double?, longitude: Double?, updatedAt: String?, createdAt: String?) {
-        self.objectId   = objectId
-        self.firstName  = firstName
-        self.lastName   = lastName
-        self.mapString  = mapString
-        self.mediaURL   = mediaURL
-        self.uniqueKey  = uniqueKey
-        self.latitude   = latitude
-        self.longitude  = longitude
-        self.updatedAt  = updatedAt
-        self.createdAt  = createdAt
-    }
-    
     init(dictionary: [String: AnyObject]) {
         objectId    = dictionary["objectId"]    as? String
         firstName   = dictionary["firstName"]   as? String

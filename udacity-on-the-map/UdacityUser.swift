@@ -13,12 +13,6 @@ struct UdacityUser {
     var lastName: String?
     var location: String?
     
-    init(firstName: String?, lastName: String?, location: String?) {
-        self.firstName = firstName
-        self.lastName = lastName
-        self.location = location
-    }
-    
     init(dictionary: [String: Any]) {
         guard let userDictionary = dictionary["user"] as? [String: Any] else {
             return

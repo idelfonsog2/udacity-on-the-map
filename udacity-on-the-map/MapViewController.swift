@@ -30,7 +30,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-                
+        self.activityIndicator?.stopAnimating()
         //Remove for refresh purposes
         data.studentLocations.removeAll()
         

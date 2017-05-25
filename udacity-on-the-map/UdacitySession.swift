@@ -12,11 +12,6 @@ struct UdacitySession {
     var uniqueKey: String?
     var sessionId: String?
     
-    init(uniqueKey: String?, sessionId: String?) {
-        self.uniqueKey = uniqueKey
-        self.sessionId = sessionId
-    }
-    
     init(dictionary: [String: Any]) {
         //Init straigh from JSON
         guard let account = dictionary["account"] as? [String: Any] else {
