@@ -21,6 +21,8 @@ class LoginViewController: UIViewController {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
     }
     
     //MARK: IBActions
@@ -91,6 +93,10 @@ class LoginViewController: UIViewController {
         activityIndicator?.color = UIColor.gray
         self.view.addSubview(activityIndicator!)
         activityIndicator?.startAnimating()
+    }
+    
+    func dismissKeyboard() {
+        self.view.endEditing(true)
     }
 }
 
