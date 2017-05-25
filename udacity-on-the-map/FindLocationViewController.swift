@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class FindLocationViewController: UIViewController, MKMapViewDelegate {
+class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
 
     //MARK: Instantiate Models
     var myStudentLocation: StudentLocation? = OMData.sharedInstance().myStudentLocation
@@ -33,7 +33,17 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         self.udacityLogoImageView.tintColor = UIColor.red
         self.mapView.delegate = self
         self.mapView.isHidden = true
+        self.locationTextField.delegate = self
+        self.mediaURLTextField.delegate = self
         self.submitButton.isHidden = true
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToNotifications()
     }
     
     //MARK: IBActions
@@ -44,7 +54,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
             displayError(message: "Missing location")
         }
     
-        //TODO: Display ActivityIndicator
+        self.view.endEditing(true)
 
         //Building profile to submit
         self.myStudentLocation?.mapString = self.locationTextField.text!
@@ -93,7 +103,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     }
     
     func createStudentLocation(params: [String: Any]) {
-        //TODO: First time the user opens the app
+        //First time the user opens the app
         PSClient().createStudentLocation(httpBody: params) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
@@ -145,6 +155,29 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         controller.addAction(okAction)
         self.present(controller, animated: true, completion: nil)
+    }
+    
+    func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func keyboardWillShow(_ notification: Notification) {
+        self.view.frame.origin.y = 30 * -1
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        self.view.frame.origin.y = 0
+    }
+    
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo!
+        let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardFrame.cgRectValue.height
+    }
+    
+    func dismissKeyboard() {
+        self.view.endEditing(true)
     }
 
 }

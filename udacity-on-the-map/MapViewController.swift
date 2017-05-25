@@ -150,9 +150,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         // Use the subtitle with URL(..) to openSafari
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle! {
-                if app.canOpenURL(URL(string: toOpen)!) {
-                    app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+            if let toOpen = URL(string:(view.annotation?.subtitle!)!) {
+                if toOpen.scheme == "https"  {
+                    if app.canOpenURL(toOpen) {
+                        app.open(toOpen, options: [:], completionHandler: nil)
+                    }
                 }
             }
         }

@@ -75,9 +75,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
         if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL {
-            //FIXME: not opening safari
-            if app.canOpenURL(URL(string: studentUrl)!) {
-                app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
+            
+            let url = URL(string: studentUrl)
+            if url?.scheme == "https"  {
+                if app.canOpenURL(URL(string: studentUrl)!) {
+                    app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
+                }
             }
         }
     }
