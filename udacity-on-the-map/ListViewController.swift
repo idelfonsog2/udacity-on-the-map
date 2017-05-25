@@ -76,7 +76,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         let app = UIApplication.shared
         if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL {
             //FIXME: not opening safari
-            app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
+            if app.canOpenURL(URL(string: studentUrl)!) {
+                app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
+            }
         }
     }
 

@@ -12,8 +12,8 @@ import MapKit
 class FindLocationViewController: UIViewController, MKMapViewDelegate {
 
     //MARK: Instantiate Models
-    let data = OMData.sharedInstance()
-    var myLocation: StudentLocation?
+    var myStudentLocation: StudentLocation? = OMData.sharedInstance().myStudentLocation
+
     
     //Properties
     var latitude: Double?
@@ -34,28 +34,6 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         self.mapView.delegate = self
         self.mapView.isHidden = true
         self.submitButton.isHidden = true
-        self.initMyProfile()
-    }
-
-    func initMyProfile() {
-        //TODO: access your lcoation in the array of student locations
-        let params: [String: Any] = ["order":"-createdAt","where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
-        PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
-            if !sucess {
-                print("Error finding the current udacity user in the Parse API")
-            } else {
-                guard let resultsDictionary = response?["results"] as? [[String: Any]] else {
-                    return
-                }
-                
-                guard let lastUpdateDictionary = resultsDictionary[0] as? [String: AnyObject] else {
-                    return
-                }
-                
-                //Init My Parse Location from Parse API
-                self.myLocation = StudentLocation(dictionary: lastUpdateDictionary)
-            }
-        }
     }
     
     //MARK: IBActions
@@ -69,7 +47,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
         //TODO: Display ActivityIndicator
 
         //Building profile to submit
-        self.myLocation?.mapString = self.locationTextField.text!
+        self.myStudentLocation?.mapString = self.locationTextField.text!
         
         //Search for location
         self.showMapWith(location: self.locationTextField.text!)
@@ -82,13 +60,13 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
  
     @IBAction func submitLocationButtonPressed(_ sender: UIButton) {
         let information: [String: Any] = [
-            ParseHTTPBodyKeys.UniqueKey : self.myLocation?.uniqueKey,
-            ParseHTTPBodyKeys.FirstName : self.myLocation?.firstName,
-            ParseHTTPBodyKeys.LastName  : self.myLocation?.lastName,
+            ParseHTTPBodyKeys.UniqueKey : self.myStudentLocation?.uniqueKey,
+            ParseHTTPBodyKeys.FirstName : self.myStudentLocation?.firstName,
+            ParseHTTPBodyKeys.LastName  : self.myStudentLocation?.lastName,
             ParseHTTPBodyKeys.MapString : self.locationTextField.text!,
             ParseHTTPBodyKeys.MediaUrl  : self.mediaURLTextField.text!,
-            ParseHTTPBodyKeys.Latitude  : self.myLocation?.latitude,
-            ParseHTTPBodyKeys.Longitude : self.myLocation?.longitude
+            ParseHTTPBodyKeys.Latitude  : self.myStudentLocation?.latitude,
+            ParseHTTPBodyKeys.Longitude : self.myStudentLocation?.longitude
         ]
         
         if UserDefaults.standard.bool(forKey: kNewLocation) {
@@ -100,12 +78,12 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
     }
     
     func updateStudentLocation(params: [String: Any]) {
-        PSClient().updateStudentLocation(objectId: (self.myLocation?.objectId)!, httpBody: params) { (response, success) in
+        PSClient().updateStudentLocation(objectId: (self.myStudentLocation?.objectId)!, httpBody: params) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
                     self.displayError(message: "Error Updating Your Location")
                 } else {
-                    self.myLocation?.updatedAt = response?["updatedAt"] as? String
+                    self.myStudentLocation?.updatedAt = response?["updatedAt"] as? String
                     NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
                     UserDefaults.standard.set(false, forKey: kNewLocation)
                     self.dismiss(animated: true, completion: nil)
@@ -121,8 +99,8 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
                 if !success {
                     self.displayError(message: "Error Posting Your Location")
                 } else {
-                    self.myLocation?.objectId = response?["objectId"] as? String
-                    self.myLocation?.createdAt = response?["createdAt"] as? String
+                    self.myStudentLocation?.objectId = response?["objectId"] as? String
+                    self.myStudentLocation?.createdAt = response?["createdAt"] as? String
                     NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
                     UserDefaults.standard.set(false, forKey: kNewLocation)
                     self.dismiss(animated: true, completion: nil)
@@ -141,12 +119,12 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate {
                 let region = MKCoordinateRegion(center: myCoordinates!, span: spanCoordinates)
                 
                 //Building profile to submit
-                self.myLocation?.longitude = myCoordinates?.longitude
-                self.myLocation?.latitude = myCoordinates?.latitude
+                self.myStudentLocation?.longitude = myCoordinates?.longitude
+                self.myStudentLocation?.latitude = myCoordinates?.latitude
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = myCoordinates!
-                annotation.title = "\(self.data.user?.firstName ?? "unknow") \(self.data.user?.lastName ?? "unknow")"
+                annotation.title = "\(self.myStudentLocation?.firstName ?? "unknow") \(self.myStudentLocation?.lastName ?? "unknow")"
                 annotation.subtitle = "\(self.mediaURLTextField.text ?? "")"
                 DispatchQueue.main.async {
                     self.submitButton.isHidden = false

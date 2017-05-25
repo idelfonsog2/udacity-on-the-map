@@ -63,7 +63,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     }
     
     func loadMyParseStudentLocationData() {
-        //Obtain My Student Location and show it
+        //Init myStudentLocation Instance
         let params: [String: Any] = ["order":"-createdAt","where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
         PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
             if !sucess {
@@ -77,6 +77,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                     return
                 }
 
+                // Init instance
+                self.data.myStudentLocation = StudentLocation(dictionary: lastUpdateDictionary)
+                //Add to students array
                 self.data.studentLocations.append(StudentLocation(dictionary: lastUpdateDictionary))
             }
         }
@@ -132,7 +135,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
             pinView!.pinTintColor = .red
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            let button = UIButton(type: .detailDisclosure)
+            button.tintColor = UIColor.blue
+            pinView!.rightCalloutAccessoryView = button
         }
         else {
             pinView!.annotation = annotation
@@ -146,7 +151,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
             if let toOpen = view.annotation?.subtitle! {
-                app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+                if app.canOpenURL(URL(string: toOpen)!) {
+                    app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+                }
             }
         }
     }

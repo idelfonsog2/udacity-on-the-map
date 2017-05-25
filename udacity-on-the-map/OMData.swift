@@ -12,6 +12,7 @@ class OMData: NSObject {
 
     //MARK: Properties
     var studentLocations: [StudentLocation] = [StudentLocation]()
+    var myStudentLocation: StudentLocation? = nil
     var user: UdacityUser? = nil
     var session: UdacitySession? = nil
     
