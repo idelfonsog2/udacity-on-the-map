@@ -20,22 +20,36 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tap)
+        subscribeToKeyboardNotifications()
+        subscribeToKeyboardOffTap()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        //Clear text fields
         self.emailAddressTextField.text = ""
         self.passwordTextField.text = ""
     }
     
     //MARK: IBActions
     @IBAction func loginToUdacity(_ sender: UIButton) {
+       getUdacitySession()
+    }
+
+    @IBAction func signUpToUdacity(_ sender: UIButton) {
+        let url = URL(string: "https://auth.udacity.com/sign-up")!
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+    
+    //MARK: Network calls
+    func getUdacitySession() {
+        
         guard let email = emailAddressTextField.text, let password = passwordTextField.text else {
             displayAlertWithError(message: "Missing field")
             return
         }
+        let indicator = startActivityIndicatorAnimation()
+
         let credentials = [
             UdacityHTTPBodyKeys.UdacityKey: [
                 UdacityHTTPBodyKeys.UsernameKey:email,
@@ -43,12 +57,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             ]
         ]
         
-        let indicator = startActivityIndicatorAnimation()
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                 if !success {
                     //access denied
                     self.displayAlertWithError(message: "Account not found or invalid credentials")
+                    self.stopActivityIndicatorAnimation(indicator: indicator)
                 } else {
                     //access granted
                     self.data.session = UdacitySession(dictionary: response as! [String : Any])
@@ -59,7 +73,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-
+    
     func loadUdacityUserProfile() {
         UDClient().getUserPublicData() { (response, success) in
             if !success {
@@ -71,10 +85,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    @IBAction func signUpToUdacity(_ sender: UIButton) {
-        let url = URL(string: "https://auth.udacity.com/sign-up")!
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    }
     
     //MARK: Helpers
     func instantiateManagerViewController() {
@@ -84,7 +94,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     //MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return textField.endEditing(true)
+        if textField.restorationIdentifier == "passwordTextField" {
+            getUdacitySession()
+            textField.endEditing(true)
+        } else {
+            textField.resignFirstResponder()
+        }
+        return true
     }
     
 }

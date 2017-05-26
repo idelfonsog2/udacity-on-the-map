@@ -28,25 +28,25 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
     //MARK: App Lify Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor(red: 109, green: 199, blue: 254, alpha: 1.0)
-        self.udacityLogoImageView.tintColor = UIColor.red
+        setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardOffTap()
+    }
+    
+    deinit {
+        unsubscribeFromKeyboardNotifications()
+    }
+    
+    //MARK: UI
+    func setupUI() {
         self.mapView.delegate = self
         self.mapView.isHidden = true
         self.locationTextField.delegate = self
         self.mediaURLTextField.delegate = self
         self.submitButton.isHidden = true
-        
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tap)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        subscribeToKeyboardNotifications()
-    }
-    
-    deinit {
-        unsubscribeFromKeyboardNotifications()
     }
     
     //MARK: IBActions
@@ -72,6 +72,10 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
     }
  
     @IBAction func submitLocationButtonPressed(_ sender: UIButton) {
+        submitLocation()
+    }
+    
+    func submitLocation() {
         let information: [String: Any] = [
             ParseHTTPBodyKeys.UniqueKey : self.myStudentLocation?.uniqueKey,
             ParseHTTPBodyKeys.FirstName : self.myStudentLocation?.firstName,
@@ -155,7 +159,16 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
         }
     }
     
-    
-
-
+    //MARK: UITextFieldDelegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if (textField.text?.isEmpty)! {
+            displayAlertWithError(message: "Please fill the fields")
+        }
+        
+        if textField.restorationIdentifier == "" {
+            submitLocation()
+        }
+        
+        return true
+    }
 }

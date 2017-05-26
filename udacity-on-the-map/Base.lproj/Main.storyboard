@@ -40,12 +40,18 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="Q1h-re-U64"/>
+                                        </connections>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fc3-Rx-1Uk">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="passwordTextField" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fc3-Rx-1Uk">
                                         <rect key="frame" x="0.0" y="174" width="343" height="35"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="06b-hw-PyP"/>
+                                        </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tu9-sa-F7r">
                                         <rect key="frame" x="0.0" y="217" width="343" height="35"/>
@@ -174,9 +180,10 @@
                             </navigationBar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="udacity logo" translatesAutoresizingMaskIntoConstraints="NO" id="Le7-wI-144">
                                 <rect key="frame" x="0.0" y="74" width="375" height="80"/>
+                                <color key="backgroundColor" red="0.42745098040000001" green="0.78039215689999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HSR-Yr-kBE">
-                                <rect key="frame" x="0.0" y="275" width="375" height="392"/>
+                                <rect key="frame" x="0.0" y="283" width="375" height="384"/>
                                 <connections>
                                     <outlet property="delegate" destination="QAe-eH-euZ" id="Nbd-Mb-Obl"/>
                                 </connections>
@@ -192,7 +199,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HLC-ss-ORP">
-                                <rect key="frame" x="16" y="154" width="343" height="121"/>
+                                <rect key="frame" x="16" y="162" width="343" height="121"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x3h-g2-vhM">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="35"/>
@@ -226,6 +233,8 @@
                                 </constraints>
                             </stackView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="HSR-Yr-kBE" firstAttribute="top" secondItem="HLC-ss-ORP" secondAttribute="bottom" id="0Es-8m-eJ1"/>
                             <constraint firstItem="Le7-wI-144" firstAttribute="leading" secondItem="54n-Lv-u1c" secondAttribute="leading" id="499-Oy-gQD"/>
@@ -234,10 +243,10 @@
                             <constraint firstAttribute="trailing" secondItem="Le7-wI-144" secondAttribute="trailing" id="GdD-bK-3O4"/>
                             <constraint firstItem="ZWa-Mz-xAt" firstAttribute="leading" secondItem="54n-Lv-u1c" secondAttribute="leading" id="JUE-l4-wdp"/>
                             <constraint firstItem="3gb-RG-oNO" firstAttribute="top" secondItem="yrh-hi-I6R" secondAttribute="bottom" constant="100" id="aQy-LH-fnS"/>
-                            <constraint firstItem="HLC-ss-ORP" firstAttribute="top" secondItem="Le7-wI-144" secondAttribute="bottom" id="b8H-re-UZO"/>
+                            <constraint firstItem="HLC-ss-ORP" firstAttribute="top" secondItem="Le7-wI-144" secondAttribute="bottom" constant="8" id="b8H-re-UZO"/>
                             <constraint firstItem="HLC-ss-ORP" firstAttribute="leading" secondItem="54n-Lv-u1c" secondAttribute="leadingMargin" id="c91-Yi-Nru"/>
                             <constraint firstAttribute="trailing" secondItem="HSR-Yr-kBE" secondAttribute="trailing" id="fE3-ha-cF1"/>
-                            <constraint firstItem="HLC-ss-ORP" firstAttribute="top" secondItem="Le7-wI-144" secondAttribute="bottom" id="gFG-Yu-sTx"/>
+                            <constraint firstItem="HLC-ss-ORP" firstAttribute="top" secondItem="Le7-wI-144" secondAttribute="bottom" constant="8" id="gFG-Yu-sTx"/>
                             <constraint firstItem="HSR-Yr-kBE" firstAttribute="leading" secondItem="54n-Lv-u1c" secondAttribute="leading" id="gJr-lX-hJR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="HLC-ss-ORP" secondAttribute="trailing" id="kyt-B8-BHD"/>
                             <constraint firstAttribute="trailing" secondItem="ZWa-Mz-xAt" secondAttribute="trailing" id="nXr-fA-iu9"/>
@@ -246,6 +255,7 @@
                             <constraint firstItem="HSR-Yr-kBE" firstAttribute="top" secondItem="HLC-ss-ORP" secondAttribute="bottom" id="zEd-6d-cZA"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="UIh-50-UvK"/>
                     <connections>
                         <outlet property="locationTextField" destination="x3h-g2-vhM" id="tjc-W2-630"/>
                         <outlet property="mapView" destination="HSR-Yr-kBE" id="NcJ-4R-Oxc"/>
@@ -256,7 +266,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2WJ-vf-RTH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3184.8000000000002" y="-236.13193403298354"/>
+            <point key="canvasLocation" x="3325.5999999999999" y="-295.50224887556226"/>
         </scene>
         <!--List-->
         <scene sceneID="qIs-a7-YmS">
@@ -347,7 +357,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="0uY-Rg-I9h">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="LGs-Vc-AzL" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MyTabBarController" automaticallyAdjustsScrollViewInsets="NO" id="LGs-Vc-AzL" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="nqw-hd-FDn"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="1Kc-td-L79">

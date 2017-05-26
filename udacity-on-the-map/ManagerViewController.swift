@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ManagerViewController: UINavigationController, UINavigationBarDelegate {
+class ManagerViewController: UINavigationController, UINavigationBarDelegate, UINavigationControllerDelegate {
     
     //Properties
     var data = OMData.sharedInstance()
@@ -21,6 +21,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.leBar.delegate = self
+        self.navigationController?.delegate = self
         self.setupNavBar()
     }
 
@@ -41,7 +42,11 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     func logout() {
         UDClient().logoutFromUdacity { (response, success) in
             DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
+                if !success {
+                    self.displayAlertWithError(message: "Unable to logout")
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                }
             }
         }
     }
@@ -52,9 +57,9 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         
         //Check if a the user has already a lcation
         if (UserDefaults.standard.bool(forKey: kUpdateLocation)) {
-            showAlerWithAction(okAction: instantiateFindLocationViewController, message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
+            overwriteLocationWith(instantiateFindLocationViewController, message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
         } else {
-            showAlerWithAction(okAction: instantiateFindLocationViewController, message: "No location found. Would You Like to post your location?")
+            overwriteLocationWith(instantiateFindLocationViewController, message: "No location found. Would You Like to post your location?")
         }
     }
     
@@ -67,5 +72,7 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
         self.present(controller, animated: true, completion: nil)
     }
+    
+    
 
 }

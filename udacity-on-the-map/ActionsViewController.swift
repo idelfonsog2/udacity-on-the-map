@@ -12,6 +12,7 @@ public extension UIViewController {
     
     //MARK: Activity Indicator
     func startActivityIndicatorAnimation() -> UIActivityIndicatorView {
+    
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.center = self.view.center
         activityIndicator.frame = self.view.frame
@@ -42,14 +43,14 @@ public extension UIViewController {
         self.present(controller, animated: true, completion: nil)
     }
     
-    //MARK: Alerts
-    func showAlerWithAction(okAction: @escaping () -> Void, message: String) {
+
+    func overwriteLocationWith(_ completeAction: @escaping () -> Void, message: String) {
         let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "cancel", style: .destructive, handler: nil)
         let okAction = UIAlertAction(title: "ok", style: .default) { (action) in
             DispatchQueue.main.async {
-                okAction()
+                completeAction()
             }
         }
         
@@ -67,6 +68,11 @@ public extension UIViewController {
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func subscribeToKeyboardOffTap()  {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
     }
     
     func unsubscribeFromKeyboardNotifications() {

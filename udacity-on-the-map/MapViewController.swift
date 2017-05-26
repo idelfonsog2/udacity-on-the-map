@@ -28,7 +28,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let indicator = startActivityIndicatorAnimation()
         
         //Remove for refresh purposes
         data.studentLocations.removeAll()
@@ -38,7 +37,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         //The map will show in the exec of the following func
         self.loadStudentLocationsData()
         
-        stopActivityIndicatorAnimation(indicator: indicator)
     }
     
     //MARK: Helper Functions
@@ -85,13 +83,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                 self.data.myStudentLocation = StudentLocation(dictionary: lastUpdateDictionary)
                 //Add to students array
                 self.data.studentLocations.append(StudentLocation(dictionary: lastUpdateDictionary))
+                UserDefaults.standard.set(true, forKey: kUpdateLocation)
             }
         }
     }
     
     func loadStudentLocationsData() {
         //Obtain 100 student locations
-        self.mapView.alpha = 0.2
+        let indicator = startActivityIndicatorAnimation()
         let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
@@ -101,10 +100,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
             } else {
                 self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
                 
-                DispatchQueue.main.async { //delay with 3 seconds
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                     //Show Map with Annotations
                     self.loadStudentLocationsOnMap()
-                    self.mapView.alpha = 1.0
+                    self.stopActivityIndicatorAnimation(indicator: indicator)
                 }
             }
         }
@@ -112,15 +111,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     func subscribeToNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name(kRefreshLocation), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(addLocationButtonPressed(_:)), name: Notification.Name(kUpdateLocation), object: nil)
     }
     
     //MARK: IBActions
     
-    @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
-        let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
-        self.present(controller, animated: true, completion: nil)
-    }
     
     //MARK: MKMapViewDelegate
     
@@ -148,12 +142,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         // Use the subtitle with URL(..) to openSafari
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
-            if let toOpen = URL(string:(view.annotation?.subtitle!)!) {
-                if toOpen.scheme == "https"  {
-                    if app.canOpenURL(toOpen) {
-                        app.open(toOpen, options: [:], completionHandler: nil)
-                    }
+            if let toOpen = URL(string:(view.annotation?.subtitle!)!), toOpen.scheme == "https", !toOpen.absoluteString.isEmpty {
+                if app.canOpenURL(toOpen) {
+                    app.open(toOpen, options: [:], completionHandler: nil)
                 }
+            } else {
+                displayAlertWithError(message: "Not ablet to open URL")
             }
         }
     }

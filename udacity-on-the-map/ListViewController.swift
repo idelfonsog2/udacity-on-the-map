@@ -68,16 +68,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
-        if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL {
-            
-            let url = URL(string: studentUrl)
-            if url?.scheme == "https"  {
-                if app.canOpenURL(URL(string: studentUrl)!) {
-                    app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
-                }
-            } else {
-                displayAlertWithError(message: "Unsecure link")
+        if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL,
+            let url = URL(string: studentUrl),
+            url.scheme == "https",
+            !url.absoluteString.isEmpty {
+            if app.canOpenURL(URL(string: studentUrl)!) {
+                app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
             }
+        } else {
+            displayAlertWithError(message: "Not able to open URL")
         }
     }
 
