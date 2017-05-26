@@ -8,11 +8,10 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     //Properties
     var data = OMData.sharedInstance()
-    var activityIndicator: UIActivityIndicatorView?
     
     //MARK: IBOutlets
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -22,19 +21,19 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.emailAddressTextField.text = ""
-        self.emailAddressTextField.text = ""
+        self.passwordTextField.text = ""
     }
     
     //MARK: IBActions
     @IBAction func loginToUdacity(_ sender: UIButton) {
         guard let email = emailAddressTextField.text, let password = passwordTextField.text else {
-            displayAlert(message: "Missing field")
+            displayAlertWithError(message: "Missing field")
             return
         }
         let credentials = [
@@ -44,18 +43,17 @@ class LoginViewController: UIViewController {
             ]
         ]
         
-        self.startActivityIndicator()
+        let indicator = startActivityIndicatorAnimation()
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
                     //access denied
-                    self.activityIndicator?.stopAnimating()
-                    self.displayAlert(message: "Account not found or invalid credentials")
+                    self.displayAlertWithError(message: "Account not found or invalid credentials")
                 } else {
                     //access granted
                     self.data.session = UdacitySession(dictionary: response as! [String : Any])
                     self.loadUdacityUserProfile()
-                    self.activityIndicator?.stopAnimating()
+                    self.stopActivityIndicatorAnimation(indicator: indicator)
                     self.instantiateManagerViewController()
                 }
             }
@@ -66,7 +64,7 @@ class LoginViewController: UIViewController {
         UDClient().getUserPublicData() { (response, success) in
             if !success {
                 DispatchQueue.main.async {
-                    self.displayAlert(message: "Could not find your information")
+                    self.displayAlertWithError(message: "Could not find your information")
                 }
             } else {
                 self.data.user = UdacityUser(dictionary: response as! [String : Any])
@@ -83,26 +81,11 @@ class LoginViewController: UIViewController {
         let controller = storyboard?.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
     }
-    
-    func displayAlert(message: String) {
-        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        controller.addAction(okAction)
-        self.present(controller, animated: true, completion: nil)
-    }
-    
-    //TODO: Implement Passwordless with Facebook
 
-    func startActivityIndicator() {
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
-        activityIndicator?.center = self.view.center
-        activityIndicator?.color = UIColor.gray
-        self.view.addSubview(activityIndicator!)
-        activityIndicator?.startAnimating()
+    //MARK: UITextFieldDelegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.endEditing(true)
     }
     
-    func dismissKeyboard() {
-        self.view.endEditing(true)
-    }
 }
 

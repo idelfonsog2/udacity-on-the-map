@@ -14,8 +14,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     //TODO: Properties
     var annotations = [MKPointAnnotation]()
     var data = OMData.sharedInstance()
-    var activityIndicator: UIActivityIndicatorView?
-
     
     //MARK: IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -23,14 +21,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapView.delegate = self
         
+        mapView.delegate = self
         subscribeToNotifications()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.activityIndicator?.stopAnimating()
+        let indicator = startActivityIndicatorAnimation()
+        
         //Remove for refresh purposes
         data.studentLocations.removeAll()
         
@@ -38,6 +37,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         
         //The map will show in the exec of the following func
         self.loadStudentLocationsData()
+        
+        stopActivityIndicatorAnimation(indicator: indicator)
     }
     
     //MARK: Helper Functions
@@ -47,10 +48,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         self.annotations.removeAll()
         
         if data.studentLocations.isEmpty {
-            displayError(string: "Unable to download data")
+            displayAlertWithError(message: "Unable to download data")
             return
         }
-        
 
         //TODO: Another user might have not posted their location or media url
         for student in self.data.studentLocations {
@@ -91,32 +91,23 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     func loadStudentLocationsData() {
         //Obtain 100 student locations
-        showActivityIndicator()
         self.mapView.alpha = 0.2
         let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
         PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
             if !success {
                 DispatchQueue.main.async {
-                    self.displayError(string: "Unable To download Data")
+                    self.displayAlertWithError(message: "Unable To download Data")
                 }
             } else {
                 self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
                 
-                //TODO: Show Map with Annotations
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                DispatchQueue.main.async { //delay with 3 seconds
+                    //Show Map with Annotations
                     self.loadStudentLocationsOnMap()
                     self.mapView.alpha = 1.0
-                    self.activityIndicator?.stopAnimating()
                 }
             }
         }
-    }
-    
-    func displayError(string: String) {
-        let controller = UIAlertController(title: "Error", message: string, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        controller.addAction(okAction)
-        self.present(controller, animated: true, completion: nil)
     }
     
     func subscribeToNotifications() {
@@ -128,7 +119,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     
     @IBAction func addLocationButtonPressed(_ sender: UIBarButtonItem) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FindLocationViewController") as! FindLocationViewController
-        //TODO: 
         self.present(controller, animated: true, completion: nil)
     }
     
@@ -166,14 +156,5 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
                 }
             }
         }
-    }
-    
-    func showActivityIndicator() {
-        //Init activity Indicator
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        activityIndicator?.color = UIColor.gray
-        activityIndicator?.center = self.view.center
-        self.view.addSubview(activityIndicator!)
-        activityIndicator?.startAnimating()
     }
 }

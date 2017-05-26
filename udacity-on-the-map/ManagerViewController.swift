@@ -40,7 +40,6 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     
     func logout() {
         UDClient().logoutFromUdacity { (response, success) in
-            //TODO: Check with udacity number of sessions that could be open by the same user
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
             }
@@ -50,32 +49,17 @@ class ManagerViewController: UINavigationController, UINavigationBarDelegate {
     //MARK: UIBarButtonItems
     func pinSelector() {
         NotificationCenter.default.post(name: Notification.Name(kUpdateLocation), object: self)
-        //TODO: Use bool form parse data to confirm user previously posted
-        if (UserDefaults.standard.bool(forKey: kUpdateLocation)) { //check if there is active location for user
-            showAlerWith(message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
+        
+        //Check if a the user has already a lcation
+        if (UserDefaults.standard.bool(forKey: kUpdateLocation)) {
+            showAlerWithAction(okAction: instantiateFindLocationViewController, message: "You have already posted a Student Location. Would You like to Overwrite your current Location?")
         } else {
-            showAlerWith(message: "No location found. Would You Like to post your location?")
+            showAlerWithAction(okAction: instantiateFindLocationViewController, message: "No location found. Would You Like to post your location?")
         }
     }
     
     func refreshSelector() {
         NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
-    }
-    
-    // MARK: Alerts
-    func showAlerWith(message: String) {
-        let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        
-        let cancelAction = UIAlertAction(title: "cancel", style: .destructive, handler: nil)
-        let okAction = UIAlertAction(title: "ok", style: .default) { (action) in
-            DispatchQueue.main.async {
-                self.instantiateFindLocationViewController()
-            }
-        }
-        
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
     }
     
     //MARK: Instantiate View Controllers

@@ -12,7 +12,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     //MARK: Instantiate Models & Properties
     var data = OMData.sharedInstance()
-    var arrayOfStudents: [StudentLocation]?
    
     //MARK: IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -34,7 +33,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func logoutFromUdacity(_ sender: UIBarButtonItem) {
         UDClient().logoutFromUdacity { (response, success) in
             if !success {
-                print("FAIL to logout")
+                self.displayAlertWithError(message: "FAIL to logout")
             } else {
                 self.dismiss(animated: true, completion: nil)
             }
@@ -44,19 +43,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     func loadStudentsOnTableView() {
 
         if self.data.studentLocations.isEmpty {
-            displayError(string: "Unable to download data")
+            displayAlertWithError(message: "Unable to download data")
             return
         }
         //refresh table
         self.tableView.reloadData()
     }
     
-    func displayError(string: String) {
-        let controller = UIAlertController(title: "Error", message: string, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        controller.addAction(okAction)
-        self.present(controller, animated: true, completion: nil)
-    }
+
     
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,6 +75,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if app.canOpenURL(URL(string: studentUrl)!) {
                     app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
                 }
+            } else {
+                displayAlertWithError(message: "Unsecure link")
             }
         }
     }

@@ -13,7 +13,6 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
 
     //MARK: Instantiate Models
     var myStudentLocation: StudentLocation? = OMData.sharedInstance().myStudentLocation
-
     
     //Properties
     var latitude: Double?
@@ -43,7 +42,11 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        subscribeToNotifications()
+        subscribeToKeyboardNotifications()
+    }
+    
+    deinit {
+        unsubscribeFromKeyboardNotifications()
     }
     
     //MARK: IBActions
@@ -51,7 +54,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
         
         //TODO: Check rubric for this logic
         if (self.locationTextField.text?.isEmpty)! {
-            displayError(message: "Missing location")
+            displayAlertWithError(message: "Missing location")
         }
     
         self.view.endEditing(true)
@@ -91,7 +94,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
         PSClient().updateStudentLocation(objectId: (self.myStudentLocation?.objectId)!, httpBody: params) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
-                    self.displayError(message: "Error Updating Your Location")
+                    self.displayAlertWithError(message: "Error Updating Your Location")
                 } else {
                     self.myStudentLocation?.updatedAt = response?["updatedAt"] as? String
                     NotificationCenter.default.post(name: Notification.Name(kRefreshLocation), object: self)
@@ -107,7 +110,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
         PSClient().createStudentLocation(httpBody: params) { (response, success) in
             DispatchQueue.main.async {
                 if !success {
-                    self.displayError(message: "Error Posting Your Location")
+                    self.displayAlertWithError(message: "Error Posting Your Location")
                 } else {
                     self.myStudentLocation?.objectId = response?["objectId"] as? String
                     self.myStudentLocation?.createdAt = response?["createdAt"] as? String
@@ -122,6 +125,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
     //MARK: Functions
     func showMapWith(location: String) {
         let geoCoder = CLGeocoder()
+        let indicator = startActivityIndicatorAnimation()
         geoCoder.geocodeAddressString(location) { (placeMarkArray, error) in
             if error == nil {
                 let myCoordinates = placeMarkArray?.first?.location?.coordinate
@@ -141,43 +145,17 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
                     self.mapView.isHidden = false
                     self.mapView.setRegion(region, animated: true)
                     self.mapView.addAnnotation(annotation)
+                    self.stopActivityIndicatorAnimation(indicator: indicator)
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.displayError(message: "Could Not find location")
+                    self.displayAlertWithError(message: "Could Not find location")
                 }
             }
         }
     }
     
-    func displayError(message: String) {
-        let controller = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        controller.addAction(okAction)
-        self.present(controller, animated: true, completion: nil)
-    }
     
-    func subscribeToNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-    }
-    
-    func keyboardWillShow(_ notification: Notification) {
-        self.view.frame.origin.y = 30 * -1
-    }
-    
-    func keyboardWillHide(_ notification: Notification) {
-        self.view.frame.origin.y = 0
-    }
-    
-    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
-        let userInfo = notification.userInfo!
-        let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
-        return keyboardFrame.cgRectValue.height
-    }
-    
-    func dismissKeyboard() {
-        self.view.endEditing(true)
-    }
+
 
 }
