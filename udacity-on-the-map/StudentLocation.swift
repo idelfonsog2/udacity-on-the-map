@@ -35,11 +35,10 @@ struct StudentLocation {
     }
     
     //Functions
-    static func locationsFromResults(arrayOfStudentsDictionaries: AnyObject) -> [StudentLocation] {
+    static func locationsFromResults(arrayStudentsDictionaries: AnyObject) -> [StudentLocation] {
         var locations = [StudentLocation]()
-        let results = arrayOfStudentsDictionaries["results"] as! [[String:AnyObject]]
         
-        for student in results {
+        for student in arrayStudentsDictionaries as! [[String: AnyObject]] {
             locations.append(StudentLocation(dictionary: student))
         }
         

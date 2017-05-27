@@ -54,11 +54,10 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
         
         //TODO: Check rubric for this logic
         if (self.locationTextField.text?.isEmpty)! {
-            displayAlertWithError(message: "Missing location")
+            displayAlertWithError(message: "Please enter a location")
         }
     
         self.view.endEditing(true)
-
         //Building profile to submit
         self.myStudentLocation?.mapString = self.locationTextField.text!
         
@@ -153,6 +152,7 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
                 }
             } else {
                 DispatchQueue.main.async {
+                    self.stopActivityIndicatorAnimation(indicator: indicator)
                     self.displayAlertWithError(message: "Could Not find location")
                 }
             }
@@ -161,14 +161,11 @@ class FindLocationViewController: UIViewController, MKMapViewDelegate, UITextFie
     
     //MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if (textField.text?.isEmpty)! {
-            displayAlertWithError(message: "Please fill the fields")
+        if (self.locationTextField.text!.isEmpty) {
+            displayAlertWithError(message: "Please enter a location")
         }
-        
-        if textField.restorationIdentifier == "" {
-            submitLocation()
-        }
-        
+        textField.resignFirstResponder()
+        showMapWith(location: self.locationTextField.text! )
         return true
     }
 }

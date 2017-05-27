@@ -61,8 +61,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                 if !success {
                     //access denied
-                    self.displayAlertWithError(message: "Account not found or invalid credentials")
                     self.stopActivityIndicatorAnimation(indicator: indicator)
+                    if response as! Int == 403 {
+                        self.displayAlertWithError(message: "Wrong email or password")
+                    } else {
+                        self.displayAlertWithError(message: "Connection Error")
+                    }
                 } else {
                     //access granted
                     self.data.session = UdacitySession(dictionary: response as! [String : Any])

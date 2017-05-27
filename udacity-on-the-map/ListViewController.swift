@@ -26,10 +26,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.loadStudentsOnTableView()
     }
     
-    deinit {
-        //FIXME: Do I remove if VC goes off screen?
-        //NotificationCenter.default.removeObserver(self)
-    }
+    
     @IBAction func logoutFromUdacity(_ sender: UIBarButtonItem) {
         UDClient().logoutFromUdacity { (response, success) in
             if !success {
@@ -41,7 +38,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func loadStudentsOnTableView() {
-
         if self.data.studentLocations.isEmpty {
             displayAlertWithError(message: "Unable to download data")
             return
@@ -49,8 +45,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         //refresh table
         self.tableView.reloadData()
     }
-    
-
     
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,12 +60,18 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     //MARK: UITableViewDelegate
+    
+    /*
+     Reviewer Question:  Why not allow the app open a URL that starts with simple http? Due to new A
+     answer: Apple announced that ATS will be REQUIRED of all apps as of January 2017.
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
         if let studentUrl = self.data.studentLocations[indexPath.row].mediaURL,
             let url = URL(string: studentUrl),
             url.scheme == "https",
             !url.absoluteString.isEmpty {
+            tableView.deselectRow(at: indexPath, animated: true)
             if app.canOpenURL(URL(string: studentUrl)!) {
                 app.open(URL(string: studentUrl)!, options: [:], completionHandler: nil)
             }

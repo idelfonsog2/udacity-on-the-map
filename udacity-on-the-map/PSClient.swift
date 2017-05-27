@@ -11,7 +11,7 @@ import UIKit
 class PSClient: NSObject {
     let network = UMNetworking.sharedInstance()
     
-    func obtainStudentLocation(parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
+    func obtainStudentLocation(all: Bool, parameters: [String : Any], completionHandlerForGET: @escaping (_ result: AnyObject?, _ success: Bool) -> Void) {
         // GET: StudentLocation
         let url = urlFromParameters(parameters, withPathExtension: ParseMethod.StudentLocation)
         let request = NSMutableURLRequest(url: url)
@@ -20,7 +20,20 @@ class PSClient: NSObject {
         request.addValue(ParseHeaderFieldsValues.RestApiKeyValue, forHTTPHeaderField: ParseHeaderFieldsKeys.ParseRestKey)
         
         let _ = network.taskForWithRequest(request) { (response, success) in
-            completionHandlerForGET(response, success)
+            guard let resultsDictionary = response?["results"] as? [[String: Any]] else {
+                return
+            }
+            
+            if !all {
+                //Single User
+                guard let lastUpdateDictionary = resultsDictionary[0] as? [String: AnyObject] else {
+                    return
+                }
+                completionHandlerForGET(lastUpdateDictionary as AnyObject, success)
+            } else {
+                //100 student locations
+               completionHandlerForGET(resultsDictionary as AnyObject, success)
+            }
         }
     }
     

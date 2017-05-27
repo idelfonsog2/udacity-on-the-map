@@ -67,18 +67,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
     func loadMyParseStudentLocationData() {
         //Init myStudentLocation Instance
         let params: [String: Any] = ["order":"-createdAt","where": "{\"\(ParseHTTPBodyKeys.UniqueKey)\":\"\(data.session!.uniqueKey!)\"}"]
-        PSClient().obtainStudentLocation(parameters: params) { (response, sucess) in
+        PSClient().obtainStudentLocation(all: false, parameters: params) { (response, sucess) in
             if !sucess {
                 print("Error finding the current udacity user in the Parse API")
             } else {
-                guard let resultsDictionary = response?["results"] as? [[String: Any]] else {
-                    return
-                }
-                
-                guard let lastUpdateDictionary = resultsDictionary[0] as? [String: AnyObject] else {
-                    return
-                }
-
+                let lastUpdateDictionary = response as! [String: AnyObject]
                 // Init instance
                 self.data.myStudentLocation = StudentLocation(dictionary: lastUpdateDictionary)
                 //Add to students array
@@ -92,13 +85,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         //Obtain 100 student locations
         let indicator = startActivityIndicatorAnimation()
         let parameters: [String: Any] = ["limit": 100, "order": "-updatedAt"]
-        PSClient().obtainStudentLocation(parameters: parameters) { (response, success) in
+        PSClient().obtainStudentLocation(all: true, parameters: parameters) { (response, success) in
             if !success {
                 DispatchQueue.main.async {
+                    self.stopActivityIndicatorAnimation(indicator: indicator)
                     self.displayAlertWithError(message: "Unable To download Data")
                 }
             } else {
-                self.data.studentLocations = StudentLocation.locationsFromResults(arrayOfStudentsDictionaries: response!)
+                self.data.studentLocations = StudentLocation.locationsFromResults(arrayStudentsDictionaries: response!)
                 
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                     //Show Map with Annotations
@@ -113,11 +107,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(loadStudentLocationsData), name: Notification.Name(kRefreshLocation), object: nil)
     }
     
-    //MARK: IBActions
-    
     
     //MARK: MKMapViewDelegate
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "pin"
         
