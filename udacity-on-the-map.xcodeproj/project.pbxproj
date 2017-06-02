@@ -68,12 +68,13 @@
 		160C99561EC3F5F0008B0399 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1691C98D1EC1E32A00758BCF /* StudentLocation.swift */,
-				160A9EF61ED21DF800933F7E /* UdacityUser.swift */,
-				16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */,
 				16FD229E1ED5A0E600D49960 /* OMData.swift */,
+				1691C98D1EC1E32A00758BCF /* StudentLocation.swift */,
+				16F940941ED4BA9D0070F9C7 /* UdacitySession.swift */,
+				160A9EF61ED21DF800933F7E /* UdacityUser.swift */,
 			);
 			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		160C99571EC3F5FA008B0399 /* UDClient */ = {
@@ -83,6 +84,7 @@
 				160C99591EC3F628008B0399 /* UDConstants.swift */,
 			);
 			name = UDClient;
+			path = UDClient;
 			sourceTree = "<group>";
 		};
 		160C99581EC3F604008B0399 /* PSClient */ = {
@@ -92,25 +94,27 @@
 				1691C98B1EC1DE5000758BCF /* PSConstants.swift */,
 			);
 			name = PSClient;
+			path = PSClient;
 			sourceTree = "<group>";
 		};
 		160C995F1EC63932008B0399 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				163045371ED1391400FC518F /* FindLocationViewController.swift */,
+				160C99601EC640BA008B0399 /* ListViewController.swift */,
 				1691C97B1EC1DD0800758BCF /* LoginViewController.swift */,
 				160A9EF41ED203D900933F7E /* ManagerViewController.swift */,
 				160C995D1EC63926008B0399 /* MapViewController.swift */,
-				160C99601EC640BA008B0399 /* ListViewController.swift */,
-				163045371ED1391400FC518F /* FindLocationViewController.swift */,
 			);
 			name = Controller;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		1691C96D1EC1DD0800758BCF = {
 			isa = PBXGroup;
 			children = (
-				1691C9781EC1DD0800758BCF /* udacity-on-the-map */,
 				1691C9771EC1DD0800758BCF /* Products */,
+				1691C9781EC1DD0800758BCF /* udacity-on-the-map */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,16 +129,16 @@
 		1691C9781EC1DD0800758BCF /* udacity-on-the-map */ = {
 			isa = PBXGroup;
 			children = (
-				1691C9791EC1DD0800758BCF /* AppDelegate.swift */,
-				16FD22A01ED5DFF900D49960 /* Constants.swift */,
-				16F75EFE1ED8685900B173FF /* Extensions */,
-				16F940961ED4E3FF0070F9C7 /* Networking */,
 				160C995F1EC63932008B0399 /* Controller */,
+				16F75EFE1ED8685900B173FF /* Extensions */,
 				160C99561EC3F5F0008B0399 /* Model */,
-				1691C97D1EC1DD0800758BCF /* Main.storyboard */,
+				16F940961ED4E3FF0070F9C7 /* Networking */,
+				1691C9791EC1DD0800758BCF /* AppDelegate.swift */,
 				160C995B1EC634E6008B0399 /* Assets.xcassets */,
-				1691C9821EC1DD0800758BCF /* LaunchScreen.storyboard */,
+				16FD22A01ED5DFF900D49960 /* Constants.swift */,
 				1691C9851EC1DD0800758BCF /* Info.plist */,
+				1691C9821EC1DD0800758BCF /* LaunchScreen.storyboard */,
+				1691C97D1EC1DD0800758BCF /* Main.storyboard */,
 			);
 			path = "udacity-on-the-map";
 			sourceTree = "<group>";
@@ -145,16 +149,18 @@
 				16E3CAF41ED7B7640017A17F /* ActionsViewController.swift */,
 			);
 			name = Extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		16F940961ED4E3FF0070F9C7 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				16F940921ED496C00070F9C7 /* UMNetworking.swift */,
-				160C99571EC3F5FA008B0399 /* UDClient */,
 				160C99581EC3F604008B0399 /* PSClient */,
+				160C99571EC3F5FA008B0399 /* UDClient */,
+				16F940921ED496C00070F9C7 /* UMNetworking.swift */,
 			);
 			name = Networking;
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +265,7 @@
 				1691C97E1EC1DD0800758BCF /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		1691C9821EC1DD0800758BCF /* LaunchScreen.storyboard */ = {
@@ -267,6 +274,7 @@
 				1691C9831EC1DD0800758BCF /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
