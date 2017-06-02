@@ -13,9 +13,10 @@ public extension UIViewController {
     //MARK: Activity Indicator
     func startActivityIndicatorAnimation() -> UIActivityIndicatorView {
     
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         activityIndicator.center = self.view.center
         activityIndicator.frame = self.view.frame
+        activityIndicator.color = UIColor.darkGray
         activityIndicator.startAnimating()
         self.view.addSubview(activityIndicator)
         
