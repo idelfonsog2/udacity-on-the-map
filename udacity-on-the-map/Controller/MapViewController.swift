@@ -55,7 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UITabBarDelegate {
             if student.latitude != nil, student.longitude != nil {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude: student.latitude!, longitude: student.longitude!)
-                annotation.title = "\(student.firstName!) \(student.lastName!)"
+                annotation.title = "\(student.firstName ?? "no name") \(student.lastName ?? "no name")"
                 annotation.subtitle = "\(student.mediaURL!)"
                 self.annotations.append(annotation)
             }

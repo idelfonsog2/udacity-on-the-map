@@ -58,7 +58,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         ]
         
         UDClient().getSessionId(httpBody: credentials) { (response, success) in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            DispatchQueue.main.async {
                 if !success {
                     //access denied
                     self.stopActivityIndicatorAnimation(indicator: indicator)
@@ -72,7 +72,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.data.session = UdacitySession(dictionary: response as! [String : Any])
                     self.loadUdacityUserProfile()
                     self.stopActivityIndicatorAnimation(indicator: indicator)
-                    self.instantiateManagerViewController()
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5, execute: {
+                        self.instantiateManagerViewController()
+                    })
                 }
             }
         }
