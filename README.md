@@ -16,12 +16,14 @@ open udacity-on-the-map.xcodeproj
 
 change the bundle Id if necessary
 
-## Issues:
+### Login with Udacity Credentials
+![Login](https://media.giphy.com/media/xT39CWEJhjblmoMsmY/giphy.gif)
 
-The information button in the annotations won't work unless the user has input an **https://**  in their profile
+### Check your classmates locations and info
+![Check Annotations](https://media.giphy.com/media/xT39DfLZT8tmsHyRt6/giphy.gif)
 
-_ sample app: _
-https://itunes.apple.com/us/app/on-the-map-portfolio-app/id994619554?mt=8
+### Submit Location
+![Submit Location](https://media.giphy.com/media/3o6vXX5uqfRe4GAtLG/giphy.gif)
 
 ## License
 The contents of this repository are covered under the MIT License
